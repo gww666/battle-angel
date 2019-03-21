@@ -5,33 +5,58 @@ import Component from "vue-class-component";
 import {Collapse, Icon, Checkbox, Button} from "ant-design-vue";
 import {componentsList} from "./config";
 import axios from "axios";
+import {postMessage} from "../../util";
 Vue.use(Collapse);
 Vue.use(Icon);
 Vue.use(Checkbox);
 Vue.use(Button);
-@Component({
-    data() {
-        return {
-            componentsList,
-            activeKey: ["1"]
-        }
-    }
-})
+// @Component({
+//     data() {
+//         return {
+//             componentsList,
+//             activeKey: ["1"]
+//         }
+//     }
+// })
+@Component
 export default class List extends Vue {
+    activeKey = ["1"];
+    componentsList = componentsList;
+    //记录需要导入的组件列表
+    needImportComponentList = [];
 
-    onChange(path) {
-        console.log("path"); 
-    }
-
-    async _import() {
-        // console.log("import");
+    onChange(component) {
+        // let arr = [].concat(needImportComponentList);
+        let _index = -1;
+        this.needImportComponentList.forEach((item, index) => {
+            if (item.type === component.type) {
+                _index = index;
+            }
+        });
+        if (_index > -1) {
+            this.needImportComponentList.splice(_index, 1);
+        } else {
+            this.needImportComponentList.push(component);
+        }
+        // console.log(component);
+        console.log(this.needImportComponentList);
         
-        // let options = {
-        //     url: "/api/compiler"
-        // }
-        // let data = await axios(options);
-        // console.log("data", data);
-        this.$store.dispatch("getIframeSrc");
+        
+    }
+    //导入组件，开始编译
+    async _import() {
+        this.$store.dispatch("getIframeSrc", this.needImportComponentList);
+    }
+    /**
+     * 添加组件
+     */
+    add(item) {
+        console.log("add");
+        
+        postMessage({
+            type: "addComponent",
+            data: item
+        });
     }
 
     render() {
@@ -50,8 +75,8 @@ export default class List extends Vue {
                                             item.list.map((item2, index2) => {
                                                 return (
                                                     <div class="component-item">
-                                                        <span>{item2.name}</span>
-                                                        <a-checkbox change={() => this.onChange(item.path)}></a-checkbox>
+                                                        <span onClick={() => this.add(item2)}>{item2.name}</span>
+                                                        <a-checkbox onChange={() => this.onChange(item2)}></a-checkbox>
                                                     </div>
                                                 )
                                             })
@@ -65,6 +90,12 @@ export default class List extends Vue {
             </div>
         )
         
+    }
+
+    mounted() {
+        Array.from(document.querySelectorAll(".component-item span")).forEach(item => {
+            // initDragEvent(item);
+        });
     }
 }
 </script>

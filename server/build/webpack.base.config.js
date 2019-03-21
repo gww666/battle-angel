@@ -34,6 +34,9 @@ module.exports = {
         })
     ],
     resolve: {
-        extensions: [".js", ".vue"]
+        extensions: [".js", ".vue"],
+        alias: {
+            component: path.resolve(__dirname, "../components")
+        }
     }
 }

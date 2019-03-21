@@ -21,22 +21,22 @@ const getConfig = (mode = "development") => {
         },
         plugins: [
             new VueSSRClientPlugin(),
-            // new CopyWebpackPlugin([
-            //     {
-            //         from: path.resolve(__dirname, "../public/static"),
-            //         to: path.resolve(__dirname, "../client-dist/public")
-            //     }
-            // ])
+            new CopyWebpackPlugin([
+                {
+                    from: path.resolve(__dirname, "../public/static"),
+                    to: path.resolve(__dirname, "../client-dist/public/static")
+                }
+            ])
         ],
-        resolve: {
-            alias: {
-                "model": path.resolve(__dirname, "../src/client/model")
-            }
-        }
+        // resolve: {
+        //     // alias: {
+        //     //     "model": path.resolve(__dirname, "../src/client/model")
+        //     // }
+        // }
     }
     config = merge(config, {
         output: {
-            publicPath: isDev ? "http://127.0.0.1:3000" : "/", 
+            publicPath: isDev ? "http://127.0.0.1:3000/" : "/", 
             filename: "public/[name].js",
         },
         optimization: {

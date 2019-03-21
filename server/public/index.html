@@ -5,8 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <!-- <link rel="stylesheet" href="public/iconfont.css"> -->
-    <link rel="stylesheet" href="https://at.alicdn.com/t/font_1018961_ko2dzrgnrjc.css">
+    <script>
+        (() => {
+            let screenWidth = window.innerWidth;
+            let designWidth = 750;
+            let ratio = 100;
+            let fontSize = screenWidth / designWidth * ratio;
+            document.documentElement.style.fontSize = fontSize + "px";
+        })();
+    </script>
 </head>
 <body>
     <!-- <div id="root"></div> -->

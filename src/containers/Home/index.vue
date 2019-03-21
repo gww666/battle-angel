@@ -7,7 +7,6 @@ import Menu from "./components/menu";
 @Component
 export default class Home extends Vue {
 
-
     render() {
         return (
             <div class="home-box">

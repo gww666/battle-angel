@@ -1,11 +1,12 @@
 import Vue from "vue";
 import {sync} from "vuex-router-sync";
 import {createRouter} from "./routers";
-import {createStore} from "./store";
+// import {createStore} from "./store";
+import store from "./store";
 import App from "./App.vue";
 export const createApp = () => {
     const router = createRouter();
-    const store = createStore();
+    // const store = createStore();
     sync(store, router);
     const app = new Vue({
         router,
@@ -14,4 +15,5 @@ export const createApp = () => {
     });
     
     return {app, router, store};
+    // return {app, store};
 }

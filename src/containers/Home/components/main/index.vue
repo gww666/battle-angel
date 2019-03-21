@@ -3,6 +3,9 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import {Select, Icon, Spin} from "ant-design-vue";
+// import Drag from "../../../../plugin/drag";
+import {initDropEvent} from "../../../../../plugin/drag2/drag-event";
+import {postMessage} from "../../util";
 Vue.use(Select);
 Vue.use(Icon);
 Vue.use(Spin);
@@ -18,19 +21,30 @@ Vue.use(Spin);
     }
 })
 export default class List extends Vue {
+    reload() {
+        if (this.src) {
+            let data = {
+                type: "reload",
+                url: this.src
+            };
+            // document.querySelector(".iframe").contentWindow.location.reload(true);
+            postMessage(data);
+        }
+    }
 
     render() {
-        console.log(this.$store);
+        // console.log(this.$store);
         
         return (
             <div class="main-box">
                 <div class="iframe-box">
                     <div class="nav-box">
-                        <a-icon type="arrow-left" />
-                        <a-icon type="arrow-right" />
-                        <a-icon type="reload" />
+                        <span><a-icon type="arrow-left" /></span>
+                        <span><a-icon type="arrow-right" /></span>
+                        <span onClick={this.reload} title="刷新"><a-icon type="reload" /></span>
                         <a-select defaultValue="jack" style="flex: 1;" change="handleChange">
                             <a-select-option value="jack">测试首页</a-select-option>
+                            <a-select-option value="jack2">测试首页22</a-select-option>
                         </a-select>
                         
                     </div>
@@ -42,6 +56,20 @@ export default class List extends Vue {
                 </div>
             </div>
         )
+    }
+
+    mounted() {
+        // initDropEvent({
+        //     el: document.querySelector(".iframe")
+        // });
+        // initDropEvent({
+        //     // el: document.querySelector(".iframe-box")
+        //     el: document.querySelector(".main-box")
+        // });
+        initDropEvent({
+            // el: document.querySelector(".iframe-box")
+            el: document.querySelector(".iframe")
+        });
     }
 }
 </script>
@@ -64,7 +92,8 @@ export default class List extends Vue {
             padding: 10px 5px;
             // margin-bottom: 10px;
             // border: 1px solid #f1f1f1;
-            &>i {
+            &>span {
+                cursor: pointer;
                 margin-right: 8px;
             }
         }

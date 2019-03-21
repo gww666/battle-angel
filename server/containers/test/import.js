@@ -1,0 +1,1 @@
+import header1 from "component/header/header1";import input3 from "component/input/input3";export default {components: {header1,input3,}}

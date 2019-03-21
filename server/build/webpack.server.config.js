@@ -2,8 +2,8 @@ const merge = require("webpack-merge");
 const path = require("path");
 const baseConfig = require("./webpack.base.config");
 const VueSSRServerPlugin  = require("vue-server-renderer/server-plugin");
-let mode = process.env.NODE_ENV || "production";
-console.log("mode", mode);
+let mode = process.env.NODE_ENV;
+// console.log("mode", mode);
 const isDev = mode === "development";
 
 let config = {
@@ -19,11 +19,11 @@ let config = {
     plugins: [
         new VueSSRServerPlugin()
     ],
-    resolve: {
-        alias: {
-            // "model": path.resolve(__dirname, "../src/server/model")
-        }
-    }
+    // resolve: {
+    //     alias: {
+    //         // "model": path.resolve(__dirname, "../src/server/model")
+    //     }
+    // }
 }
 
 module.exports = merge(baseConfig, config);

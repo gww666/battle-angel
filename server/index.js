@@ -6,8 +6,8 @@ const staticRouter = require("./ssr/static-assets.js");
 // const uploadRouter = require("./routers/upload");
 const send = require("koa-send");
 const isDev = process.env.NODE_ENV === "development";
-const apiRouter = require("./ssr/compiler");
-// const {body} = require("./util");
+const apiRouter = require("./ssr/api");
+const {body} = require("./util/server-util");
 // const session = require("koa-session");
 // let SSRRouter;
 // if (isDev) {
@@ -34,7 +34,7 @@ server.use(async (ctx, next) => {
         await next();
     }
 });
-// server.use(body());
+server.use(body());
 //使用静态资源文件的路由
 server.use(staticRouter.routes()).use(staticRouter.allowedMethods());
 //使用处理服务端渲染的路由

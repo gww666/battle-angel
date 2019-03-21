@@ -1,15 +1,21 @@
-module.exports = {
-	presets: [
+{
+	"presets": [
 		"@vue/app"
 	],
-	plugins: [
+	"plugins": [
+		"@babel/plugin-syntax-dynamic-import",
 		[
             "@babel/plugin-proposal-decorators",
             {
                 "legacy": true
             }
 		],
-		"@babel/plugin-proposal-class-properties",
+		[
+			"@babel/plugin-proposal-class-properties", 
+			{
+				"loose": false
+			}
+		],
 		[
 			"import",
 			{

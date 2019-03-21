@@ -6,9 +6,13 @@
 </template>
 <script>
 // import Header from "./components/Header";
+// import "./util";
 export default {
     components: {
         // "m-header": Header
+    },
+    mounted() {
+        import("./util/index.js")
     }
 }
 </script>
