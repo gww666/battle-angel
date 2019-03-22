@@ -58,7 +58,19 @@ export default class List extends Vue {
             data: item
         });
     }
-
+    /**
+     * 获取列表
+    */
+    async getList() {
+        let url = "/api/getKitsList";
+        let options = {
+            url,
+            method: "get"
+        }
+        let list = await axios(options)
+        console.log('list: >>>>>>>>', list.data)
+        this.componentsList = list.data.data
+    }
     render() {
         return (
             <div class="component-list-box">
@@ -96,6 +108,7 @@ export default class List extends Vue {
         Array.from(document.querySelectorAll(".component-item span")).forEach(item => {
             // initDragEvent(item);
         });
+        this.getList()
     }
 }
 </script>
