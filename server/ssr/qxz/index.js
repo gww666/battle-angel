@@ -16,28 +16,32 @@ function isFile(_path) {
 // 左侧组件列表
 const getKitsList = async (ctx, next) => {
     let data = []
-    let kitClass = fs.readdirSync(path.resolve(__dirname, '../../components'))
-    Array.isArray(kitClass) && kitClass.map(async ele => {
-        let _path = path.resolve(__dirname, `../../components/${ele}`)
-        if(!fs.statSync(_path).isFile()) {
-            let obj = {
-                type: ele,
-                title: ele,
-                list: []
-            }
-            let kitName = fs.readdirSync(_path)
-            Array.isArray(kitName) && kitName.map(item => {
-                item = item.split('.')[0]
-                obj.list.push({
-                    name: item,
-                    path: `component/${ele}/${item}`,
-                    type: item
+    try{
+        let kitClass = fs.readdirSync(path.resolve(__dirname, '../../components'))
+        kitClass.forEach(ele => {
+            let _path = path.resolve(__dirname, `../../components/${ele}`)
+            if(!fs.statSync(_path).isFile()) {
+                let obj = {
+                    type: ele,
+                    title: ele,
+                    list: []
+                }
+                let kitName = fs.readdirSync(_path)
+                kitName.forEach(item => {
+                    item = item.split('.')[0]
+                    obj.list.push({
+                        name: item,
+                        path: `component/${ele}/${item}`,
+                        type: item
+                    })
                 })
-            })
-            data.push(obj)
-        }
-    })
-    ctx.body = new SucModel(data, '获取列表材功');
+                data.push(obj)
+            }
+        })
+        ctx.body = new SucModel(data, '获取列表材功');
+    }catch(err) {
+        ctx.body = new ErrModel(data, '获取列表失败');
+    }
 }
 module.exports = {
     getKitsList
