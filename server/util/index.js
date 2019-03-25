@@ -35,7 +35,8 @@ const receiveMessage = (data) => {
     
 }
 // if (typeof window !== undefined) {
-    window.addEventListener("message", receiveMessage, false);
+window.addEventListener("message", receiveMessage, false);
+window.addEventListener("message", receiveMessage, false);
 // }
 
 

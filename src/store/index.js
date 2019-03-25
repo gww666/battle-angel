@@ -2,6 +2,8 @@ import Vuex from "vuex";
 import Vue from "vue";
 Vue.use(Vuex);
 import axios from "axios";
+import {COMPILER} from "../config/api";
+import gw from "./modules/gw";
 export default new Vuex.Store({
     state: {
         count: 1,
@@ -27,7 +29,7 @@ export default new Vuex.Store({
         async getIframeSrc({commit}, componentList) {
             // return console.log(list);
             commit("setIsCompiling", true);
-            let url = "/api/compiler";
+            let url = COMPILER;
             let options = {
                 url,
                 method: "post",
@@ -40,7 +42,7 @@ export default new Vuex.Store({
         }
     },
     modules: {
-        // gw
+        gw
     }
 
 });

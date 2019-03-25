@@ -3,11 +3,16 @@ const compiler = require("./compiler");
 const fs = require("fs");
 const path = require('path');
 const { SucModel, ErrModel } = require('../util/resModel')
+const {
+    getProps
+} = require("./gw");
 const router = new KoaRouter({
     prefix: "/api"
 });
 //编译的接口
 router.post("/compiler", compiler);
+//获取组件支持的props
+router.get("/getProps", getProps);
 
 // 列表的接口
 router.get('/getKitsList', async (ctx, next) => {
