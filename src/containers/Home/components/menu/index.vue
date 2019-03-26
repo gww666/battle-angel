@@ -1,6 +1,5 @@
 <script>
 import Vue from "vue";
-import Drag from "../../../../plugin/drag";
 import Component from "vue-class-component";
 import {Icon} from "ant-design-vue";
 Vue.use(Icon);
@@ -25,7 +24,6 @@ export default class Menu extends Vue {
         
     }
     mounted() {
-        this.initDrag();
     }
     render() {
         return (

@@ -4,6 +4,7 @@ import Component from "vue-class-component";
 import ComponentList from "./components/component-list";
 import Main from "./components/main";
 import Menu from "./components/menu";
+import Edit from "./components/edit";
 @Component
 export default class Home extends Vue {
 
@@ -16,8 +17,11 @@ export default class Home extends Vue {
                 <div class="main">
                     <Main />
                 </div>
-                <div class="right"></div>
-                <Menu />
+                <div class="right">
+                    <Edit />
+                </div>
+
+                
             </div>
         )
     }
@@ -28,6 +32,7 @@ export default class Home extends Vue {
     width: 100%;
     height: 100%;
     display: flex;
+    align-items: center;
 
     .left {
         width: 200px;

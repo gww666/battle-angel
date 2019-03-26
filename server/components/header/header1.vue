@@ -1,25 +1,19 @@
 <script>
 import Vue from "vue";
-import Component from "vue-class-component";
-import Drag from "../../../plugin/drag";
+import Component, {mixins} from "vue-class-component";
+import BaseHeader from "./base";
 @Component
-export default class Home extends Vue {
-
+export default class Home extends mixins(BaseHeader) {
 
     render() {
         return (
             <div class="header1-box">
                 <img src="../../public/static/images/arrow.png" alt="arrow" />
-                <span>登录</span>
+                <span>{this.text}</span>
             </div>
         )
     }
     mounted() {
-        let inputs = document.querySelectorAll(".header1-box");
-        Array.from(inputs).forEach(item => new Drag(item));
-        // let menu = document.querySelector(".btn-box");
-        //把menu变为可拖拽的
-        // new Drag(input);
     }
 }
 </script>

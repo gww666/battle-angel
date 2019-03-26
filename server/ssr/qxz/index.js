@@ -22,7 +22,7 @@ const getKitsList = async (ctx, next) => {
             let _path = path.resolve(__dirname, `../../components/${ele}`)
             if(!fs.statSync(_path).isFile()) {
                 let obj = {
-                    type: ele,
+                    group: ele,
                     title: ele,
                     list: []
                 }

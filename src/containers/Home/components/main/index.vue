@@ -3,8 +3,6 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import {Select, Icon, Spin} from "ant-design-vue";
-// import Drag from "../../../../plugin/drag";
-import {initDropEvent} from "../../../../../plugin/drag2/drag-event";
 import {postMessage} from "../../util";
 Vue.use(Select);
 Vue.use(Icon);
@@ -25,7 +23,9 @@ export default class List extends Vue {
         if (this.src) {
             let data = {
                 type: "reload",
-                url: this.src
+                data: {
+                    url: this.src
+                }
             };
             // document.querySelector(".iframe").contentWindow.location.reload(true);
             postMessage(data);
@@ -66,16 +66,13 @@ export default class List extends Vue {
         //     // el: document.querySelector(".iframe-box")
         //     el: document.querySelector(".main-box")
         // });
-        initDropEvent({
-            // el: document.querySelector(".iframe-box")
-            el: document.querySelector(".iframe")
-        });
     }
 }
 </script>
 <style lang="scss" scoped>
 .main-box {
-    width: 1000px;
+    width: 800px;
+    // flex: 1;
     height: 100%;
     display: flex;
     flex-flow: column nowrap;

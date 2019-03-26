@@ -1,6 +1,6 @@
 export const componentsList = [
     {
-        type: "header",
+        group: "header",
         title: "头部",
         list: [
             {
@@ -11,7 +11,7 @@ export const componentsList = [
         ]
     },
     {
-        type: "input",
+        group: "input",
         title: "输入框",
         list: [
             {
@@ -32,7 +32,7 @@ export const componentsList = [
         ]
     },
     {
-        type: "button",
+        group: "button",
         title: "按钮",
         list: [
             {

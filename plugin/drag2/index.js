@@ -133,71 +133,71 @@ export default (Vue) => {
      * @param {*} el 
      * @param {*} obj 
      */
-    // function initMouseEvent(el, {componentName, handleType, index, deleteAble}) {
-    //     if (handleType === "add") return;
-    //     let id = el.getAttribute("data-id");
-    //     el.onmouseenter = () => {
-    //         // console.log("鼠标进入");
-    //         if(window.environment==='production'){return}
-    //         showCover();
-    //     }
-    //     el.onmouseleave = () => {
-    //         // console.log("鼠标离开");
-    //         hideCover();
-    //     }
-    //     //创建一个浮层
-    //     function showCover() {
-    //         let width = getComputedStyle(el, null).width;
-    //         let height = getComputedStyle(el, null).height;
-    //         !el.style.position &&  (el.style.position = "relative");
-    //         let cover = `
-    //             <div class="edit-cover" 
-    //                 style="border: 3px dashed #2489c5;width: ${width};height: ${height};
-    //                 position: absolute;left: 0;top: 0;
-    //                 z-index: 1;box-sizing: border-box;">
-    //                 <div style="height: 30px;width: 150px;position: absolute;
-    //                     right: 0;top: 0;display: flex;justify-content: space-between;">
-    //                     <span class="cover-edit-btn"
-    //                         style="${styleLoader(editBtn.blue_btn)}">
-    //                         编辑
-    //                     </span>
-    //                     <span class="cover-del-btn" 
-    //                         style="${deleteAble ? styleLoader(editBtn.blue_btn) : styleLoader(editBtn.blue_btn_disable)}">
-    //                         删除
-    //                     </span>
-    //                 </div>
-    //             </div>
-    //         `;
-    //         el.insertAdjacentHTML("afterbegin", cover);
-    //         //添加编辑按钮点击事件
-    //         el.querySelector(".cover-edit-btn").onclick = editClickEvent;
-    //         el.querySelector(".cover-del-btn").onclick = deleteClickEvent;
-    //     }
-    //     //隐藏浮层
-    //     function hideCover() {
-    //         el.querySelector(".edit-cover") && el.removeChild(el.querySelector(".edit-cover"));
-    //     }
-    //     function editClickEvent() {
-    //         // 当点击猜你喜欢组件的时候让编辑按钮变为不可点击
-    //         if(componentName==="GuessYouLike"){
-    //             el.querySelector(".cover-edit-btn").style = styleLoader(editBtn.blue_btn_disable)
-    //         }
-    //         console.log("点击编辑按钮", componentName, id);
-    //         let parentNode = el.parentNode;
-    //         let part = getPart(parentNode);
-    //         edit({componentName, id, part});
-    //     }
-    //     function deleteClickEvent() {
-    //     	if (!deleteAble) {
-    //     		console.log("该组件不能删除");
-    //     		return;
-    //     	}
-    //         // console.log("点击删除按钮按钮", index);
-    //         let parentNode = el.parentNode;
+    function initMouseEvent(el, {componentName, handleType, index, deleteAble}) {
+        if (handleType === "add") return;
+        let id = el.getAttribute("data-id");
+        el.onmouseenter = () => {
+            // console.log("鼠标进入");
+            if(window.environment==='production'){return}
+            showCover();
+        }
+        el.onmouseleave = () => {
+            // console.log("鼠标离开");
+            hideCover();
+        }
+        //创建一个浮层
+        function showCover() {
+            let width = getComputedStyle(el, null).width;
+            let height = getComputedStyle(el, null).height;
+            !el.style.position &&  (el.style.position = "relative");
+            let cover = `
+                <div class="edit-cover" 
+                    style="border: 3px dashed #2489c5;width: ${width};height: ${height};
+                    position: absolute;left: 0;top: 0;
+                    z-index: 1;box-sizing: border-box;">
+                    <div style="height: 30px;width: 150px;position: absolute;
+                        right: 0;top: 0;display: flex;justify-content: space-between;">
+                        <span class="cover-edit-btn"
+                            style="${styleLoader(editBtn.blue_btn)}">
+                            编辑
+                        </span>
+                        <span class="cover-del-btn" 
+                            style="${deleteAble ? styleLoader(editBtn.blue_btn) : styleLoader(editBtn.blue_btn_disable)}">
+                            删除
+                        </span>
+                    </div>
+                </div>
+            `;
+            el.insertAdjacentHTML("afterbegin", cover);
+            //添加编辑按钮点击事件
+            el.querySelector(".cover-edit-btn").onclick = editClickEvent;
+            el.querySelector(".cover-del-btn").onclick = deleteClickEvent;
+        }
+        //隐藏浮层
+        function hideCover() {
+            el.querySelector(".edit-cover") && el.removeChild(el.querySelector(".edit-cover"));
+        }
+        function editClickEvent() {
+            // 当点击猜你喜欢组件的时候让编辑按钮变为不可点击
+            if(componentName==="GuessYouLike"){
+                el.querySelector(".cover-edit-btn").style = styleLoader(editBtn.blue_btn_disable)
+            }
+            console.log("点击编辑按钮", componentName, id);
+            let parentNode = el.parentNode;
+            let part = getPart(parentNode);
+            edit({componentName, id, part});
+        }
+        function deleteClickEvent() {
+        	if (!deleteAble) {
+        		console.log("该组件不能删除");
+        		return;
+        	}
+            // console.log("点击删除按钮按钮", index);
+            let parentNode = el.parentNode;
             
-    //         let part = getPart(parentNode);
-    //         // console.log("parentNode", parentNode, part);
-    //         del({position: index, part});
-    //     }
-    // }
+            let part = getPart(parentNode);
+            // console.log("parentNode", parentNode, part);
+            del({position: index, part});
+        }
+    }
 }

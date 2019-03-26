@@ -1,25 +1,21 @@
 <script>
 import Vue from "vue";
-import Component from "vue-class-component";
-import Drag from "../../../plugin/drag";
+import Component, {mixins} from "vue-class-component";
+import Base from "./base";
+import styleLoader from "../../../plugin/edit/css-modules";
 @Component
-export default class Home extends Vue {
-
+export default class Home extends mixins(Base) {
+    // <img src={require(`../../public/static/images/${this.icon}.png`)} alt="arrow" />
 
     render() {
         return (
-            <div class="input1-box">
-                <img src="../../public/static/images/phone.png" alt="arrow" />
-                <input type="text" placeholder="请输入手机号" />
+            <div class="input1-box" style={styleLoader(this.mStyle)}>
+                <img src={`../../public/static/images/${this.icon}.png`} alt="arrow" />
+                <input type="text" placeholder={this.placeholder} />
             </div>
         )
     }
     mounted() {
-        let inputs = document.querySelectorAll(".input1-box");
-        Array.from(inputs).forEach(item => new Drag(item));
-        // let menu = document.querySelector(".btn-box");
-        //把menu变为可拖拽的
-        // new Drag(input);
     }
 }
 </script>

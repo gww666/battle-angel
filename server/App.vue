@@ -1,18 +1,13 @@
 <template>
     <div id="root">
-        <!-- <m-header></m-header> -->
         <router-view></router-view>
     </div>
 </template>
 <script>
-// import Header from "./components/Header";
-// import "./util";
 export default {
-    components: {
-        // "m-header": Header
-    },
     mounted() {
-        import("./util/index.js")
+        import("./util/message.js");
+        // import("../plugin/ps/index.js");
     }
 }
 </script>

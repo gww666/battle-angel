@@ -1,7 +1,6 @@
 <script>
 import Vue from "vue";
 import Component from "vue-class-component";
-import Drag from "../../../plugin/drag";
 @Component
 export default class Home extends Vue {
 
@@ -14,8 +13,7 @@ export default class Home extends Vue {
         )
     }
     mounted() {
-        let inputs = document.querySelectorAll(".button1-box");
-        Array.from(inputs).forEach(item => new Drag(item));
+        
     }
 }
 </script>

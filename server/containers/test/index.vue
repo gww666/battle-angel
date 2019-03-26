@@ -1,58 +1,58 @@
 <template>
-    <div class="test-box">
-        <component v-for="(item, index) in componentList" :is="item.type" :key="index + '' + item.type"></component>
+    <div class="test-box" :style="mStyle">
+        <component 
+            v-for="(item, index) in componentList" 
+            :is="item.type" :key="index + '' + item.type"
+            :componentId="item.id"
+            :data-baid="item.id"
+            :data-bagroup="item.group">
+        </component>
     </div>
 </template>
 
 <script>
-// import Header from "./components/Header";
-// import Input1 from "../components/input/1";
 import Vue from "vue";
 import Component from "vue-class-component";
 import components from "./import";
 export default {
     mixins: [components],
+    // props: {
+    //     mStyle: {
+    //         type: Object,
+    //         default: () => ({})
+    //     }
+    // },
+    data() {
+        return {
+            mStyle: {}
+        }
+    },
     computed: {
         componentList() {
-            // console.log("打印数据", this.$store.state.gw.componentList);
-            
             return this.$store.state.gw.componentList;
         }
     },
-    // components: {
-    //     Input1
-    // }
+    methods: {
+        
+    },
+    mounted() {
+        window.PSEvent.listen("page", data => {
+            let mStyle = {}
+            Object.keys(data).forEach(key => {
+                let value = data[key];
+                //属于样式标签
+                if (key in document.documentElement.style) {
+                    mStyle[key] = value;
+                } else {
+                    this[key] = value
+                }
+            });
+            console.log("打印style", mStyle);
+            //设置样式属性
+            this.mStyle =  mStyle;
+        });
+    }
 }
-// @Component({
-//     computed: {
-//         componentList() {
-//             console.log("打印数据", this.$store.state.gw.componentList);
-            
-//             return this.$store.state.gw.componentList;
-//         }
-//     }
-// })
-// export default class Test extends Vue {
-//     render(h) {
-//         return (
-//             <div class="test-box">
-//                 {
-//                     this.componentList.map((item, index) => {
-//                         return (
-//                             <component is={item.type}></component>
-//                         )
-//                     })
-//                 }
-                
-//             </div>
-//         )
-//     }
-//     mounted() {
-//         setTimeout(() => {
-//             console.log("延迟打印数据", this.$store.state.gw.componentList);
-//         }, 5000);
-//     }
-// }
 
 </script>
 

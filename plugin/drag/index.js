@@ -9,14 +9,18 @@ class Drag {
     }
     init() {
         this.dom.style.position = "absolute";
+        let plugins;
+        if (plugins = this.options.plugins) {
+            plugins.forEach(fn => fn(this.dom));
+        }
     }
     addEventListener() {
         let dom = this.dom;
         //鼠标左键按下
         dom.onmousedown = (e) => {
 
-            console.log(e.target);
-            console.log("开始拖拽");
+            // console.log(e.target);
+            // console.log("开始拖拽");
             //记录鼠标点下的点
             let offsetX = e.offsetX;
             let offsetY = e.offsetY;
@@ -34,7 +38,7 @@ class Drag {
             }
         }
         dom.onmouseup = (e) => {
-            console.log("onmouseup");
+            // console.log("onmouseup");
             // dom.onmousedown = null;
             document.onmousemove = null;
         }

@@ -8,14 +8,14 @@ class BaseModel {
 class SucModel extends BaseModel {
     constructor(data, message) {
         super(data, message);
-        this.errno = 1
+        this.returnCode = 1
     }
 }
 
 class ErrModel extends BaseModel {
     constructor(data, message) {
         super(data, message);
-        this.errno = 0
+        this.returnCode = 0
     }
 }
 

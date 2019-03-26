@@ -13,6 +13,10 @@ module.exports = [
     },
     {
         "title": "上边距",
-        "prop": "left"
+        "prop": "top"
+    },
+    {
+        "title": "提示文字",
+        "prop": "text"
     }
 ]

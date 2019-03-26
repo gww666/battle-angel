@@ -6,18 +6,11 @@ import {Collapse, Icon, Checkbox, Button} from "ant-design-vue";
 import {componentsList} from "./config";
 import axios from "axios";
 import {postMessage} from "../../util";
+import {generatorId} from "../../../../../plugin/edit/util";
 Vue.use(Collapse);
 Vue.use(Icon);
 Vue.use(Checkbox);
 Vue.use(Button);
-// @Component({
-//     data() {
-//         return {
-//             componentsList,
-//             activeKey: ["1"]
-//         }
-//     }
-// })
 @Component
 export default class List extends Vue {
     activeKey = ["1"];
@@ -39,23 +32,30 @@ export default class List extends Vue {
             this.needImportComponentList.push(component);
         }
         // console.log(component);
-        console.log(this.needImportComponentList);
+        // console.log(this.needImportComponentList);
         
         
     }
     //导入组件，开始编译
     async _import() {
-        this.$store.dispatch("getIframeSrc", this.needImportComponentList);
+        await this.$store.dispatch("getIframeSrc", this.needImportComponentList);
+        //请求页面配置
+        this.$store.dispatch("gw/getPagePropsList", {});
     }
     /**
      * 添加组件
      */
-    add(item) {
-        console.log("add");
-        
+    add(group, itemInfo) {
+        let item = {
+            ...itemInfo,
+            id: generatorId(),//为组件生成一个id
+            group
+        }
         postMessage({
             type: "addComponent",
-            data: item
+            data: {
+                component: item
+            }
         });
     }
     /**
@@ -63,13 +63,8 @@ export default class List extends Vue {
     */
     async getList() {
         let url = "/api/getKitsList";
-        let options = {
-            url,
-            method: "get"
-        }
-        let list = await axios(options)
-        console.log('list: >>>>>>>>', list.data)
-        this.componentsList = list.data.data
+        let list = await axios(url);
+        this.componentsList = list.data.data;
     }
     render() {
         return (
@@ -87,7 +82,7 @@ export default class List extends Vue {
                                             item.list.map((item2, index2) => {
                                                 return (
                                                     <div class="component-item">
-                                                        <span onClick={() => this.add(item2)}>{item2.name}</span>
+                                                        <span onClick={() => this.add(item.group, item2)}>{item2.name}</span>
                                                         <a-checkbox onChange={() => this.onChange(item2)}></a-checkbox>
                                                     </div>
                                                 )
@@ -105,9 +100,6 @@ export default class List extends Vue {
     }
 
     mounted() {
-        Array.from(document.querySelectorAll(".component-item span")).forEach(item => {
-            // initDragEvent(item);
-        });
         this.getList()
     }
 }
