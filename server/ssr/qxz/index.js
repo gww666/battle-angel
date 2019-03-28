@@ -1,35 +1,30 @@
 const fs = require("fs");
 const path = require('path');
 const { SucModel, ErrModel } = require('../../util/resModel')
-// 是不是文件啊？
-function isFile(_path) {
-    return new Promise((reslove, reject) => {
-        fs.stat(_path, (err, result) => {
-            if(err) {
-                reslove(false)
-            }else {
-                reslove(result.isFile())
-            }
-        })
+
+const excludeList = require('../../config/excluded-components')
+// 筛除基础组建和配置文件
+function isExclude(name) {
+    let a = false;
+    excludeList.forEach(ele => {
+        name.includes(ele) && (a = true)
     })
+    return a
 }
 // 左侧组件列表
 const getKitsList = async (ctx, next) => {
-    let data = []
     try{
-        let kitClass = fs.readdirSync(path.resolve(__dirname, '../../components'))
+        let kitClass = fs.readdirSync(path.resolve(__dirname, '../../components')), data = [];
         kitClass.forEach(ele => {
-            let _path = path.resolve(__dirname, `../../components/${ele}`)
-            if(!fs.statSync(_path).isFile()) {
+            if(!isExclude(ele)) {
                 let obj = {
                     group: ele,
                     title: ele,
                     list: []
-                }
-                let kitName = fs.readdirSync(_path)
+                }, kitName = fs.readdirSync(path.resolve(__dirname, `../../components/${ele}`));
                 kitName.forEach(item => {
                     item = item.split('.')[0]
-                    obj.list.push({
+                    !isExclude(item) && obj.list.push({
                         name: item,
                         path: `component/${ele}/${item}`,
                         type: item
@@ -38,7 +33,7 @@ const getKitsList = async (ctx, next) => {
                 data.push(obj)
             }
         })
-        ctx.body = new SucModel(data, '获取列表材功');
+        ctx.body = new SucModel(data, '获取列表成功');
     }catch(err) {
         ctx.body = new ErrModel(data, '获取列表失败');
     }
