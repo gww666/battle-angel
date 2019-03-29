@@ -16,11 +16,9 @@ class Drag {
     }
     addEventListener() {
         let dom = this.dom;
+        dom.oncontextmenu = () => {return false};
         //鼠标左键按下
         dom.onmousedown = (e) => {
-
-            // console.log(e.target);
-            // console.log("开始拖拽");
             //记录鼠标点下的点
             let offsetX = e.offsetX;
             let offsetY = e.offsetY;

@@ -1,6 +1,7 @@
 <script>
 import Vue from "vue";
 import Component from "vue-class-component";
+import StyleLoader from "../../../plugin/edit/css-modules";
 @Component({
     props: {
         componentId: {
@@ -11,6 +12,7 @@ import Component from "vue-class-component";
 })
 export default class Home extends Vue {
     text = "";
+    mStyle = "";
     mounted() {
         window.PSEvent.listen(this.componentId, data => {
             let mStyle = {}
@@ -25,10 +27,9 @@ export default class Home extends Vue {
                     }
                 }
             });
-            console.log("打印style", mStyle);
             //设置样式属性
             if (Object.keys(mStyle).length) {
-                this.mStyle = mStyle;
+                this.mStyle = StyleLoader(mStyle);
             }
             
         });

@@ -7,7 +7,7 @@ export default class Home extends mixins(BaseHeader) {
 
     render() {
         return (
-            <div class="header1-box">
+            <div class="header1-box" style={this.mStyle}>
                 <img src="../../public/static/images/arrow.png" alt="arrow" />
                 <span>{this.text}</span>
             </div>

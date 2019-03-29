@@ -1,1 +1,1 @@
-import button1 from "component/button/button1.vue";export default {components: {button1,}}
+import header1 from "component/header/header1.vue";import button1 from "component/button/button1.vue";export default {components: {header1,button1,}}

@@ -1,6 +1,7 @@
 <script>
 import Vue from "vue";
 import Component from "vue-class-component";
+import StyleLoader from "../../../plugin/edit/css-modules";
 @Component({
     props: {
         componentId: {
@@ -10,7 +11,7 @@ import Component from "vue-class-component";
     }
 })
 export default class BaseInput extends Vue {
-    mStyle = {};
+    mStyle = "";
     text = "";
     placeholder = "";
     icon = "phone";
@@ -31,7 +32,7 @@ export default class BaseInput extends Vue {
             console.log("打印style", mStyle);
             //设置样式属性
             if (Object.keys(mStyle).length) {
-                this.mStyle = mStyle;
+                this.mStyle = StyleLoader(mStyle);
             }
             
         });
