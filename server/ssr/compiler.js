@@ -49,20 +49,25 @@ const removeDirectory = (path) => {
     });
 }
 const importComponent = (componentList) => {
+    let componentJSONPath = path.resolve(__dirname, "../containers/test/import.json");
     let componentFilePath = path.resolve(__dirname, "../containers/test/import.js");
     let arr = [];
     // let components = {};
-    let components = "";
+    let components = "", comPaths = "";
     //生成import语句
     componentList.forEach(item => {
         let str = `import ${item.type} from "${item.path}";`;
         // components[item.type] = item.type;
         components += `${item.type},`
+        // 引入组件的路径们
+        comPaths += `${item.path},`
         arr.push(str);
     });
     //生成component配置
     let code = `${arr.join("")}export default {components: {${components}}}`;
     fs.writeFileSync(componentFilePath, code);
+    //生成component路径对比json
+    fs.writeFileSync(componentJSONPath, JSON.stringify(comPaths));
 }
 const handle = async (ctx, next) => {
 // router.post("/compiler", async (ctx, next) => {

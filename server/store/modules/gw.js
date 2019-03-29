@@ -1,3 +1,4 @@
+import comPaths from '../../containers/test/import.json'
 export default {
     namespaced: true,
     state: {
@@ -6,7 +7,12 @@ export default {
     mutations: {
         setComponentList(state, component) {
             console.log("推入组件", component);
-            
+
+            console.log(comPaths.indexOf(component.path), 'exist?')
+            if(comPaths.indexOf(component.path) < 0) {
+                console.log('报错中...')
+                return
+            }
             // if (state.componentsInfo[component.type]) {
             //     state.componentsInfo[component.type].push(component);
             // } else {

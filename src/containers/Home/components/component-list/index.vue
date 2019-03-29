@@ -46,6 +46,7 @@ export default class List extends Vue {
      * 添加组件
      */
     add(group, itemInfo) {
+        console.log(group, itemInfo, 'configs')
         let item = {
             ...itemInfo,
             id: generatorId(),//为组件生成一个id
