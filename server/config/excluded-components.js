@@ -1,5 +1,6 @@
 module.exports = [
     'props-export',
-    'props-config',
-    'base'
+    'props-export.js',
+    'base',
+    'base.vue'
 ]
