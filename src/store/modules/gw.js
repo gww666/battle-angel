@@ -14,6 +14,7 @@ export default {
     namespaced: true,
     state: {
         editId: "page",//正在编辑的组件id
+        editActiveTab: "1",//1为页面配置，2为组件配置
         pageProps: {},
         componentProps: {}
     },
@@ -36,6 +37,9 @@ export default {
         },
         setEditId(state, id) {
             state.editId = id;
+        },
+        setEditActiveTab(state, val) {
+            state.editActiveTab = val;
         }
     },
     actions: {

@@ -14,7 +14,7 @@ Vue.use(Button);
 
 @Component
 export default class Edit extends Vue {
-    tabValue = "1";//1为页面配置，2为组件配置
+    // tabValue = "1";
     handleSubmit() {
         let getValues = this.tabValue === "1" ? this.$refs.pageForm.getValues : this.$refs.comForm.getValues;
         let values = getValues();
@@ -29,10 +29,16 @@ export default class Edit extends Vue {
         postMessage(data, "*");
     }
     onRadioChange(e) {
-        this.tabValue = e.target.value;
-        if (this.tabValue === "1") {
+        // this.tabValue = e.target.value;
+        this.$store.commit("gw/setEditActiveTab", e.target.value);
+        if (e.target.value === "1") {
             this.$store.commit("gw/setEditId", "page");
         }
+    }
+    //获取当前编辑的面板
+    //1为页面配置，2为组件配置
+    get tabValue() {
+        return this.$store.state.gw.editActiveTab;
     }
     get editId() {
         return this.$store.state.gw.editId;
@@ -49,11 +55,11 @@ export default class Edit extends Vue {
             <div class="edit-box">
                 {/**切换配置选项卡 */} 
                 <div class="radio-box">
-                    <a-radio-group name="radioGroup" 
+                    <a-radio-group name="radioGroup"
                         defaultValue="1"
                         onChange={this.onRadioChange}>
-                        <a-radio value="1">page</a-radio>
-                        <a-radio value="2">component</a-radio>
+                        <a-radio value="1" checked={this.tabValue === "1"}>page</a-radio>
+                        <a-radio value="2" checked={this.tabValue === "2"}>component</a-radio>
                     </a-radio-group>
                 </div>
                 {/** 页面属性设置 */}

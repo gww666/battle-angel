@@ -7,6 +7,7 @@ const events = (type) => {
                 group: data.group,
                 id: data.id
             });
+            store.commit("gw/setEditActiveTab", "2");
         }
     }
     return _events[type] || (() => {});
