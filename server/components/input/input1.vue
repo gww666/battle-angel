@@ -2,14 +2,12 @@
 import Vue from "vue";
 import Component, {mixins} from "vue-class-component";
 import Base from "./base";
-import styleLoader from "../../../plugin/edit/css-modules";
 @Component
 export default class Home extends mixins(Base) {
-    // <img src={require(`../../public/static/images/${this.icon}.png`)} alt="arrow" />
-
+    
     render() {
         return (
-            <div class="input1-box" style={styleLoader(this.mStyle)}>
+            <div class="input1-box" style={this.mStyle}>
                 <img src={`../../public/static/images/${this.icon}.png`} alt="arrow" />
                 <input type="text" placeholder={this.placeholder} />
             </div>

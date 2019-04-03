@@ -40,26 +40,30 @@ export default class Edit extends Vue {
     get tabValue() {
         return this.$store.state.gw.editActiveTab;
     }
+    //获取正在编辑的模块id
     get editId() {
         return this.$store.state.gw.editId;
     }
+    //页面支持编辑的属性列表
     get pagePropsList() {
         return this.$store.state.gw.pageProps[this.editId] || [];
     }
+    //组件支持编辑的属性列表
     get componentPropsList() {
         return this.$store.state.gw.componentProps[this.editId] || [];
     }
     render() {
+        //是否显示提交按钮
         let shouSubmitBtn = (this.tabValue === "1" && this.pagePropsList.length) || (this.tabValue === "2" && this.componentPropsList.length);
         return (
             <div class="edit-box">
                 {/**切换配置选项卡 */} 
                 <div class="radio-box">
                     <a-radio-group name="radioGroup"
-                        defaultValue="1"
+                        value={this.tabValue}
                         onChange={this.onRadioChange}>
-                        <a-radio value="1" checked={this.tabValue === "1"}>page</a-radio>
-                        <a-radio value="2" checked={this.tabValue === "2"}>component</a-radio>
+                        <a-radio value="1">page</a-radio>
+                        <a-radio value="2">component</a-radio>
                     </a-radio-group>
                 </div>
                 {/** 页面属性设置 */}
@@ -94,7 +98,7 @@ export default class Edit extends Vue {
                         type="primary"
                         onClick={this.handleSubmit}
                     >
-                        Submit
+                        应用
                     </a-button> :
                     <div></div>
                 }

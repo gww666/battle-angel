@@ -7,8 +7,6 @@ export default {
     mutations: {
         setComponentList(state, component) {
             console.log("推入组件", component);
-
-            console.log(comPaths.indexOf(component.path), 'exist?')
             if(comPaths.indexOf(component.path) < 0) {
                 console.log('报错中...')
                 return

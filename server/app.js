@@ -4,6 +4,7 @@ import {createRouter} from "./routers";
 // import {createStore} from "./store";
 import store from "./store";
 import App from "./App.vue";
+
 export const createApp = () => {
     const router = createRouter();
     // const store = createStore();

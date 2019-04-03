@@ -1,1 +1,1 @@
-import input2 from "component/input/input2";import input3 from "component/input/input3";export default {components: {input2,input3,}}
+import input1 from "component/input/input1.vue";import input2 from "component/input/input2.vue";export default {components: {input1,input2,}}

@@ -2,11 +2,12 @@
 // <a-icon type="picture" theme="twoTone"/>
 import Vue from "vue";
 import Component from "vue-class-component";
-import {Collapse, Icon, Checkbox, Button} from "ant-design-vue";
+import {Collapse, Icon, Checkbox, Button, message} from "ant-design-vue";
 import {componentsList} from "./config";
 import axios from "axios";
 import {postMessage} from "../../util";
 import {generatorId} from "../../../../../plugin/edit/util";
+import comJSON from "../../../../../server/containers/test/import.json";
 Vue.use(Collapse);
 Vue.use(Icon);
 Vue.use(Checkbox);
@@ -47,6 +48,10 @@ export default class List extends Vue {
      */
     add(group, itemInfo) {
         console.log(group, itemInfo, 'configs')
+        if(comJSON.indexOf(itemInfo.path) < 0) {
+            message.warning('请先导入组件', 1.5)
+            return
+        }
         let item = {
             ...itemInfo,
             id: generatorId(),//为组件生成一个id
