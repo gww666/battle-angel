@@ -7,6 +7,7 @@ import {componentsList} from "./config";
 import axios from "axios";
 import {postMessage} from "../../util";
 import {generatorId} from "../../../../../plugin/edit/util";
+// 判断是否导入用的json
 import comJSON from "../../../../../server/containers/test/import.json";
 Vue.use(Collapse);
 Vue.use(Icon);
@@ -48,6 +49,7 @@ export default class List extends Vue {
      */
     add(group, itemInfo) {
         console.log(group, itemInfo, 'configs')
+        // 判断是否导入
         if(comJSON.indexOf(itemInfo.path) < 0) {
             message.warning('请先导入组件', 1.5)
             return
