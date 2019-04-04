@@ -8,7 +8,6 @@ export default {
         setComponentList(state, component) {
             console.log("推入组件", component);
             if(comPaths.indexOf(component.path) < 0) {
-                console.log('报错中...')
                 return
             }
             // if (state.componentsInfo[component.type]) {
