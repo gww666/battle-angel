@@ -8,7 +8,7 @@ export default {
         setComponentList(state, component) {
             console.log("推入组件", component);
             if(comPaths.indexOf(component.path) < 0) {
-                return
+                return 
             }
             // if (state.componentsInfo[component.type]) {
             //     state.componentsInfo[component.type].push(component);
