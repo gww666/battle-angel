@@ -1,14 +1,14 @@
 <script>
 import Vue from "vue";
-import Component from "vue-class-component";
+import Component, { mixins } from "vue-class-component";
+import BaseBtn from "./base";
 @Component
-export default class Home extends Vue {
-
+export default class Home extends mixins(BaseBtn) {
 
     render() {
         return (
             <div class="button1-box">
-                <span>确定</span>
+                <span>{this.text || '确定'}</span>
             </div>
         )
     }

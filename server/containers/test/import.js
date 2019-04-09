@@ -1,1 +1,1 @@
-import button1 from "component/button/button1.vue";export default {components: {button1,}}
+import input1 from "component/input/input1.vue";export default {components: {input1,}}

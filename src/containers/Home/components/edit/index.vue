@@ -18,7 +18,7 @@ export default class Edit extends Vue {
     handleSubmit() {
         let getValues = this.tabValue === "1" ? this.$refs.pageForm.getValues : this.$refs.comForm.getValues;
         let values = getValues();
-        // console.log("submit");
+        console.log("submit", values);
         let data = {
             type: this.tabValue === "1" ? "changePageProps" : "changeComponentProps",
             data: {

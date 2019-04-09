@@ -2,7 +2,8 @@ const KoaRouter = require("koa-router");
 const compiler = require("./compiler");
 
 const { 
-    getKitsList 
+    getKitsList,
+    getReadyKits
 } = require('./qxz')
 const {
     getProps
@@ -17,4 +18,6 @@ router.get("/getProps", getProps);
 
 // 列表的接口
 router.get('/getKitsList', getKitsList);
+// 获取可用的组件的接口
+router.get('/getReadyKits', getReadyKits);
 module.exports = router;

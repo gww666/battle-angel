@@ -4,6 +4,7 @@
 import store from "../store";
 import Drag from "../../plugin/drag";
 import Edit from "../../plugin/edit";
+import components from "../containers/test/import";
 //接收父页面的postmessage
 const events = (type) => {
     const _event = {

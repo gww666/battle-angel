@@ -7,8 +7,6 @@ import {componentsList} from "./config";
 import axios from "axios";
 import {postMessage} from "../../util";
 import {generatorId} from "../../../../../plugin/edit/util";
-// 判断是否导入用的json
-import comJSON from "../../../../../server/containers/test/import.json";
 Vue.use(Collapse);
 Vue.use(Icon);
 Vue.use(Checkbox);
@@ -19,6 +17,8 @@ export default class List extends Vue {
     componentsList = componentsList;
     //记录需要导入的组件列表
     needImportComponentList = [];
+    //记录已经导入的组件
+    importedComponent = ''
 
     onChange(component) {
         // let arr = [].concat(needImportComponentList);
@@ -35,22 +35,22 @@ export default class List extends Vue {
         }
         // console.log(component);
         // console.log(this.needImportComponentList);
-        
-        
     }
     //导入组件，开始编译
     async _import() {
         await this.$store.dispatch("getIframeSrc", this.needImportComponentList);
         //请求页面配置
         this.$store.dispatch("gw/getPagePropsList", {});
+        //请求已导入的组件
+        this.getReadyKits();
     }
     /**
      * 添加组件
-     */
+     */  
     add(group, itemInfo) {
-        console.log(group, itemInfo, 'configs')
         // 判断是否导入
-        if(comJSON.indexOf(itemInfo.path) < 0) {
+        let regExp = new RegExp(itemInfo.path)
+        if(!regExp.test(this.importedComponent)) {
             message.warning('请先导入组件', 1.5)
             return
         }
@@ -71,8 +71,24 @@ export default class List extends Vue {
     */
     async getList() {
         let url = "/api/getKitsList";
-        let list = await axios(url);
-        this.componentsList = list.data.data;
+        try {
+            let list = await axios(url);
+            this.componentsList = list.data.data;
+        }catch (err) {
+            console.log('err: ', err)
+        }
+    }
+    /**
+     * 获取已导入的组件
+    */
+    async getReadyKits() {
+        let url = "/api/getReadyKits";
+        try {
+            let res = await axios(url);
+            this.importedComponent = res.data.data
+        }catch(err) {
+            this.importedComponent = ''
+        }
     }
     render() {
         return (
