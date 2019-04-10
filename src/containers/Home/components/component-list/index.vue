@@ -33,6 +33,7 @@ export default class List extends Vue {
         } else {
             this.needImportComponentList.push(component);
         }
+        this.$store.commit("gw/setNeedImportComponentList", this.needImportComponentList);
         // console.log(component);
         // console.log(this.needImportComponentList);
     }
@@ -49,11 +50,11 @@ export default class List extends Vue {
      */  
     add(group, itemInfo) {
         // 判断是否导入
-        let regExp = new RegExp(itemInfo.path)
-        if(!regExp.test(this.importedComponent)) {
-            message.warning('请先导入组件', 1.5)
-            return
-        }
+        // let regExp = new RegExp(itemInfo.path)
+        // if(!regExp.test(this.importedComponent)) {
+        //     message.warning('请先导入组件', 1.5)
+        //     return
+        // }
         let item = {
             ...itemInfo,
             id: generatorId(),//为组件生成一个id

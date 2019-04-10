@@ -1,16 +1,23 @@
 <script>
 import Vue from "vue";
 import Component from "vue-class-component";
-import {Icon} from "ant-design-vue";
-Vue.use(Icon);
+import {Button} from "ant-design-vue";
+Vue.use(Button);
 @Component
 export default class Menu extends Vue {
 
     initDrag() {
-        let menu = document.querySelector(".dangling-menu-box");
+        // let menu = document.querySelector(".dangling-menu-box");
         // let menu = document.querySelector(".btn-box");
         //把menu变为可拖拽的
-        new Drag(menu);
+        // new Drag(menu);
+    }
+    //导入组件，开始编译
+    async _import() {
+        const {needImportComponentList} = this.$store.state.gw;
+        await this.$store.dispatch("getIframeSrc", needImportComponentList);
+        //请求页面配置
+        this.$store.dispatch("gw/getPagePropsList", {});
     }
     add(e) {
         e.stopPropagation();
@@ -23,63 +30,35 @@ export default class Menu extends Vue {
     download() {
         
     }
-    mounted() {
-    }
     render() {
         return (
-            <div class="dangling-menu-container">
-                <div class="dangling-menu-box">
-                    <div class="btn-box">
-                        <span onClick={this.add}>
-                            <Icon type="file-add" />
-                        </span>
-                        <span onClick={this.copy}>
-                            <Icon type="copy" />
-                        </span>
-                        <span onClick={this.download}>
-                            <Icon type="download" />
-                        </span>
-                    </div>
-                </div>
+            <div class="menu-btn-box">
+                <a-button onClick={this._import} size="small">导入</a-button>
+                <a-button onClick={this.download} size="small">下载</a-button>
             </div>
         )
+    }
+    mounted() {
     }
 
 }
 </script>
 <style lang="scss" scoped>
-.dangling-menu-box {
+.menu-btn-box {
     position: fixed;
-    left: 80%;
-    top: 50px;
-    width: 200px;
-    height: 30px;
-    border-radius: 15px;
-    background-color: #f0f0f0;
-    box-shadow: 2px 4px 10px #444;
-    line-height: 30px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #fafafa;
 
-    .btn-box {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-
-
-
-        &>span i {
-            font-size: 16px;
-            margin-right: 15px;
-            cursor: pointer;
-        }
-        &>span i:nth-of-type(1) {
-            margin-left: 20px;
-        }
-
+    &>button {
+        margin-right: 10px;
     }
 }
-
 </style>
 
 

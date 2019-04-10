@@ -16,7 +16,8 @@ export default {
         editId: "page",//正在编辑的组件id
         editActiveTab: "1",//1为页面配置，2为组件配置
         pageProps: {},
-        componentProps: {}
+        componentProps: {},
+        needImportComponentList: [], //点击import按钮时，传给服务端的值
     },
     getters: {
 
@@ -40,6 +41,9 @@ export default {
         },
         setEditActiveTab(state, val) {
             state.editActiveTab = val;
+        },
+        setNeedImportComponentList(state, list) {
+            state.needImportComponentList = list;
         }
     },
     actions: {

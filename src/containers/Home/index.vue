@@ -20,8 +20,7 @@ export default class Home extends Vue {
                 <div class="right">
                     <Edit />
                 </div>
-
-                
+                <Menu />
             </div>
         )
     }
