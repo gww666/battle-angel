@@ -8,6 +8,11 @@ const events = (type) => {
                 id: data.id
             });
             store.commit("gw/setEditActiveTab", "2");
+        },
+        async returnHtml(data) {
+            let html = data.html;
+            await store.dispatch("gw/downloadPage", {html});
+            console.log("下载完毕");
         }
     }
     return _events[type] || (() => {});

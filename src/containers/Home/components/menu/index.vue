@@ -2,6 +2,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import {Button} from "ant-design-vue";
+import {postMessage} from "../../util";
 Vue.use(Button);
 @Component
 export default class Menu extends Vue {
@@ -27,8 +28,12 @@ export default class Menu extends Vue {
     copy() {
 
     }
-    download() {
-        
+    async download() {
+        //给Iframe发送消息
+        postMessage({
+            type: "getHtml"
+        });
+        // await this.$store.dispatch("gw/downloadPage");
     }
     render() {
         return (

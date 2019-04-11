@@ -1,47 +1,25 @@
 // const KoaRouter = require("koa-router");
 const path = require("path");
 const fs = require("fs");
-const serverWebpackConfig = require("../build/webpack.server.config.js");
 const clientWebpackConfig = require("../build/webpack.client.config.js");
-const {createBundleRenderer} = require("vue-server-renderer");
-const memoryFs = require("memory-fs");
 const webpack = require("webpack");
-const render = require("./render");
 const rimraf = require("rimraf");
-const {
-    TEMPLATE_PATH,
-    PROD_CLIENT_MANIFEST_PATH,
-    PROD_SERVER_MANIFEST_PATH
-} = require("./config.js");
 
-
-// const serverCompiler = webpack(webpackConfig);
-//指定文件编译输出为内存
-const mfs = new memoryFs();
-// serverCompiler.outputFileSystem = mfs;
-
-// const router = new KoaRouter({
-//     prefix: "/api"
-// });
-// let serverCompiler;
-const compiler = (configPath, type) => {
+const compiler = (configPath) => {
     return new Promise((resolve) => {
-        let serverCompiler = webpack(configPath);
-        if (type === "server") {
-            serverCompiler.outputFileSystem = mfs;
-        }
-        serverCompiler.run((err, stats) => {
-            // console.log("err", err);
+        // let serverCompiler = webpack(configPath);
+        webpack(configPath, (err, stats) => {
+            console.log("err", err);
             // console.log("stats", stats);
             resolve();
         });
-
+        // serverCompiler.run((err, stats) => {
+        //     console.log("err", err);
+        //     // console.log("stats", stats);
+        //     resolve();
+        // });
     });
 }
-const bundlePath = path.join(
-    serverWebpackConfig.output.path,
-    "vue-ssr-server-bundle.json"
-);
 
 const removeDirectory = (path) => {
     return new Promise(resolve => {
@@ -65,33 +43,18 @@ const importComponent = (componentList) => {
     fs.writeFileSync(componentFilePath, code);
 }
 const handle = async (ctx, next) => {
-// router.post("/compiler", async (ctx, next) => {
     //获取参数
     let componentList = ctx.params.componentList;
     // console.log("接收到参数", componentList);
     //按需引入组件
     importComponent(componentList);
     //删除完毕，开始编译
-    await removeDirectory(path.resolve(__dirname, "../client-dist"));
+    await removeDirectory(path.resolve(__dirname, "../client-dist/public"));
     console.log("删除完毕，开始编译");
     //打包编译客户端的文件
-    await compiler(clientWebpackConfig("development"), "client");
-    await compiler(serverWebpackConfig, "server");
-    const template = fs.readFileSync(TEMPLATE_PATH, "utf-8");
-    let bundle;
-    try {
-        bundle = JSON.parse(mfs.readFileSync(bundlePath, "utf-8"));
-    } catch(err) {
-        console.log("err", err);
-        
-    }
-    const clientManifest = require(PROD_CLIENT_MANIFEST_PATH);
-    let renderer = createBundleRenderer(bundle, {
-        runInNewContext: false,
-        template,
-        clientManifest
-    });
-    let html = await render(ctx, renderer);
+    // await compiler(clientWebpackConfig("production"));
+    await compiler(clientWebpackConfig("development"));
+    let html = fs.readFileSync(path.resolve(__dirname, "../client-dist/index.html"), "utf-8");
     //鉴于srcdoc的问题，这里写入文件，返回链接地址
     // ctx.body = html;
     const distPath = path.resolve(__dirname, "../client-dist/public/test.html");

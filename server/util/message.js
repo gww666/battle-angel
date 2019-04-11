@@ -5,6 +5,9 @@ import store from "../store";
 import Drag from "../../plugin/drag";
 import Edit from "../../plugin/edit";
 import components from "../containers/test/import";
+const postMessage = (data) => {
+    window.parent.postMessage(data, "*");
+}
 //接收父页面的postmessage
 const events = (type) => {
     const _event = {
@@ -38,6 +41,16 @@ const events = (type) => {
         changeComponentProps(data) {
             _event.changePageProps(data);
         },
+        //获取当前页面的html信息
+        getHtml(data) {
+            // return document.documentElement.outerHTML;
+            postMessage({
+                type: "returnHtml",
+                data: {
+                    html: document.documentElement.outerHTML
+                }
+            });
+        }
 
     }
     if (_event[type]) {

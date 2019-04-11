@@ -50,7 +50,7 @@ export default class List extends Vue {
                     </div>
                     {
                         this.compilerState ? <div class="loading-box"><span>编译中</span><a-spin /></div> :
-                            <iframe class="iframe" width="375px" height="667px" frameBorder="0" src={this.src}></iframe>
+                            <iframe name="preview" class="iframe" width="375px" height="667px" frameBorder="0" src={this.src}></iframe>
                     }
                     
                 </div>

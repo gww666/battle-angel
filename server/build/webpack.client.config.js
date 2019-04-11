@@ -4,6 +4,8 @@ const path = require("path");
 const baseConfig = require("./webpack.base.config");
 const VueSSRClientPlugin = require("vue-server-renderer/client-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+// const PrerenderSPAPlugin = require('prerender-spa-plugin');
+// const Renderer = PrerenderSPAPlugin.PuppeteerRenderer;
 // const Visualizer = require("webpack-visualizer-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 // const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -14,13 +16,14 @@ const getConfig = (mode = "development") => {
 
     let config = {
         mode,
-        entry: path.resolve(__dirname, "../client-entry.js"),
+        // entry: path.resolve(__dirname, "../client-entry.js"),
+        entry: path.resolve(__dirname, "../main.js"),
         output: {
             filename: "[name].js",
             path: path.resolve(__dirname, "../client-dist")
         },
         plugins: [
-            new VueSSRClientPlugin(),
+            // new VueSSRClientPlugin(),
             new CopyWebpackPlugin([
                 {
                     from: path.resolve(__dirname, "../public/static"),

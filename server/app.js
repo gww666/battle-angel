@@ -9,6 +9,9 @@ export const createApp = () => {
     const router = createRouter();
     // const store = createStore();
     sync(store, router);
+    // console.log("sync同步之后的store", store);
+    // console.log("sync同步之后的store2", JSON.parse(JSON.stringify(store)));
+    
     const app = new Vue({
         router,
         store,

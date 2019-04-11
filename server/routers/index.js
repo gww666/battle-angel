@@ -5,7 +5,7 @@ import Test from "../containers/test";
 // const Test = () => import("../containers/test.vue");
 export const createRouter = () => {
     return new Router({
-        mode: "history",
+        // mode: "history",
         routes: [
             {
                 path: "/",
