@@ -30,10 +30,10 @@ export default class Menu extends Vue {
     }
     async download() {
         //给Iframe发送消息
-        postMessage({
-            type: "getHtml"
-        });
-        // await this.$store.dispatch("gw/downloadPage");
+        // postMessage({
+        //     type: "getHtml"
+        // });
+        await this.$store.dispatch("gw/downloadPage");
     }
     render() {
         return (

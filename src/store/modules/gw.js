@@ -70,7 +70,7 @@ export default {
             commit("setPageProps", {list: test, id: "page"});
         },
         //下载接口
-        async downloadPage({commit}, params) {
+        async downloadPage({commit}, params = {}) {
             let options = {
                 url: DOWNLOAD,
                 method: "POST",
