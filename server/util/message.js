@@ -18,7 +18,7 @@ const events = (type) => {
         },
         addComponent(data) {
             let component = data.component;
-            store.commit("gw/setComponentList", component);
+            store.commit("addComponentToList", component);
             //顺便初始化组建的拖拽等事件
             //nextTick
             setTimeout(() => {
@@ -31,27 +31,37 @@ const events = (type) => {
                 });
             }, 0);   
         },
-        //更该页面配置
+        //更改页面配置
         changePageProps(data) {
             let id = data.id;
-            delete data.id;
-            PSEvent.trigger(id, data);
+            // delete data.id;
+            // PSEvent.trigger(id, data);
+            PSEvent.trigger(id, data.config);
         },
-        //更该组件配置
+        //更改组件配置
         changeComponentProps(data) {
-            _event.changePageProps(data);
+            let id = data.id;
+            PSEvent.trigger(id, data.config);
+            //保存到vuex中
+            let list = JSON.parse(JSON.stringify(store.state.componentList));
+            for (let item of list) {
+                if (item.id === data.id) {
+                    item.config = data.config;
+                }
+            }
+            store.commit("setComponentList", list);
+
         },
-        //获取当前页面的html信息
-        getHtml(data) {
+        //获取当前页面组件配置信息
+        getComList(data) {
             // return document.documentElement.outerHTML;
             postMessage({
-                type: "returnHtml",
+                type: "returnComList",
                 data: {
-                    html: document.documentElement.outerHTML
+                    list: store.state.componentList
                 }
             });
-        }
-
+        },
     }
     if (_event[type]) {
         return _event[type];

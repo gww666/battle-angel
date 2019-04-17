@@ -1,6 +1,7 @@
 import {
     GET_PROPS,
-    DOWNLOAD
+    DOWNLOAD,
+    SAVE
 } from "../../config/api";
 import axios from "axios";
 const handleData = (data) => {
@@ -78,6 +79,16 @@ export default {
             }
             let data = await axios(options);
             data = handleData(data);
-        }
+        },
+        //保存接口
+        async saveComList({commit}, params = {}) {
+            let options = {
+                url: SAVE,
+                method: "POST",
+                data: params
+            }
+            let data = await axios(options);
+            data = handleData(data);
+        },
     }
 }

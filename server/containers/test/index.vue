@@ -29,7 +29,7 @@ export default {
     },
     computed: {
         componentList() {
-            return this.$store.state.gw.componentList;
+            return this.$store.state.componentList;
         }
     },
     methods: {
