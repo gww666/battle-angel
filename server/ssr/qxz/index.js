@@ -10,8 +10,6 @@ const Name = (name) => {
 // 左侧组件列表
 const getKitsList = async (ctx, next) => {
     try {
-        let selfProps = path.resolve(__dirname, `../../components/${group}/props-export.js`);
-        let commonProps = resolve(__dirname, `../../components/props-export.js`);
         let baseList = fs.readdirSync(path.resolve(__dirname, '../../components'));
         let data = [];
         baseList.forEach(baseName => {
@@ -24,12 +22,13 @@ const getKitsList = async (ctx, next) => {
                     list: []
                 }
                 componentsList.forEach(subName => {
+                    console.log(subName, 'subName')
                     //判断文件夹或文件名称是否为保留字
                     if (!excludeList.includes(subName)) {
                         baseObject.list.push({
-                            name: Name(subName),
+                            name: subName,
                             path: `component/${baseName}/${subName}`,
-                            type: Name(subName)
+                            type: subName
                         });
                     }
                 });

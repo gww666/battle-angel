@@ -1,7 +1,7 @@
 <script>
 import Vue from "vue";
 import Component, {mixins} from "vue-class-component";
-import BaseHeader from "./base";
+import BaseHeader from "../base";
 @Component
 export default class Home extends mixins(BaseHeader) {
 
