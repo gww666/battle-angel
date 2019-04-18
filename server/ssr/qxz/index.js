@@ -7,12 +7,22 @@ const Name = (name) => {
     res.splice(res.length - 1, 1);
     return res.join(".");
 }
+const getProps = (_path) => {
+    let hasProps = fs.existsSync(_path)
+    return hasProps ? require(_path) : hasProps
+}
 // 左侧组件列表
 const getKitsList = async (ctx, next) => {
+    // components中的props
+    let basePropsPath = path.resolve(__dirname, `'../../components/props-export'`)
+    let baseProps = getProps(basePropsPath);
     try {
         let baseList = fs.readdirSync(path.resolve(__dirname, '../../components'));
         let data = [];
         baseList.forEach(baseName => {
+            // 组件类的props
+            let classPropsPath = path.resolve(__dirname, `../../components/${baseName}/props-export.js`)
+            let classProps = getProps(classPropsPath);
             //判断文件夹名称是否为保留字
             if (!excludeList.includes(baseName)) {
                 let componentsList = fs.readdirSync(path.resolve(__dirname, `../../components/${baseName}`));
@@ -22,13 +32,16 @@ const getKitsList = async (ctx, next) => {
                     list: []
                 }
                 componentsList.forEach(subName => {
-                    console.log(subName, 'subName')
+                    // 单个组件的props
+                    let kitPropsPath = path.resolve(__dirname, `../../components/${baseName}/${subName}/props-export.js`)
+                    let kitProps = getProps(kitPropsPath);
                     //判断文件夹或文件名称是否为保留字
                     if (!excludeList.includes(subName)) {
                         baseObject.list.push({
                             name: subName,
                             path: `component/${baseName}/${subName}`,
-                            type: subName
+                            type: subName,
+                            config: kitProps || classProps || baseProps || []
                         });
                     }
                 });

@@ -1,1 +1,1 @@
-import button1 from "component/button/button1";export default {components: {button1,}}
+import input2 from "component/input/input2";import input3 from "component/input/input3";export default {components: {input2,input3,}}
