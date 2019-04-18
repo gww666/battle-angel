@@ -1,7 +1,7 @@
 <script>
 import Vue from "vue";
 import Component, {mixins} from "vue-class-component";
-import Base from "./base";
+import Base from "../base";
 @Component
 export default class Home extends mixins(Base) {
     

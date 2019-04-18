@@ -1,8 +1,8 @@
 <script>
 import Vue from "vue";
 import Component from "vue-class-component";
-import StyleLoader from "../../../plugin/edit/css-modules";
-import {initListenerCallback, initData} from "../../util/preview-helper";
+import StyleLoader from "../../../../plugin/edit/css-modules";
+import {initListenerCallback, initData} from "../../../util/preview-helper";
 
 @Component({
     props: {
