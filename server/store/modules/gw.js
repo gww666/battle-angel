@@ -2,7 +2,13 @@
 export default {
     namespaced: true,
     state: {
-        componentList: []
+        componentList: [{
+            group: "button",
+            id: "120161",
+            name: "button1",
+            path: "component/button/button1.vue",
+            type: "button1",
+        }]
     },
     mutations: {
         setComponentList(state, component) {

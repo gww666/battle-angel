@@ -2,6 +2,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import {Button} from "ant-design-vue";
+import {postMessage} from "../../util";
 Vue.use(Button);
 @Component
 export default class Menu extends Vue {
@@ -19,6 +20,13 @@ export default class Menu extends Vue {
         //请求页面配置
         this.$store.dispatch("gw/getPagePropsList", {});
     }
+    async save() {
+        //给iframe发消息，拿到其配置信息
+        postMessage({
+            type: "getComList"
+        });
+        const {needImportComponentList} = this.$store.state;
+    }
     add(e) {
         e.stopPropagation();
         console.log("add");
@@ -27,13 +35,18 @@ export default class Menu extends Vue {
     copy() {
 
     }
-    download() {
-        
+    async download() {
+        //给Iframe发送消息
+        // postMessage({
+        //     type: "getHtml"
+        // });
+        await this.$store.dispatch("gw/downloadPage");
     }
     render() {
         return (
             <div class="menu-btn-box">
                 <a-button onClick={this._import} size="small">导入</a-button>
+                <a-button onClick={this.save} size="small">保存</a-button>
                 <a-button onClick={this.download} size="small">下载</a-button>
             </div>
         )

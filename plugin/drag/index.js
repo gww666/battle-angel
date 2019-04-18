@@ -10,8 +10,13 @@ class Drag {
     init() {
         this.dom.style.position = "absolute";
         let plugins;
+        
         if (plugins = this.options.plugins) {
             plugins.forEach(fn => fn(this.dom));
+        }
+        //lifecycle方法
+        if (this.options.init) {
+            this.options.init(this.dom);
         }
     }
     addEventListener() {
@@ -36,6 +41,10 @@ class Drag {
             }
         }
         dom.onmouseup = (e) => {
+            //lifecycle方法
+            if (this.options.complete) {
+                this.options.init(this.dom);
+            }
             // console.log("onmouseup");
             // dom.onmousedown = null;
             document.onmousemove = null;

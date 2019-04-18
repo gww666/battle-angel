@@ -2,6 +2,7 @@
 node_modules
 client-dist
 server-dist
+download
 /dist
 package-lock.json
 

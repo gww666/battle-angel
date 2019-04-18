@@ -7,7 +7,7 @@ export default class Home extends mixins(BaseBtn) {
 
     render() {
         return (
-            <div class="button1-box">
+            <div class="button1-box" style={this.mStyle}>
                 <span>{this.text || '确定'}</span>
             </div>
         )

@@ -1,5 +1,7 @@
 import {
-    GET_PROPS
+    GET_PROPS,
+    DOWNLOAD,
+    SAVE
 } from "../../config/api";
 import axios from "axios";
 const handleData = (data) => {
@@ -67,6 +69,26 @@ export default {
                 }
             ]
             commit("setPageProps", {list: test, id: "page"});
-        }
+        },
+        //下载接口
+        async downloadPage({commit}, params = {}) {
+            let options = {
+                url: DOWNLOAD,
+                method: "POST",
+                data: params
+            }
+            let data = await axios(options);
+            data = handleData(data);
+        },
+        //保存接口
+        async saveComList({commit}, params = {}) {
+            let options = {
+                url: SAVE,
+                method: "POST",
+                data: params
+            }
+            let data = await axios(options);
+            data = handleData(data);
+        },
     }
 }

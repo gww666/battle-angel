@@ -23,7 +23,9 @@ export default class Edit extends Vue {
             type: this.tabValue === "1" ? "changePageProps" : "changeComponentProps",
             data: {
                 id: this.editId,
-                ...values
+                config: {
+                    ...values
+                }
             }
         }
         postMessage(data, "*");
@@ -105,11 +107,18 @@ export default class Edit extends Vue {
             </div>
         )
     }
+    initListener() {
+        //当iframe里点击了组件编辑按钮时，需要回显组件值
+        //为了防止重复监听，每次监听前先清除
+        PSEvent.remove("showComponentConfig");
+        PSEvent.listen("showComponentConfig", (config) => {
+            // console.log("config", config);
+            this.$refs.comForm.setValues(config);
+        });
+    }
     mounted() {
         //初始化监听，当切换组件id时，对input值进行清空
-        // PSEvent.listen("resetValues", () => {
-
-        // });
+        this.initListener();
     }
 }
 </script>

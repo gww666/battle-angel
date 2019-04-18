@@ -20,6 +20,7 @@
     "koa-router": "^7.4.0",
     "koa-send": "^5.0.0",
     "memory-fs": "^0.4.1",
+    "recast": "^0.17.5",
     "vue": "^2.6.6",
     "vue-class-component": "^7.0.1",
     "vue-router": "^3.0.2",

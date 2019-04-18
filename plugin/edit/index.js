@@ -1,5 +1,6 @@
 import editBtn from "./css-modules/edit-button";
 import styleLoader from "./css-modules";
+import store from "../../server/store";
 // import {getClass} from "../../utils/gw/utils";
 class Edit {
     constructor(dom) {
@@ -60,7 +61,8 @@ class Edit {
                 type: "getComponentProps",
                 data: {
                     id,
-                    group
+                    group,
+                    config: store.state.componentList.find(item => item.id === id).config
                 }
             }
             //告诉父页面点击的组件信息
