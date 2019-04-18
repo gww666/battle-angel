@@ -26,7 +26,7 @@ const getKitsList = async (ctx, next) => {
             //判断文件夹名称是否为保留字
             if (!excludeList.includes(baseName)) {
                 let componentsList = fs.readdirSync(path.resolve(__dirname, `../../components/${baseName}`));
-                let baseObject =  {
+                let baseObject =  { 
                     group: baseName,
                     title: baseName,
                     list: []
