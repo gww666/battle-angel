@@ -60,5 +60,3 @@ export default class Menu extends Vue {
     }
 }
 </style>
-
-
