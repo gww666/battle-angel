@@ -8,13 +8,22 @@ const Name = (name) => {
     return res.join(".");
 }
 const getProps = (_path) => {
-    let hasProps = fs.existsSync(_path)
-    return hasProps ? require(_path) : hasProps
+    let hasProps = fs.existsSync(_path);
+    let obj = {};
+    if(hasProps) {
+        let arr = require(_path)
+        arr.forEach(ele => {
+            if(ele.prop) {
+                obj[ele.prop] = '';
+            }
+        })
+    }
+    return hasProps ? obj : hasProps;
 }
 // 左侧组件列表
 const getKitsList = async (ctx, next) => {
     // components中的props
-    let basePropsPath = path.resolve(__dirname, `'../../components/props-export'`)
+    let basePropsPath = path.resolve(__dirname, '../../components/props-export.js')
     let baseProps = getProps(basePropsPath);
     try {
         let baseList = fs.readdirSync(path.resolve(__dirname, '../../components'));
