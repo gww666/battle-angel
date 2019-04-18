@@ -18,5 +18,9 @@ module.exports = [
     {
         "title": "提示文字",
         "prop": "text"
-    }
+    },
+    {
+        "title": "定位类型",
+        "prop": "position"
+    },
 ]

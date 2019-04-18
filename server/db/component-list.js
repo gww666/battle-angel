@@ -1,3 +1,3 @@
 
-        export default [{"name":"button1","path":"component/button/button1.vue","type":"button1","id":"101879","group":"button"},{"name":"header1","path":"component/header/header1.vue","type":"header1","id":"105544","group":"header"},{"name":"button1","path":"component/button/button1.vue","type":"button1","id":"108335","group":"button","config":{"width":"260px","height":"","left":"","top":"","text":"取消"}},{"name":"button1","path":"component/button/button1.vue","type":"button1","id":"191497","group":"button"},{"name":"button1","path":"component/button/button1.vue","type":"button1","id":"183366","group":"button"}];
+        export default [{"name":"button1","path":"component/button/button1.vue","type":"button1","id":"143809","group":"button","config":{"width":"","height":"","left":"","top":"","text":"取消","position":""}}];
     

@@ -24,9 +24,16 @@ const events = (type) => {
             setTimeout(() => {
                 Array.from(document.querySelectorAll("div[data-baid]")).forEach(item => {
                     new Drag(item, {
-                        plugins: [
-                            Edit
-                        ]
+                        // plugins: [
+                        //     Edit
+                        // ],
+                        init(dom) {
+                            new Edit(dom)
+                            
+                        },
+                        dragCompleted(dom) {
+
+                        }
                     });
                 });
             }, 0);   

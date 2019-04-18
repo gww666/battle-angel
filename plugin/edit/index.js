@@ -1,6 +1,7 @@
 import editBtn from "./css-modules/edit-button";
 import styleLoader from "./css-modules";
 import store from "../../server/store";
+import {mapComputedStyle} from "../../server/util/preview-helper";
 // import {getClass} from "../../utils/gw/utils";
 class Edit {
     constructor(dom) {
@@ -13,6 +14,8 @@ class Edit {
      */
     initMouseEvent(el, {componentName, handleType, index, deleteAble} = {deleteAble: true}) {
         // if (handleType === "add") return;
+        
+        
         let id = el.getAttribute("data-baid");
         let group = el.getAttribute("data-bagroup");
         el.onmouseenter = () => {
@@ -25,6 +28,7 @@ class Edit {
         }
         //创建一个浮层
         function showCover() {
+            // console.log("el", el);
             let width = getComputedStyle(el, null).width;
             let height = getComputedStyle(el, null).height;
             !el.style.position && (el.style.position = "relative");
@@ -62,7 +66,7 @@ class Edit {
                 data: {
                     id,
                     group,
-                    config: store.state.componentList.find(item => item.id === id).config
+                    config: mapComputedStyle(el, store.state.componentList.find(item => item.id === id).config)
                 }
             }
             //告诉父页面点击的组件信息

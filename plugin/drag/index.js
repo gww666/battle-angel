@@ -42,8 +42,8 @@ class Drag {
         }
         dom.onmouseup = (e) => {
             //lifecycle方法
-            if (this.options.complete) {
-                this.options.init(this.dom);
+            if (this.options.dragCompleted) {
+                this.options.dragCompleted(this.dom);
             }
             // console.log("onmouseup");
             // dom.onmousedown = null;
