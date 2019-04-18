@@ -8,17 +8,17 @@ const Name = (name) => {
     return res.join(".");
 }
 const getProps = (_path) => {
-    let hasProps = fs.existsSync(_path)
-    let obj = {}
+    let hasProps = fs.existsSync(_path);
+    let obj = {};
     if(hasProps) {
         let arr = require(_path)
         arr.forEach(ele => {
             if(ele.prop) {
-                obj[ele.prop] = ''
+                obj[ele.prop] = '';
             }
         })
     }
-    return hasProps ? obj : hasProps
+    return hasProps ? obj : hasProps;
 }
 // 左侧组件列表
 const getKitsList = async (ctx, next) => {
