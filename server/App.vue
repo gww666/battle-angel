@@ -6,50 +6,51 @@
 <script>
 import Edit from "./plugin/edit";
 import Drag from "./plugin/drag";
-import {setPosition} from "./util/preview-helper";
+import {setPosition, initDrag} from "./util/preview-helper";
 export default {
     methods: {
         //该方法download时会被删除掉
         __private__init() {
-            const postMessage = (data) => {
-                window.parent.postMessage(data, "*");
-            }
+            // const postMessage = (data) => {
+            //     window.parent.postMessage(data, "*");
+            // }
             import("./util/message.js");
-            let that = this;
-            Array.from(document.querySelectorAll("div[data-baid]")).forEach(item => {
-                let id = item.getAttribute("data-baid");
-                let group = item.getAttribute("data-bagroup");
+            initDrag();
+            // let that = this;
+            // Array.from(document.querySelectorAll("div[data-baid]")).forEach(item => {
+            //     let id = item.getAttribute("data-baid");
+            //     let group = item.getAttribute("data-bagroup");
                 
-                new Drag(item, {
-                    init(dom) {
-                        new Edit(dom)
-                    },
-                    dragStart(dom) {
-                        let config = that.$store.state.componentList.find(com => com.id === id).config;
-                        postMessage({
-                            type: "getComponentProps",
-                            data: {
-                                // tab: "2",
-                                tag: "dragStart",
-                                id,
-                                config,
-                                group
-                            }
-                        });
-                    },
-                    dragCompleted(dom) {
-                        setPosition(dom);
-                        // let id = dom.getAttribute("data-baid");
-                        let config = that.$store.state.componentList.find(com => com.id === id).config
-                        postMessage({
-                            type: "updateEditComProps",
-                            data: {
-                                config
-                            }
-                        });
-                    }
-                });
-            });
+            //     new Drag(item, {
+            //         init(dom) {
+            //             new Edit(dom)
+            //         },
+            //         dragStart(dom) {
+            //             let config = that.$store.state.componentList.find(com => com.id === id).config;
+            //             postMessage({
+            //                 type: "getComponentProps",
+            //                 data: {
+            //                     // tab: "2",
+            //                     tag: "dragStart",
+            //                     id,
+            //                     config,
+            //                     group
+            //                 }
+            //             });
+            //         },
+            //         dragCompleted(dom) {
+            //             setPosition(dom);
+            //             // let id = dom.getAttribute("data-baid");
+            //             let config = that.$store.state.componentList.find(com => com.id === id).config
+            //             postMessage({
+            //                 type: "updateEditComProps",
+            //                 data: {
+            //                     config
+            //                 }
+            //             });
+            //         }
+            //     });
+            // });
         },
     },
     mounted() {

@@ -8,6 +8,7 @@ import components from "../containers/test/import";
 const postMessage = (data) => {
     window.parent.postMessage(data, "*");
 }
+import {initDrag} from "./preview-helper";
 //接收父页面的postmessage
 const events = (type) => {
     const _event = {
@@ -22,20 +23,21 @@ const events = (type) => {
             //顺便初始化组建的拖拽等事件
             //nextTick
             setTimeout(() => {
-                Array.from(document.querySelectorAll("div[data-baid]")).forEach(item => {
-                    new Drag(item, {
-                        // plugins: [
-                        //     Edit
-                        // ],
-                        init(dom) {
-                            new Edit(dom)
+                // Array.from(document.querySelectorAll("div[data-baid]")).forEach(item => {
+                //     new Drag(item, {
+                //         // plugins: [
+                //         //     Edit
+                //         // ],
+                //         init(dom) {
+                //             new Edit(dom)
                             
-                        },
-                        dragCompleted(dom) {
+                //         },
+                //         dragCompleted(dom) {
 
-                        }
-                    });
-                });
+                //         }
+                //     });
+                // });
+                initDrag();
             }, 0);   
         },
         //更改页面配置
@@ -73,6 +75,8 @@ const events = (type) => {
     if (_event[type]) {
         return _event[type];
     }
+    console.warn(`没有定义${type}事件的handler`);
+    
     return () => {};
 }
 const receiveMessage = (data) => {
@@ -83,7 +87,7 @@ const receiveMessage = (data) => {
     
 }
 // if (typeof window !== undefined) {
-window.addEventListener("message", receiveMessage, false);
+// window.addEventListener("message", receiveMessage, false);
 window.addEventListener("message", receiveMessage, false);
 // }
 

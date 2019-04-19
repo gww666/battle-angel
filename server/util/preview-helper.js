@@ -4,7 +4,9 @@
  */
 import StyleLoader from "../plugin/edit/css-modules";
 import store from "../store";
-import {setComConfigById} from "../util/setConfig";
+import {setComConfigById, getComConfigById} from "../util/setConfig";
+import Edit from "../plugin/edit";
+import Drag from "../plugin/drag";
 /**
  * 
  * @param {Object} vm 
@@ -41,23 +43,6 @@ export const initData = (vm) => {
     }
 }
 
-//点击编辑按钮时调用的方法，主要是把元素的样式值填充到config对象里
-export const mapComputedStyle = (el, config) => {
-    // console.log("重新获取");
-    
-    //遍历config
-    for (let key in config) {
-        //判断属性属于样式，并且没有值，获取该元素的默认样式返回
-        if (key in document.documentElement.style && !config[key]) {
-            config[key] = window.getComputedStyle(el, null)[key];
-            console.log("key", key);
-            console.log("config[key]", config[key]);
-            
-        }
-    }
-    return config;
-}
-
 //把绝对定位元素的坐标点存到vuex中
 export const setPosition = (el) => {
     //获取组件ID
@@ -66,3 +51,44 @@ export const setPosition = (el) => {
     let top = window.getComputedStyle(el, null).top;
     setComConfigById(id, {left, top});
 }
+
+//初始化drag
+export const initDrag = () => {
+    const postMessage = (data) => {
+        window.parent.postMessage(data, "*");
+    }
+    Array.from(document.querySelectorAll("div[data-baid]")).forEach(item => {
+        let id = item.getAttribute("data-baid");
+        let group = item.getAttribute("data-bagroup");
+        
+        new Drag(item, {
+            init(dom) {
+                new Edit(dom)
+            },
+            dragStart(dom) {
+                let config = getComConfigById(dom, id);
+                postMessage({
+                    type: "getComponentProps",
+                    data: {
+                        // tab: "2",
+                        tag: "dragStart",
+                        id,
+                        config,
+                        group
+                    }
+                });
+            },
+            dragCompleted(dom) {
+                setPosition(dom);
+                // let id = dom.getAttribute("data-baid");
+                let config = getComConfigById(dom, id);
+                postMessage({
+                    type: "updateEditComProps",
+                    data: {
+                        config
+                    }
+                });
+            }
+        });
+    });
+} 

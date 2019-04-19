@@ -1,7 +1,6 @@
 import editBtn from "./css-modules/edit-button";
 import styleLoader from "./css-modules";
-import store from "../../store";
-import {mapComputedStyle} from "../../util/preview-helper";
+import {getComConfigById} from "../../util/setConfig";
 // import {getClass} from "../../utils/gw/utils";
 class Edit {
     constructor(dom) {
@@ -66,7 +65,7 @@ class Edit {
                 data: {
                     id,
                     group,
-                    config: mapComputedStyle(el, store.state.componentList.find(item => item.id === id).config)
+                    config: getComConfigById(el, id)
                 }
             }
             //告诉父页面点击的组件信息
