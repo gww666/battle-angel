@@ -14,14 +14,21 @@ const removeDirectory = (path) => {
 }
 //server目录下需要copy的目录
 let serverDirCopyList = [
-    "build/webpack.base.config.js",
-    "build/webpack.client.config.js",
+    // "build/webpack.base.config.js",
+    // "build/webpack.client.config.js",
     "routers",
     "store",
+    "public",
     // "components",
-    "util/message.js",
+    // "util/message.js",
+    "plugin/drag",
+    "plugin/edit",
+    "util/preview-helper.js",
+    "util/setConfig.js",
+    "db",
     "main.js",
-    "App.vue"
+    "App.vue",
+    "private.init.js"
 ]
 //判定文件是否需要copy
 const needCopy = (_path) => {
@@ -60,12 +67,16 @@ const generateComponents = () => {
             //把componentPath由alias转换为真实的路径
             value = value.split("/");
             value.splice(0, 1);
+            let type = value[0];//组件类别
             value = value.join("/");
             let componentPath = path.join(__dirname, "../components", value);
             let distPath = path.join(__dirname, "../download/components", value);
             //复制样式组件
             copy(componentPath, distPath);
-            
+            //同时复制该目录下的base组件
+            let baseComponentPath = path.join(__dirname, "../components", type, "base");
+            let baseDistPath = path.join(__dirname, "../download/components", type, "base");
+            copy(baseComponentPath, baseDistPath);
         }
     });
 }
@@ -75,7 +86,7 @@ const helper = (type, componentName) => {
             <${componentName}></${componentName}>
         </template>
         <script>
-        import ${componentName} from "../../components/${type}/${componentName}";
+        import ${componentName} from "component/${type}/${componentName}";
         export default {
             components: {
                 ${componentName}
@@ -122,14 +133,21 @@ const generateContainers = () => {
                 let fileName = path.parse(targetPath).name;
                 fs.writeFileSync(targetPath, helper(item, fileName));
                 //生成import语句
-                importItem = `import ${fileName} from "./components/${item}/${subItem}";`;
-                componentsName += `${fileName},`;
+                //排除base组件
+                if (fileName !== "base") {
+                    importItem = `import ${fileName} from "./components/${item}/${subItem}";`;
+                    componentsName += `${fileName},`;
+                }
             } else {
                 targetPath = path.join(targetPath, "index.vue");
                 fs.writeFileSync(targetPath, helper(item, subItem));
                 //生成import语句
-                importItem = `import ${subItem} from "./components/${item}/${subItem}";`;
-                componentsName += `${subItem},`
+                //排除base组件
+                if (subItem !== "base") {
+                    importItem = `import ${subItem} from "./components/${item}/${subItem}";`;
+                    componentsName += `${subItem},`;
+                }
+                
             }
             importCode.push(importItem);
         });
@@ -169,14 +187,38 @@ const generateRouter = () => {
 const generateConfig = () => {
     //package.json
     copy(
-        path.resolve(__dirname, "../../package.json"),
+        path.resolve(__dirname, "../template/package.json"),
         path.resolve(__dirname, "../download/package.json"),
     );
     //.babelrc
     copy(
-        path.resolve(__dirname, "../../.babelrc"),
+        path.resolve(__dirname, "../template/.babelrc"),
         path.resolve(__dirname, "../download/.babelrc"),
     );
+    //build
+    copy(
+        path.resolve(__dirname, "../template/build"),
+        path.resolve(__dirname, "../download/build"),
+    );
+}
+
+//清除无用信息
+const treeShaking = () => {
+    //main.js
+    let _path = path.resolve(__dirname, "../download/main.js");
+    let content = fs.readFileSync(_path, "utf-8");
+    content = content.replace(`import "./plugin/ps";`, "");
+    fs.writeFileSync(_path, content);
+    //App.vue
+    _path = path.resolve(__dirname, "../download/private.init.js");
+    // content = fs.readFileSync(_path, "utf-8");
+    // content = content.replace(`import {setPosition, initDrag} from "./util/preview-helper";`, "");
+    // content = content.replace(/^__private__init\(\)\s\{.*\}$/, "");
+    // content = content.replace(/^this\.__private__init\(\);$/, "");
+    content = "export default {};"
+    fs.writeFileSync(_path, content);
+
+
 }
 
 
@@ -187,6 +229,7 @@ module.exports = async (ctx) => {
     generateContainers();
     generateRouter();
     generateConfig();
+    treeShaking();
     ctx.body = new SucModel([], "创建成功");
 }
 

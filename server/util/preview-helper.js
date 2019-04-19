@@ -31,9 +31,11 @@ const mapData = (vm, data) => {
     }
 }
 export const initListenerCallback = (vm) => {
-    window.PSEvent.listen(vm.componentId, (data) => {
-        mapData(vm, data)
-    });
+    if (typeof window.PSEvent !== "undefined") {
+        window.PSEvent.listen(vm.componentId, (data) => {
+            mapData(vm, data)
+        });
+    }
 }
 
 export const initData = (vm) => {

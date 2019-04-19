@@ -37,6 +37,18 @@ const mkdirsSync = (targetPath, cb) => {
         mkdirsSync(_path, _cb);
     }
 } 
+
+const copyFile = (op, dp) => {
+    let reg = /\.(jpg|jpeg|gif|png)$/i;
+    if (reg.test(op)) {
+        //是图片，通过流复制
+        let r = fs.readFileSync(op);
+        fs.writeFileSync(dp, r);
+    } else {
+        let r = fs.readFileSync(op, "utf-8");
+        fs.writeFileSync(dp, r);
+    }
+}
 /**
  * 复制文件或目录的方法
  * @param {String} 原始路径 
@@ -48,13 +60,15 @@ const copy = (originPath, distPath) => {
     if (stats.isFile()) {
         try {
             //是文件
-            let r = fs.readFileSync(originPath, "utf-8");
-            fs.writeFileSync(distPath, r);
+            // let r = fs.readFileSync(originPath, "utf-8");
+            // fs.writeFileSync(distPath, r);
+            copyFile(originPath, distPath);
         } catch (err) {
             //创建目录
             mkdirsSync(path.dirname(distPath));
-            let r = fs.readFileSync(originPath, "utf-8");
-            fs.writeFileSync(distPath, r);
+            // let r = fs.readFileSync(originPath, "utf-8");
+            // fs.writeFileSync(distPath, r);
+            copyFile(originPath, distPath);
         }
     } else {
         let arr = fs.readdirSync(originPath);
