@@ -2,8 +2,9 @@
  * created by gw
  * 2019-4-17
  */
-import StyleLoader from "../../plugin/edit/css-modules";
+import StyleLoader from "../plugin/edit/css-modules";
 import store from "../store";
+import {setComConfigById} from "../util/setConfig";
 /**
  * 
  * @param {Object} vm 
@@ -34,19 +35,15 @@ export const initListenerCallback = (vm) => {
 }
 
 export const initData = (vm) => {
-    // console.log("store", );
-    
-    
     let component = vm.$store.state.componentList.find(item => item.id === vm.componentId);
-    // console.log("id", vm.componentId);
-    // console.log("config", config);
     if (component && component.config) {
         mapData(vm, component.config);
     }
 }
 
+//点击编辑按钮时调用的方法，主要是把元素的样式值填充到config对象里
 export const mapComputedStyle = (el, config) => {
-    console.log("重新获取");
+    // console.log("重新获取");
     
     //遍历config
     for (let key in config) {
@@ -59,4 +56,13 @@ export const mapComputedStyle = (el, config) => {
         }
     }
     return config;
+}
+
+//把绝对定位元素的坐标点存到vuex中
+export const setPosition = (el) => {
+    //获取组件ID
+    let id = el.getAttribute("data-baid");
+    let left = window.getComputedStyle(el, null).left;
+    let top = window.getComputedStyle(el, null).top;
+    setComConfigById(id, {left, top});
 }

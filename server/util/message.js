@@ -2,8 +2,8 @@
 // const store = createStore();
 // import {createStore} from "../store";
 import store from "../store";
-import Drag from "../../plugin/drag";
-import Edit from "../../plugin/edit";
+import Drag from "../plugin/drag";
+import Edit from "../plugin/edit";
 import components from "../containers/test/import";
 const postMessage = (data) => {
     window.parent.postMessage(data, "*");

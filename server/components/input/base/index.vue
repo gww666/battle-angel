@@ -1,7 +1,7 @@
 <script>
 import Vue from "vue";
 import Component from "vue-class-component";
-import StyleLoader from "../../../../plugin/edit/css-modules";
+import StyleLoader from "../../../plugin/edit/css-modules";
 @Component({
     props: {
         componentId: {
