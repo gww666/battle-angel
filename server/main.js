@@ -1,5 +1,5 @@
 import Vue from "vue";
-import "../plugin/ps";
+import "./plugin/ps";
 import {createRouter} from "./routers";
 // import {createStore} from "./store";
 import store from "./store";

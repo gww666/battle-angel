@@ -1,7 +1,7 @@
 import editBtn from "./css-modules/edit-button";
 import styleLoader from "./css-modules";
-import store from "../../server/store";
-import {mapComputedStyle} from "../../server/util/preview-helper";
+import store from "../../store";
+import {mapComputedStyle} from "../../util/preview-helper";
 // import {getClass} from "../../utils/gw/utils";
 class Edit {
     constructor(dom) {
@@ -89,4 +89,6 @@ class Edit {
 const doEdit = (dom) => {
     new Edit(dom);
 }
+
+
 export default doEdit;

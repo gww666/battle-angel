@@ -6,7 +6,7 @@ import {Collapse, Icon, Checkbox, Button, message} from "ant-design-vue";
 import {componentsList} from "./config";
 import axios from "axios";
 import {postMessage} from "../../util";
-import {generatorId} from "../../../../../plugin/edit/util";
+import {generatorId} from "../../../../plugin/edit/util";
 Vue.use(Collapse);
 Vue.use(Icon);
 Vue.use(Checkbox);

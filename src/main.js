@@ -2,7 +2,7 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from "./router";
 import store from "./store";
-import "../plugin/ps";
+import "./plugin/ps";
 
 Vue.config.productionTip = false
 
