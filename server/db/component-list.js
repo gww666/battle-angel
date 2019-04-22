@@ -1,3 +1,3 @@
 
-        export default [{"name":"button1","path":"component/button/button1","type":"button1","config":{"width":"337.5px","height":"44px","left":"-120px","top":"189px","text":"取消","position":"absolute"},"id":"158218","group":"button"}];
+        export default [{"name":"button1","path":"component/button/button1","type":"button1","config":{"width":"300px","height":"44px","left":"43px","top":"228px","text":"取消"},"id":"158218","group":"button"},{"name":"header1","path":"component/header/header1","type":"header1","config":{"width":"375px","height":"30px","left":"2px","top":"35px","text":"345"},"id":"151475","group":"header"}];
     
