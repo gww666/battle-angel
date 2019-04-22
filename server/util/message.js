@@ -2,9 +2,6 @@
 // const store = createStore();
 // import {createStore} from "../store";
 import store from "../store";
-import Drag from "../plugin/drag";
-import Edit from "../plugin/edit";
-import components from "../containers/test/import";
 const postMessage = (data) => {
     window.parent.postMessage(data, "*");
 }
@@ -23,20 +20,6 @@ const events = (type) => {
             //顺便初始化组建的拖拽等事件
             //nextTick
             setTimeout(() => {
-                // Array.from(document.querySelectorAll("div[data-baid]")).forEach(item => {
-                //     new Drag(item, {
-                //         // plugins: [
-                //         //     Edit
-                //         // ],
-                //         init(dom) {
-                //             new Edit(dom)
-                            
-                //         },
-                //         dragCompleted(dom) {
-
-                //         }
-                //     });
-                // });
                 initDrag();
             }, 0);   
         },

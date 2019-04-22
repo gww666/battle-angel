@@ -20,7 +20,8 @@ export default class List extends Vue {
     //记录已经导入的组件
     importedComponent = ''
 
-    onChange(component) {
+    onChange(group, component) {
+        component.group = group;
         // let arr = [].concat(needImportComponentList);
         let _index = -1;
         this.needImportComponentList.forEach((item, index) => {
@@ -108,7 +109,7 @@ export default class List extends Vue {
                                                 return (
                                                     <div class="component-item">
                                                         <span onClick={() => this.add(item.group, item2)}>{item2.name}</span>
-                                                        <a-checkbox onChange={() => this.onChange(item2)}></a-checkbox>
+                                                        <a-checkbox onChange={() => this.onChange(item.group, item2)}></a-checkbox>
                                                     </div>
                                                 )
                                             })

@@ -25,6 +25,12 @@ const body = () => {
         await next();
     }
 }
+//挂载一些便利的全局API
+const generateGlobalAPI = () => {
+    // global.resolve = (_path) => {
+    //     return path.resolve(__dirname, _path);
+    // }
+}
 //递归创建目录
 const mkdirsSync = (targetPath, cb) => {
     try {
@@ -90,5 +96,6 @@ const copy = (originPath, distPath) => {
 
 module.exports = {
     body,
-    copy
+    copy,
+    generateGlobalAPI
 }

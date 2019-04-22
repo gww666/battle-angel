@@ -12,6 +12,9 @@ const removeDirectory = (path) => {
         rimraf(path, resolve);
     });
 }
+const resolve = (_path) => {
+    return path.resolve(__dirname, _path);
+}
 //server目录下需要copy的目录
 let serverDirCopyList = [
     // "build/webpack.base.config.js",
@@ -55,106 +58,56 @@ const _copy = (scanPath = path.resolve(__dirname, "../../server")) => {
     }
 }
 
+//拷贝样式组件
 const generateComponents = () => {
-    let _path = path.resolve(__dirname, "../containers/test/import.js");
-    //拿到导入的样式组件
-    let code = fs.readFileSync(_path, "utf-8");
-    let ast = recast.parse(code);
-    ast.program.body.forEach(item => {
-        if (item.type === "ImportDeclaration") {
-            //执行复制操作
-            let value = item.source.value;
-            //把componentPath由alias转换为真实的路径
-            value = value.split("/");
-            value.splice(0, 1);
-            let type = value[0];//组件类别
-            value = value.join("/");
-            let componentPath = path.join(__dirname, "../components", value);
-            let distPath = path.join(__dirname, "../download/components", value);
-            //复制样式组件
-            copy(componentPath, distPath);
-            //同时复制该目录下的base组件
-            let baseComponentPath = path.join(__dirname, "../components", type, "base");
-            let baseDistPath = path.join(__dirname, "../download/components", type, "base");
-            copy(baseComponentPath, baseDistPath);
+    //扫描containers目录
+    let pagesDirPath = resolve("../containers");
+    let pageArr = fs.readdirSync(pagesDirPath);
+    pageArr.forEach(dirName => {
+        if (dirName !== "private") {
+            let importJSFilePath = resolve(`../containers/${dirName}/import.js`);
+            //拿到导入的样式组件
+            let code = fs.readFileSync(importJSFilePath, "utf-8");
+            let ast = recast.parse(code);
+            ast.program.body.forEach(item => {
+                if (item.type === "ImportDeclaration") {
+                    //执行复制操作
+                    let value = item.source.value;
+                    console.log("value", value);
+                    //把componentPath由alias转换为真实的路径
+                    //原始value形如./components/button/button1
+                    value = value.split("/");
+                    // value.splice(0, 1);
+                    let group = value[2];//组件类别
+                    let name = value[3];//组件名称
+                    // value = value.join("/");
+                    let componentPath = path.join(__dirname, "../components", group, name);
+                    let distPath = path.join(__dirname, "../download/components", group, name);
+                    //复制样式组件
+                    copy(componentPath, distPath);
+                    //同时复制该目录下的base组件
+                    let baseComponentPath = path.join(__dirname, "../components", group, "base");
+                    let baseDistPath = path.join(__dirname, "../download/components", group, "base");
+                    copy(baseComponentPath, baseDistPath);
+                }
+            });
         }
-    });
+    });    
 }
-const helper = (type, componentName) => {
-    return `
-        <template>
-            <${componentName}></${componentName}>
-        </template>
-        <script>
-        import ${componentName} from "component/${type}/${componentName}";
-        export default {
-            components: {
-                ${componentName}
-            }
-        }
-        </script>
-    `;
-}
+
 const generateContainers = () => {
-    //创建containers文件夹
-    fs.mkdirSync(path.resolve(__dirname, "../download/containers"));
-    //创建页面文件夹
-    let pagePath = path.resolve(__dirname, `../download/containers/${"test"}`)
-    fs.mkdirSync(pagePath);
-    //在页面文件夹下copy过来index.vue
-    copy(
-        path.resolve(__dirname, "../containers/test/index.vue"),
-        path.join(pagePath, "index.vue"),
-    );
-    //在该页面目录下生成components逻辑组件文件夹
-    copy(
-        path.resolve(__dirname, "../download/components"),
-        path.join(pagePath, "components")
-    );
-    //生成import.js文件
-    let importFile = path.join(pagePath, "import.js");
-    //拿到类别
-    let arr = fs.readdirSync(path.resolve(pagePath, "components"));
-    let importCode = [];
-    let componentsName = "";
-    arr.forEach(item => {
-        //拿到每个组件
-        let subArr = fs.readdirSync(path.join(pagePath, "components", item));
-        subArr.forEach(subItem => {
-            //判断这一层是目录还是文件，如果是目录，则读取目录下面的index.vue文件
-            //否则直接更改该文件
-            let targetPath = path.join(pagePath, "components", item, subItem);
-            let stats = fs.statSync(targetPath);
-            //import语句
-            let importItem = "";
-            if (stats.isFile()) {
-                //直接更改该文件
-                //获取文件名称
-                let fileName = path.parse(targetPath).name;
-                fs.writeFileSync(targetPath, helper(item, fileName));
-                //生成import语句
-                //排除base组件
-                if (fileName !== "base") {
-                    importItem = `import ${fileName} from "./components/${item}/${subItem}";`;
-                    componentsName += `${fileName},`;
-                }
-            } else {
-                targetPath = path.join(targetPath, "index.vue");
-                fs.writeFileSync(targetPath, helper(item, subItem));
-                //生成import语句
-                //排除base组件
-                if (subItem !== "base") {
-                    importItem = `import ${subItem} from "./components/${item}/${subItem}";`;
-                    componentsName += `${subItem},`;
-                }
-                
-            }
-            importCode.push(importItem);
-        });
+    //扫描containers目录
+    let pagesDirPath = resolve("../containers");
+    let arr = fs.readdirSync(pagesDirPath);
+    arr.forEach(dirName => {
+        if (dirName !== "private") {
+            //可以复制
+            copy(
+                resolve(`../containers/${dirName}`),
+                resolve(`../download/containers/${dirName}`),
+            );
+        }
     });
-    let code = `${importCode.join("")}export default {components: {${componentsName}}}`;
-    //写入import.js
-    fs.writeFileSync(importFile, code);
 }
 
 const generateRouter = () => {

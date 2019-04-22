@@ -3,7 +3,6 @@
  * 2019-4-17
  */
 import StyleLoader from "../plugin/edit/css-modules";
-import store from "../store";
 import {setComConfigById, getComConfigById} from "../util/setConfig";
 import Edit from "../plugin/edit";
 import Drag from "../plugin/drag";
@@ -30,18 +29,23 @@ const mapData = (vm, data) => {
         vm.mStyle = StyleLoader(mStyle);
     }
 }
-export const initListenerCallback = (vm) => {
+export const initListenerCallback = (vm, type) => {
     if (typeof window.PSEvent !== "undefined") {
-        window.PSEvent.listen(vm.componentId, (data) => {
+        let eventName = type === "page" ? vm.pageId : vm.componentId;
+        window.PSEvent.listen(eventName, (data) => {
             mapData(vm, data)
         });
     }
 }
 
-export const initData = (vm) => {
-    let component = vm.$store.state.componentList.find(item => item.id === vm.componentId);
-    if (component && component.config) {
-        mapData(vm, component.config);
+export const initData = (vm, type) => {
+    let store = vm.$store.state;
+    let config = type === "page" ?
+        {backgroundColor: "#fff"} :
+        store.componentList.find(item => item.id === vm.componentId).config;
+
+    if (config) {
+        mapData(vm, config);
     }
 }
 
