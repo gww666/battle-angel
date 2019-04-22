@@ -52,6 +52,8 @@ export default class Edit extends Vue {
     }
     //组件支持编辑的属性列表
     get componentPropsList() {
+        console.log("componentPropsList", this.$store.state.gw.componentProps[this.editId]);
+        
         return this.$store.state.gw.componentProps[this.editId] || [];
     }
     render() {
@@ -71,6 +73,7 @@ export default class Edit extends Vue {
                 {/** 页面属性设置 */}
                 {
                     this.tabValue === "1" ?
+                    //页面属性配置面板
                     <div class="page-props-box">
                         <Form ref="pageForm">
                             {
@@ -82,6 +85,7 @@ export default class Edit extends Vue {
                             }
                         </Form>
                     </div> :
+                    //组件属性配置面板
                     <div class="component-props-box">
                         <Form ref="comForm">
                             {

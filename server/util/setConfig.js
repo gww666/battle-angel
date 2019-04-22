@@ -37,3 +37,10 @@ export const getComConfigById = (el, id) => {
         store.state.componentList.find(item => item.id === id).config
     );
 } 
+/**
+ * 根据组件id获取其完整对象数据
+ * @param {*} id 
+ */
+export const getComDataById = (id) => {
+    return store.state.componentList.find(item => item.id === id);
+}

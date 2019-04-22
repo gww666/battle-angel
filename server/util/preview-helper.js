@@ -3,9 +3,12 @@
  * 2019-4-17
  */
 import StyleLoader from "../plugin/edit/css-modules";
-import {setComConfigById, getComConfigById} from "../util/setConfig";
+import {setComConfigById, getComConfigById, getComDataById} from "../util/setConfig";
 import Edit from "../plugin/edit";
 import Drag from "../plugin/drag";
+const postMessage = (data) => {
+    window.parent.postMessage(data, "*");
+}
 /**
  * 
  * @param {Object} vm 
@@ -42,7 +45,7 @@ export const initData = (vm, type) => {
     let store = vm.$store.state;
     let config = type === "page" ?
         {backgroundColor: "#fff"} :
-        store.componentList.find(item => item.id === vm.componentId).config;
+        getComConfigById(vm.componentId);
 
     if (config) {
         mapData(vm, config);
@@ -60,9 +63,7 @@ export const setPosition = (el) => {
 
 //初始化drag
 export const initDrag = () => {
-    const postMessage = (data) => {
-        window.parent.postMessage(data, "*");
-    }
+    
     Array.from(document.querySelectorAll("div[data-baid]")).forEach(item => {
         let id = item.getAttribute("data-baid");
         let group = item.getAttribute("data-bagroup");
@@ -98,3 +99,46 @@ export const initDrag = () => {
         });
     });
 } 
+
+//获取元素水平居中的left值
+export const alignCenter = (comId) => {
+    // //拿到组件ID
+    // let comId = vm.componentId;
+    // //根据组件ID获取到元素
+    // let el = document.querySelector(`div[baid=${comId}]`);
+    // let screenWidth = window.innerWidth;
+    // let elWidth = window.getComputedStyle(el, null).width.slice(0, -2);
+    // //获得当前config
+    // let config = getComConfigById(comId);
+    // config.left = (screenWidth - elWidth) / 2 + "px";
+    // //保存到vuex中
+    // setComConfigById(comId, config);
+    // //更新iframe页面的组件UI
+    // mapData(vm, config);
+    // //通知父页面更新表单数据
+    // postMessage({
+    //     type: "getComponentProps",
+    //     data: {
+    //         id: comId,
+    //         config
+    //     }
+    // });
+    //以上为一个实现版本，但考虑到维护性采取下面的方式
+    //根据组件ID获取到元素
+    let el = document.querySelector(`div[baid=${comId}]`);
+    let screenWidth = window.innerWidth;
+    let elWidth = window.getComputedStyle(el, null).width.slice(0, -2);
+    //获得当前config
+    let config = getComConfigById(el, comId);
+    config.left = (screenWidth - elWidth) / 2 + "px";
+    //获取group
+    let group = getComDataById(comId).group;
+    postMessage({
+        type: "getComponentProps",
+        data: {
+            id: comId,
+            group,
+            config,
+        }
+    });
+}
