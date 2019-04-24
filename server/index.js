@@ -7,7 +7,9 @@ const staticRouter = require("./ssr/static-assets.js");
 const send = require("koa-send");
 const isDev = process.env.NODE_ENV === "development";
 const apiRouter = require("./ssr/api");
-const {body} = require("./util/server-util");
+const {body, generateGlobalAPI} = require("./util/server-util");
+generateGlobalAPI();
+
 // const session = require("koa-session");
 // let SSRRouter;
 // if (isDev) {

@@ -5,8 +5,8 @@ const fs = require("fs");
 // let d = path.resolve(__dirname, "../copy-test/index.js");
 // copy(o, d);
 
-const recast = require("recast");
-let code = fs.readFileSync("../containers/test/import.js", "utf-8");
-let ast = recast.parse(code);
-const add  = ast.program.body[0];
-console.log(add);
+// const recast = require("recast");
+// let code = fs.readFileSync("../containers/test/import.js", "utf-8");
+// let ast = recast.parse(code);
+// const add  = ast.program.body[0];
+// console.log(add);

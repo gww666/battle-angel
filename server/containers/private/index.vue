@@ -14,17 +14,13 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import components from "./import";
+import {initData, initListenerCallback} from "../../util/preview-helper";
 export default {
     mixins: [components],
-    // props: {
-    //     mStyle: {
-    //         type: Object,
-    //         default: () => ({})
-    //     }
-    // },
     data() {
         return {
-            mStyle: {}
+            mStyle: {},
+            pageId: "page"
         }
     },
     computed: {
@@ -35,22 +31,11 @@ export default {
     methods: {
         
     },
+    created() {
+        initData(this, "page");
+    },
     mounted() {
-        window.PSEvent.listen("page", data => {
-            let mStyle = {}
-            Object.keys(data).forEach(key => {
-                let value = data[key];
-                //属于样式标签
-                if (key in document.documentElement.style) {
-                    mStyle[key] = value;
-                } else {
-                    this[key] = value
-                }
-            });
-            console.log("打印style", mStyle);
-            //设置样式属性
-            this.mStyle =  mStyle;
-        });
+        initListenerCallback(this, "page");
     }
 }
 

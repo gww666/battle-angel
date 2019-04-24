@@ -1,7 +1,9 @@
-import Test from "../containers/test";
-export default [
-    {
-        path: "/",
-        component: Test
-    }
-]
+
+        import test2 from "../containers/test2";
+        export default [
+            {
+                path: "/",
+                component: test2
+            }
+        ]
+    

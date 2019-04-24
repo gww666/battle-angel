@@ -31,6 +31,16 @@ export default new Vuex.Store({
             // }
             state.componentList = [...list];
             // state.componentList.push(component);
+        },
+        // 点击了一个组件的删除
+        deleteComponentById(state, param) {
+            console.log(param ,'hahahahhaha')
+            let list = state.componentList
+            for(let i = 0;i < list.length;i++) {
+                if(list[i].id === param.id) {
+                    state.componentList.splice(i, 1)
+                }
+            }
         }
     },
     modules: {

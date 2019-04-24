@@ -6,7 +6,9 @@ import {postMessage} from "../../util";
 Vue.use(Button);
 @Component
 export default class Menu extends Vue {
-
+    get isDownloading() {
+        return this.$store.state.gw.isDownloading;
+    }
     initDrag() {
         // let menu = document.querySelector(".dangling-menu-box");
         // let menu = document.querySelector(".btn-box");
@@ -47,7 +49,7 @@ export default class Menu extends Vue {
             <div class="menu-btn-box">
                 <a-button onClick={this._import} size="small">导入</a-button>
                 <a-button onClick={this.save} size="small">保存</a-button>
-                <a-button onClick={this.download} size="small">下载</a-button>
+                <a-button onClick={this.download} size="small" loading={this.isDownloading}>下载</a-button>
             </div>
         )
     }

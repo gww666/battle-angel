@@ -6,6 +6,9 @@ download
 /dist
 package-lock.json
 
+#忽略自己本地创建的页面
+server/containers/*
+!server/containers/private
 # local env files
 .env.local
 .env.*.local

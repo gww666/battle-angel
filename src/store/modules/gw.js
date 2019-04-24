@@ -20,6 +20,7 @@ export default {
         pageProps: {},
         componentProps: {},
         needImportComponentList: [], //点击import按钮时，传给服务端的值
+        isDownloading: false
     },
     getters: {
 
@@ -46,6 +47,10 @@ export default {
         },
         setNeedImportComponentList(state, list) {
             state.needImportComponentList = list;
+        },
+        //设置正在下载中
+        setIsDownloading(state, flag) {
+            state.isDownloading = flag;
         }
     },
     actions: {
@@ -71,7 +76,8 @@ export default {
             commit("setPageProps", {list: test, id: "page"});
         },
         //下载接口
-        async downloadPage({commit}, params = {}) {
+        async downloadPage({commit, state}, params = {}) {
+            commit("setIsDownloading", true);
             let options = {
                 url: DOWNLOAD,
                 method: "POST",
@@ -79,6 +85,10 @@ export default {
             }
             let data = await axios(options);
             data = handleData(data);
+            setTimeout(() => {
+                commit("setIsDownloading", false);
+            }, 1000);
+            
         },
         //保存接口
         async saveComList({commit}, params = {}) {

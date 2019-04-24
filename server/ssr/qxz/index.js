@@ -66,7 +66,6 @@ const getKitsList = async (ctx, next) => {
 const getReadyKits= async (ctx, next) => {
     try {
         let kitsList = fs.readFileSync(path.resolve(__dirname, '../../containers/test/import.js'), 'utf8')
-        // let kitsList = require('../../containers/test/import.js')
         ctx.body = new SucModel(kitsList, '获取导入组件成功')
     } catch (err) {
         ctx.body = new ErrModel('', '获取已导入组件失败')

@@ -1,1 +1,0 @@
-import header1 from "component/header/header1";export default {components: {header1,}}
