@@ -23,4 +23,13 @@ module.exports = [
         "title": "定位类型",
         "prop": "position"
     },
+    {
+        "title": "transform",
+        "prop": "transform"
+    },
+    {
+        "title": "水平居中",
+        "prop": "alignCenter",
+        "type": "button"
+    }
 ]

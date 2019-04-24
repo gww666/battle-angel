@@ -7,6 +7,9 @@
     <title>Document</title>
     <script>
         (() => {
+            //rem换算原理
+            //在750px的设计稿宽度下，我们设定html的fontSize为100px
+            //在不同手机屏幕宽度下，计算得到其html的fontSize大小
             let screenWidth = window.innerWidth;
             let designWidth = 750;
             let ratio = 100;

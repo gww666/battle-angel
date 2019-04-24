@@ -28,10 +28,15 @@ export const setComConfigById = (id, config) => {
 
 /**
  * 根据组件id获取组件的配置项，并对其做了一层样式填充的包装
- * @param {*} el 
- * @param {*} id 
+ * @param {*} el 可省略
+ * @param {*} id 必传
  */
 export const getComConfigById = (el, id) => {
+
+    if (typeof el === "string" && id === undefined) {
+        id = el;
+        el = document.querySelector(`div[data-baid="${id}"]`);
+    }
     return mapComputedStyle(
         el, 
         store.state.componentList.find(item => item.id === id).config

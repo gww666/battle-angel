@@ -5,15 +5,19 @@ import Component from "vue-class-component";
 import "../../util/message";
 import {postMessage} from "../../util/index";
 import Input from "../form/input";
+import Select from "../form/select";
 import Form from "../form";
 import {Button, Radio} from "ant-design-vue";
-// Vue.use(Form);
-// Vue.use(Input);
 Vue.use(Radio);
 Vue.use(Button);
 
 @Component
 export default class Edit extends Vue {
+    getFormInstance() {
+        return this.tabValue === "1" ? 
+            this.$refs.pageForm : 
+            this.$refs.comForm;
+    }
     // tabValue = "1";
     handleSubmit() {
         let getValues = this.tabValue === "1" ? this.$refs.pageForm.getValues : this.$refs.comForm.getValues;
@@ -30,6 +34,7 @@ export default class Edit extends Vue {
         }
         postMessage(data, "*");
     }
+    //切换编辑面板
     onRadioChange(e) {
         // this.tabValue = e.target.value;
         this.$store.commit("gw/setEditActiveTab", e.target.value);
@@ -55,6 +60,41 @@ export default class Edit extends Vue {
         console.log("componentPropsList", this.$store.state.gw.componentProps[this.editId]);
         
         return this.$store.state.gw.componentProps[this.editId] || [];
+    }
+    handleFormBtnEvent(propType) {
+        let comId = this.editId;
+        const _event = {
+            //水平居中的事件
+            alignCenter: () => {
+                let form = this.getFormInstance();
+                form.setValues({
+                    left: "50%",
+                    transform: "translateX(-50%)"
+                });
+            }
+        };
+        if (_event[propType]) {
+            _event[propType]();
+        } else {
+            console.warn(`handleFormBtnEvent: 没有定义${propType}事件`);
+        }
+    }
+    //根据条件渲染表单元素
+    formElRender(item) {
+        let type = item.type || "input";
+        switch (type) {
+            case "input":
+                return <Input label={item.prop} id={item.prop} />;
+            case "button":
+                return (
+                    <a-button type="primary"
+                        onClick={this.handleFormBtnEvent.bind(this, item.prop)}>
+                        {item.title}
+                    </a-button>
+                );
+            case "select":
+                return <Select id={item.prop} label={item.prop} values={item.values}></Select>;
+        }
     }
     render() {
         //是否显示提交按钮
@@ -90,9 +130,10 @@ export default class Edit extends Vue {
                         <Form ref="comForm">
                             {
                                 this.componentPropsList.map(item => {
-                                    return (
-                                        <Input label={item.prop} id={item.prop} />
-                                    )
+                                    // return (
+                                    //     <Input label={item.prop} id={item.prop} />
+                                    // )
+                                    return this.formElRender(item);
                                 })
                             }
                         </Form>
@@ -114,8 +155,8 @@ export default class Edit extends Vue {
     initListener() {
         //当iframe里点击了组件编辑按钮时，需要回显组件值
         //为了防止重复监听，每次监听前先清除
-        PSEvent.remove("showComponentConfig");
-        PSEvent.listen("showComponentConfig", (config) => {
+        window.PSEvent.remove("showComponentConfig");
+        window.PSEvent.listen("showComponentConfig", (config) => {
             // console.log("config", config);
             this.$refs.comForm.setValues(config);
         });

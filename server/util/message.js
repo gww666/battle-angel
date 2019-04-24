@@ -5,7 +5,7 @@ import store from "../store";
 const postMessage = (data) => {
     window.parent.postMessage(data, "*");
 }
-import {initDrag} from "./preview-helper";
+import {initDrag, alignCenter} from "./preview-helper";
 //接收父页面的postmessage
 const events = (type) => {
     const _event = {
@@ -54,6 +54,10 @@ const events = (type) => {
                 }
             });
         },
+        //获取某个元素水平居中的left值
+        alignCenter(data) {
+            alignCenter(data.comId);
+        }
     }
     if (_event[type]) {
         return _event[type];

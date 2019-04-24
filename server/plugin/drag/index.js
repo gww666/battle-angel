@@ -9,11 +9,7 @@ class Drag {
     }
     init() {
         this.dom.style.position = "absolute";
-        let plugins;
-        
-        if (plugins = this.options.plugins) {
-            plugins.forEach(fn => fn(this.dom));
-        }
+
         //lifecycle方法
         if (this.options.init) {
             this.options.init(this.dom);
@@ -24,6 +20,9 @@ class Drag {
         dom.oncontextmenu = () => {return false};
         //鼠标左键按下
         dom.onmousedown = (e) => {
+            console.log("开始拖拽");
+            //如果存在translateX,置为none，防止对拖拽产生影响
+            this.dom.style.transform = "none";
             if (this.options.dragStart) {
                 this.options.dragStart(this.dom);
             }
