@@ -2,7 +2,6 @@ import editBtn from "./css-modules/edit-button";
 import styleLoader from "./css-modules";
 import {getComConfigById} from "../../util/setConfig";
 import store from "../../store";
-import { Modal } from 'ant-design-vue'
 // import {getClass} from "../../utils/gw/utils";
 class Edit {
     constructor(dom) {
@@ -85,33 +84,27 @@ class Edit {
             //告诉父页面点击的组件信息
             window.parent.postMessage(data, "*");
         }
-        function deleteClickEvent() {
+        //删除的点击事件
+        function deleteClickEvent(event) {
         	// if (!deleteAble) {
         	// 	console.log("该组件不能删除");
         	// 	return;
-        	// }
+            // }
+            event.stopPropagation();
             console.log("点击删除按钮按钮", id, group);
-            // Modal.confirm({
-            //     cancelText: '取消',
-            //     okText: '确定',
-            //     content: '确定删除这个组件么',
-            //     onOk: () => {
-                    store.commit('deleteComponentById', {id, group})
-                    let data = {
-                        type: "deleteComponentById",
-                        data: {
-                            id,
-                            group
-                        }
-                    }
-                    // let parentNode = el.parentNode;
-                    //告诉父页面要删除的组件信息
-                    window.parent.postMessage(data, "*");
-                    // let part = getPart(parentNode);
-                    // console.log("parentNode", parentNode, part);
-                    // del({position: index, part});
+            let data = {
+                type: "deleteComponentById",
+                data: {
+                    id,
+                    group
                 }
-            // })
+            }
+            // let parentNode = el.parentNode;
+            //告诉父页面要删除的组件信息
+            window.parent.postMessage(data, "*");
+            // let part = getPart(parentNode);
+            // console.log("parentNode", parentNode, part);
+            // del({position: index, part});
         }
     }
 }

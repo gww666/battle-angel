@@ -23,6 +23,14 @@ const events = (type) => {
                 initDrag();
             }, 0);   
         },
+        // 删除组件
+        deleteThisComponent(data) {
+            let {id, group} = data;
+            store.commit('deleteComponentById', {id, group})
+            setTimeout(() => {
+                initDrag();
+            }, 0); 
+        },
         //更改页面配置
         changePageProps(data) {
             let id = data.id;
