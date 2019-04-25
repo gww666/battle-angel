@@ -51,6 +51,7 @@ export default class Input extends Vue {
         outline: none;
         height: 26px;
         width: 200px;
+        border-radius: 3px;
     }
 }
 </style>

@@ -53,14 +53,26 @@ class Edit {
             `;
             el.insertAdjacentHTML("afterbegin", cover);
             //添加编辑按钮点击事件
+            el.querySelector(".cover-edit-btn").onmousedown = stop;
+            el.querySelector(".cover-edit-btn").onmouseup = stop;
             el.querySelector(".cover-edit-btn").onclick = editClickEvent;
+            el.querySelector(".cover-del-btn").onmousedown = stop;
+            el.querySelector(".cover-del-btn").onmouseup = stop;
             el.querySelector(".cover-del-btn").onclick = deleteClickEvent;
         }
         //隐藏浮层
         function hideCover() {
             el.querySelector(".edit-cover") && el.removeChild(el.querySelector(".edit-cover"));
         }
-        function editClickEvent() {
+        //阻止冒泡，防止事件污染
+        function stop(event) {
+            event.stopPropagation();
+        }
+        //编辑的点击事件
+        function editClickEvent(event) {
+            event.stopPropagation();
+            console.log("event.stopPropagation", event.stopPropagation);
+            
             console.log("点击编辑按钮", id, group);
             let data = {
                 type: "getComponentProps",
