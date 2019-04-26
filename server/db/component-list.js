@@ -1,3 +1,3 @@
 
-        export default [{"name":"button1","path":"component/button/button1","type":"button1","config":{"width":"337.5px","height":"44px","left":"43px","top":"220px","text":"取消","position":"absolute"},"id":"158218","group":"button"},{"name":"header1","path":"component/header/header1","type":"header1","config":{"width":"375px","height":"44px","left":"0px","top":"0px","text":"hello word","position":"absolute"},"id":"116100","group":"header"},{"name":"input1","path":"component/input/input1","type":"input1","config":{"width":"337.5px","height":"44px","left":"50%","top":"114px","text":"","position":"absolute","transform":"translateX(-50%)","placeholder":"","icon":"password"},"id":"188524","group":"input"}];
+        export default [];
     

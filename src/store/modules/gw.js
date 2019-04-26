@@ -51,6 +51,10 @@ export default {
         //设置正在下载中
         setIsDownloading(state, flag) {
             state.isDownloading = flag;
+        },
+        //删除一个组件
+        deleteAComponentProps(state, id) {
+            delete state.componentProps[id]
         }
     },
     actions: {
