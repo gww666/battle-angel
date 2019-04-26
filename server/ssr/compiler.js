@@ -79,6 +79,7 @@ const routerFilehelper = (pageName) => {
 
 const generateContainers = async (componentList) => {
     let pageName = "test2";
+    let pageId = "test2";
     let pageDirPath = resolve(`../containers/${pageName}`);
     //如果之前存在该页面，先删除掉
     await removeDirectory(pageDirPath);
@@ -122,7 +123,7 @@ const generateContainers = async (componentList) => {
         importCode.push(`import ${item.type} from "./components/${item.group}/${item.type}";`);
         componentsName += `${item.type},`;
     });
-    let code = `${importCode.join("")}export default {components: {${componentsName}}}`;
+    let code = `${importCode.join("")}export default {data() {return {pageId: ${pageId}}},components: {${componentsName}}}`;
     //写入import.js
     fs.writeFileSync(importJSFilePath, code);
 }

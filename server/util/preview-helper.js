@@ -22,9 +22,10 @@ const mapData = (vm, data) => {
             //属于样式标签
             if (key in document.documentElement.style) {
                 mStyle[key] = value;
-            } else {
-                vm[key] = value
             }
+            //为了灵活起见，这里会把所有的属性都绑定到this上，如果data中有赋值，
+            //则会映射到data上
+            vm[key] = value
         }
     });
     //设置样式属性

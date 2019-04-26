@@ -39,6 +39,7 @@ const getConfig = (mode = "development") => {
     }
     config = merge(config, {
         output: {
+            
             publicPath: isDev ? "http://127.0.0.1:3000/" : "/", 
             filename: "public/[name].js",
         },
@@ -63,6 +64,23 @@ const getConfig = (mode = "development") => {
                 //     }
                 // }
             }
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.(png|jpg|jpeg|gif)$/i,
+                    use: [
+                        {
+                            loader: "file-loader",
+                            options: {
+                                limit: 8192,
+                                name: "public/static/images/[name].[ext]",
+                                // name: "[name].[hash:8].[ext]",
+                            }
+                        }
+                    ]
+                }
+            ]
         },
         plugins: [
             // new MiniCssExtractPlugin({

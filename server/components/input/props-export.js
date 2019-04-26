@@ -13,4 +13,12 @@ module.exports = base.concat([
             {key: "密码", value: "password"}
         ]
     },
+    {
+        title: "背景颜色",
+        prop: "backgroundColor"
+    },
+    {
+        title: "边框圆角弧度",
+        prop: "borderRadius"
+    },
 ]);

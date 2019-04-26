@@ -9,6 +9,7 @@ package-lock.json
 #忽略自己本地创建的页面
 server/containers/*
 !server/containers/private
+page-config.js
 # local env files
 .env.local
 .env.*.local

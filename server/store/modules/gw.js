@@ -8,7 +8,8 @@ export default {
             name: "button1",
             path: "component/button/button1.vue",
             type: "button1",
-        }]
+        }],
+        
     },
     mutations: {
         setComponentList(state, component) {
@@ -20,6 +21,9 @@ export default {
             // }
             state.componentList = state.componentList.concat(component);
             // state.componentList.push(component);
+        },
+        setComBoxComponentList() {
+
         }
     }
 }

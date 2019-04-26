@@ -15,8 +15,17 @@ export const mapComputedStyle = (el, config) => {
  * @param {String} id 
  * @param {Object} config 
  */
-export const setComConfigById = (id, config) => {
-    let list = JSON.parse(JSON.stringify(store.state.componentList));
+export const setComConfigById = (pageId, id, config) => {
+    // let list = JSON.parse(JSON.stringify(store.state.componentList));
+    let obj = JSON.parse(JSON.stringify(store.state.pageConfig));
+    //先找page里
+    let com = obj[pageId].componentList.find(item => item.id === id);
+    if (com) {
+        com.config = Object.assign(com.config, config);
+    } else {
+        let 
+        com = obj[pageId].componentList.find(item => item.id === id);
+    }
     for (let item of list) {
         if (item.id === id) {
             item.config = Object.assign(item.config, config);
