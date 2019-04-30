@@ -1,6 +1,6 @@
 <template>
-	<div class="select-box">
-		<span>{{this.label}}</span>
+	<div class="select-box" :style="mStyle">
+		<span :style="labelStyle">{{this.label}}</span>
 		<a-select
 			style="width: 200px"
 			v-model="value">
@@ -10,7 +10,6 @@
 			</a-select-option>
 		</a-select>
 	</div>
-	
 </template>
 <script>
 import Vue from "vue";
@@ -18,6 +17,14 @@ import { Select } from "ant-design-vue";
 Vue.use(Select);
 export default {
 	props: {
+		mStyle: {
+			type: Object,
+			default: () => {}
+		},
+		labelStyle: {
+			type: Object,
+			default: () => {}
+		},
 		values: {
 			type: Array,
 			default: () => []
@@ -33,6 +40,11 @@ export default {
 		change: {
 			type: Function,
 			default: () => {}
+		},
+		//回显值或默认值
+		defaultValue: {
+			type: String,
+			default: ""
 		}
 	},
 	data() {
@@ -52,6 +64,14 @@ export default {
 				this.change(newVal);
 			}
 		}
+	},
+	created() {
+		for (let item of this.values) {
+			if (item.value === this.defaultValue) {
+				this.setValue(this.defaultValue);
+				break;
+			}
+		}
 	}
 };
 </script>
@@ -59,7 +79,7 @@ export default {
 .select-box {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    // margin-bottom: 10px;
 
     span {
         font-size: 14px;

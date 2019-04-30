@@ -26,16 +26,14 @@ export default new Vuex.Store({
     },
     actions: {
         //请求编译后的内容
-        async getIframeSrc({commit}, componentList) {
+        async getIframeSrc({commit}, params) {
             // return console.log(list);
             commit("setIsCompiling", true);
             let url = COMPILER;
             let options = {
                 url,
                 method: "post",
-                data: {
-                    componentList
-                }
+                data: params
             }
             let data = await axios(options);
             commit("setIframeSrc", data.data);

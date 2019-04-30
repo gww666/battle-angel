@@ -19,6 +19,17 @@ Vue.use(Spin);
     }
 })
 export default class List extends Vue {
+    get currentPageId() {
+        return this.$store.state.gw.currentPageId;
+    }
+    get pageList() {
+        return [
+            {
+                // name: "测试",
+                id: "t3"
+            }
+        ].map(item => ({key: item.id, value: item.id}));
+    }
     reload() {
         if (this.src) {
             let data = {
@@ -31,7 +42,10 @@ export default class List extends Vue {
             postMessage(data);
         }
     }
-
+    //处理页面切换的逻辑
+    handleChange(value) {
+        this.$store.commit("gw/setCurrentPageId", value);
+    }
     render() {
         // console.log(this.$store);
         
@@ -42,9 +56,14 @@ export default class List extends Vue {
                         <span><a-icon type="arrow-left" /></span>
                         <span><a-icon type="arrow-right" /></span>
                         <span onClick={this.reload} title="刷新"><a-icon type="reload" /></span>
-                        <a-select defaultValue="jack" style="flex: 1;" change="handleChange">
-                            <a-select-option value="jack">测试首页</a-select-option>
-                            <a-select-option value="jack2">测试首页22</a-select-option>
+                        <a-select defaultValue={this.currentPageId} style="flex: 1;" onChange={this.handleChange}>
+                            {
+                                this.pageList.map(item => {
+                                    return (
+                                        <a-select-option value={item.value}>{item.value}</a-select-option>
+                                    )
+                                })
+                            }
                         </a-select>
                         
                     </div>

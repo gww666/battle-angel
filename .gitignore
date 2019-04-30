@@ -10,6 +10,7 @@ package-lock.json
 server/containers/*
 !server/containers/private
 page-config.js
+project/
 # local env files
 .env.local
 .env.*.local

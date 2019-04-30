@@ -2,6 +2,7 @@ const KoaRouter = require("koa-router");
 const compiler = require("./compiler");
 const download = require("./download");
 const save = require("./save");
+const newFile = require("./newFile");
 
 const { 
     getKitsList,
@@ -19,8 +20,10 @@ router.post("/compiler", compiler);
 router.get("/getProps", getProps);
 //下载接口
 router.post("/download", download);
-//下载接口
+//保存接口
 router.post("/save", save);
+//保存接口
+router.get("/newFile", newFile);
 
 // 列表的接口
 router.get('/getKitsList', getKitsList);

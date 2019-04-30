@@ -11,11 +11,16 @@ router.get("/*", async ctx => {
     let pathObj = path.parse(ctx.path);
     // if (pathObj.dir === "/public/upload") {
     //     const filename = pathObj.base;
-    //     await send(ctx, "upload/" + filename);
     // } else {
-    console.log("拼接的链接", "client-dist" + ctx.path);
+    let _path = ctx.path.split("/");
+    //形如["", "public", "89", "test.html"]
+    let projectName = _path[2];
+    // let rest = `/${_path[1]}/${_path[3]}`;
+    let rest = `/${_path[3]}`;
+    console.log("拼接的链接", `server/project/${projectName}/client-dist` + rest);
         
-    await send(ctx, "server/client-dist" + ctx.path);
+    // await send(ctx, `server/project/${projectName}/client-dist` + rest);
+    await send(ctx, `server/project/${projectName}/client-dist` + rest);
     // }
     
 });

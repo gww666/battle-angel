@@ -1,7 +1,8 @@
 import {
     GET_PROPS,
     DOWNLOAD,
-    SAVE
+    SAVE,
+    NEW_FILE
 } from "../../config/api";
 import axios from "axios";
 const handleData = (data) => {
@@ -20,7 +21,11 @@ export default {
         pageProps: {},
         componentProps: {},
         needImportComponentList: [], //点击import按钮时，传给服务端的值
-        isDownloading: false
+        //是否正在下载
+        isDownloading: false,
+        //当前选中的项目id
+        currentProjectId: "89",
+        currentPageId: "t3",
     },
     getters: {
 
@@ -55,7 +60,15 @@ export default {
         //删除一个组件
         deleteAComponentProps(state, id) {
             delete state.componentProps[id]
-        }
+        },
+        //设置当前选中的项目ID
+        setCurrentProjectId(state, id) {
+            state.currentProjectId = id;
+        },
+        //设置当前选中的页面ID
+        setCurrentPageId(state, id) {
+            state.currentPageId = id;
+        },
     },
     actions: {
         async getComponentPropsList({state, commit}, params) {
@@ -100,6 +113,15 @@ export default {
                 url: SAVE,
                 method: "POST",
                 data: params
+            }
+            let data = await axios(options);
+            data = handleData(data);
+        },
+        //新建接口
+        async newFile({commit}, params = {}) {
+            let options = {
+                url: NEW_FILE,
+                params
             }
             let data = await axios(options);
             data = handleData(data);
