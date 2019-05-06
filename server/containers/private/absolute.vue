@@ -19,13 +19,17 @@ export default {
     mixins: [components],
     data() {
         return {
-            mStyle: {},
-            pageId: "page"
+            mStyle: {}
         }
     },
     computed: {
         componentList() {
-            return this.$store.state.componentList;
+            let page = this.$store.state.pageConfig[this.pageId];
+            if (page) {
+                return page.componentList;
+            } else {
+                return [];
+            }
         }
     },
     methods: {

@@ -8,19 +8,19 @@ const router = new KoaRouter({
 
 router.get("/*", async ctx => {
     console.log("静态资源文件", ctx.path);
-    let pathObj = path.parse(ctx.path);
+    // let pathObj = path.parse(ctx.path);
     // if (pathObj.dir === "/public/upload") {
     //     const filename = pathObj.base;
     // } else {
     let _path = ctx.path.split("/");
     //形如["", "public", "89", "test.html"]
-    let projectName = _path[2];
+    let projectId = _path[2];
     // let rest = `/${_path[1]}/${_path[3]}`;
-    let rest = `/${_path[3]}`;
-    console.log("拼接的链接", `server/project/${projectName}/client-dist` + rest);
+    let rest = `/${_path.slice(3).filter(item => item).join("/")}`;
+    console.log("拼接的链接", `server/project/${projectId}/client-dist` + rest);
         
-    // await send(ctx, `server/project/${projectName}/client-dist` + rest);
-    await send(ctx, `server/project/${projectName}/client-dist` + rest);
+    // await send(ctx, `server/project/${projectId}/client-dist` + rest);
+    await send(ctx, `server/project/${projectId}/client-dist` + rest);
     // }
     
 });

@@ -68,7 +68,7 @@ export const initData = (vm, type) => {
     let id = type === "page" ? vm.pageId : vm.componentId;
     let config = type === "page" ?
         {backgroundColor: "#fff"} :
-        vm.$store.state.componentList.find(item => item.id === id).config;
+        getComConfigById(id, true);
     if (config) {
         mapData(vm, config);
     }

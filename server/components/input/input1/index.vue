@@ -8,7 +8,7 @@ export default class Home extends mixins(Base) {
     render() {
         return (
             <div class="input1-box" style={this.mStyle}>
-                <img src={`../../public/static/images/${this.icon}.png`} alt="arrow" />
+                <img src={require(`../../../public/static/images/${this.icon}.png`)} alt="arrow" />
                 <input type="text" placeholder={this.placeholder} />
             </div>
         )

@@ -9,6 +9,7 @@ export default new Vuex.Store({
         count: 1,
         pageConfig,
         componentList,
+        currentPageId: "t3",
         comBoxComponentList: {}
     },
     mutations: {
@@ -17,6 +18,7 @@ export default new Vuex.Store({
         },
         //追加一个组件
         addComponentToList(state, {comId, pageId, component}) {
+            // console.log("追加一个组件", addComponentToList);
             let obj = JSON.parse(JSON.stringify(state.pageConfig));
             //向页面的组件列表追加一个组件
             if (pageId) {
@@ -36,11 +38,13 @@ export default new Vuex.Store({
                 com.componentList.push(component);
             }
             state.pageConfig = obj;
+            console.log(state.pageConfig);
+            
             // console.log("推入组件", component);
             // state.componentList = state.componentList.concat(component);
         },
-        setComponentList(state, list) {
-            state.componentList = [...list];
+        setPageConfig(state, config) {
+            state.pageConfig = config;
             // state.componentList.push(component);
         },
         // 点击了一个组件的删除按钮
@@ -51,6 +55,9 @@ export default new Vuex.Store({
                     state.componentList.splice(i, 1)
                 }
             }
+        },
+        setCurrentPageId(state, id) {
+            state.currentPageId = id;
         }
     },
     modules: {

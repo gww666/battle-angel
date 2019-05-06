@@ -108,7 +108,7 @@ export default {
             
         },
         //保存接口
-        async saveComList({commit}, params = {}) {
+        async savePageConfig({commit}, params = {}) {
             let options = {
                 url: SAVE,
                 method: "POST",

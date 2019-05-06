@@ -138,16 +138,19 @@ const handle = async (ctx, next) => {
     generateComponents({componentList, projectId, pageId});
     // generateRouter();
     //删除完毕，开始编译
-    await removeDirectory(path.join(projectDirPath, "client-dist/public"));
+    await removeDirectory(path.join(projectDirPath, "client-dist/static"));
     console.log("删除完毕，开始编译");
     //打包编译客户端的文件
     let clientWebpackConfig = require(`../project/${projectId}/build/webpack.client.config.js`);
     await compiler(clientWebpackConfig("development", projectId));
+    
     let html = fs.readFileSync(path.join(projectDirPath, "client-dist/index.html"), "utf-8");
     //鉴于srcdoc的问题，这里写入文件，返回链接地址
     // ctx.body = html;
     const distPath = path.join(projectDirPath, "client-dist/test.html");
     fs.writeFileSync(distPath, html);
+    // console.log("pageId", pageId);
+    
     ctx.body = `http://127.0.0.1:3000/public/${projectId}/test.html/#/${pageId}`;
 };
 

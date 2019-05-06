@@ -6,6 +6,7 @@ const postMessage = (data) => {
     window.parent.postMessage(data, "*");
 }
 import {initDrag, alignCenter} from "./preview-helper";
+import {setComConfigById} from "./setConfig";
 //接收父页面的postmessage
 const events = (type) => {
     const _event = {
@@ -15,8 +16,9 @@ const events = (type) => {
             window.location.href = url;
         },
         addComponent(data) {
-            let component = data.component;
-            store.commit("addComponentToList", component);
+            let {component, pageId} = data;
+            store.commit("setCurrentPageId", pageId);
+            store.commit("addComponentToList", {pageId, comId: component.id, component});
             //顺便初始化组建的拖拽等事件
             //nextTick
             setTimeout(() => {
@@ -43,22 +45,23 @@ const events = (type) => {
             let id = data.id;
             PSEvent.trigger(id, data.config);
             //保存到vuex中
-            let list = JSON.parse(JSON.stringify(store.state.componentList));
-            for (let item of list) {
-                if (item.id === data.id) {
-                    item.config = data.config;
-                }
-            }
-            store.commit("setComponentList", list);
+            setComConfigById(id, data.config);
+            // let list = JSON.parse(JSON.stringify(store.state.componentList));
+            // for (let item of list) {
+            //     if (item.id === data.id) {
+            //         item.config = data.config;
+            //     }
+            // }
+            // store.commit("setComponentList", list);
 
         },
-        //获取当前页面组件配置信息
-        getComList(data) {
+        //获取所有页面配置信息
+        getPageConfig(data) {
             // return document.documentElement.outerHTML;
             postMessage({
-                type: "returnComList",
+                type: "returnPageConfig",
                 data: {
-                    list: store.state.componentList
+                    config: store.state.pageConfig
                 }
             });
         },

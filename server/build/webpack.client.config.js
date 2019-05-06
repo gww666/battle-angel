@@ -2,32 +2,25 @@ const webpack = require("webpack");
 const merge = require("webpack-merge");
 const path = require("path");
 const baseConfig = require("./webpack.base.config");
-const VueSSRClientPlugin = require("vue-server-renderer/client-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-// const PrerenderSPAPlugin = require('prerender-spa-plugin');
-// const Renderer = PrerenderSPAPlugin.PuppeteerRenderer;
-// const Visualizer = require("webpack-visualizer-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-// const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-// const assetsPath = require("./utils");
 
-const getConfig = (mode = "development") => {
+const getConfig = (mode = "development", projectId) => {
     const isDev = mode === "development";
-
+    
     let config = {
         mode,
         // entry: path.resolve(__dirname, "../client-entry.js"),
         entry: path.resolve(__dirname, "../main.js"),
         output: {
-            filename: "[name].js",
             path: path.resolve(__dirname, "../client-dist")
         },
         plugins: [
             // new VueSSRClientPlugin(),
             new CopyWebpackPlugin([
                 {
-                    from: path.resolve(__dirname, "../public/static"),
-                    to: path.resolve(__dirname, "../client-dist/public/static")
+                    from: path.resolve(__dirname, "../public/static/js"),
+                    to: path.resolve(__dirname, "../client-dist/static/js")
                 }
             ])
         ],
@@ -39,9 +32,8 @@ const getConfig = (mode = "development") => {
     }
     config = merge(config, {
         output: {
-            
-            publicPath: isDev ? "http://127.0.0.1:3000/" : "/", 
-            filename: "public/[name].js",
+            publicPath: isDev ? `http://127.0.0.1:3000/public/${projectId}` : "/", 
+            filename: "static/js/[name].js",
         },
         optimization: {
             removeAvailableModules: true,
@@ -74,8 +66,19 @@ const getConfig = (mode = "development") => {
                             loader: "file-loader",
                             options: {
                                 limit: 8192,
-                                name: "public/static/images/[name].[ext]",
-                                // name: "[name].[hash:8].[ext]",
+                                // publicPath: "/abc",
+                                outputPath(url, resourcePath, context) {
+                                    // console.log("outputPath-url", url);
+                                    // console.log("outputPath-resourcePath", resourcePath);
+                                    // let relativePath = path.relative(context, resourcePath);
+                                    let pathObj = path.parse(resourcePath);
+                                    // console.log("pathObj", pathObj);
+                                    
+                                    // console.log("outputPath-relativePath", relativePath);
+                                    return isDev ? `/static/images/${url}` : `static/images/${url}`;
+                                },
+                                // name: isDev ? "[name].[ext]" : "[name].[ext]",
+                                // name: "[name].[ext]",
                             }
                         }
                     ]

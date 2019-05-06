@@ -18,7 +18,11 @@ export default class List extends Vue {
     //记录需要导入的组件列表
     needImportComponentList = [];
     //记录已经导入的组件
-    importedComponent = ''
+    importedComponent = '';
+
+    get currentPageId() {
+        return this.$store.state.gw.currentPageId;
+    }
 
     onChange(group, component) {
         component.group = group;
@@ -64,7 +68,8 @@ export default class List extends Vue {
         postMessage({
             type: "addComponent",
             data: {
-                component: item
+                component: item,
+                pageId: this.currentPageId
             }
         });
     }

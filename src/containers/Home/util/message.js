@@ -63,9 +63,10 @@ const events = (type) => {
                 }
             })
         },
-        async returnComList(data) {
-            store.dispatch("gw/saveComList", {
-                list: data.list
+        async returnPageConfig(data) {
+            store.dispatch("gw/savePageConfig", {
+                pageConfig: data.config,
+                projectId: store.state.gw.currentProjectId
             });
         },
         async updateEditComProps(data) {

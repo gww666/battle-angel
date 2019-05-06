@@ -41,7 +41,7 @@ export default class Menu extends Vue {
     async save() {
         //给iframe发消息，拿到其配置信息
         postMessage({
-            type: "getComList"
+            type: "getPageConfig"
         });
         const {needImportComponentList} = this.$store.state;
     }
