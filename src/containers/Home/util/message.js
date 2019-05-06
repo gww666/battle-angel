@@ -63,11 +63,15 @@ const events = (type) => {
                 }
             })
         },
-        async returnPageConfig(data) {
+        async savePageConfig(data) {
             store.dispatch("gw/savePageConfig", {
                 pageConfig: data.config,
                 projectId: store.state.gw.currentProjectId
             });
+        },
+        async returnPageConfig(data) {
+            //保存到vuex中
+            store.commit("gw/setPageConfig", data.config);
         },
         async updateEditComProps(data) {
             setTimeout(() => {

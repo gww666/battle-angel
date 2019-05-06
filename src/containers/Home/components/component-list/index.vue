@@ -65,6 +65,7 @@ export default class List extends Vue {
             id: generatorId(),//为组件生成一个id
             group
         }
+        //通知iframe增加一个组件
         postMessage({
             type: "addComponent",
             data: {
@@ -72,6 +73,7 @@ export default class List extends Vue {
                 pageId: this.currentPageId
             }
         });
+        //
     }
     /**
      * 获取列表

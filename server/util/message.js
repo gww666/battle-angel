@@ -58,8 +58,9 @@ const events = (type) => {
         //获取所有页面配置信息
         getPageConfig(data) {
             // return document.documentElement.outerHTML;
+            let {cb} = data;
             postMessage({
-                type: "returnPageConfig",
+                type: cb,
                 data: {
                     config: store.state.pageConfig
                 }

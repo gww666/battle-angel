@@ -83,6 +83,13 @@ class Edit {
             }
             //告诉父页面点击的组件信息
             window.parent.postMessage(data, "*");
+            //告诉父页面iframe的页面配置信息
+            window.parent.postMessage({
+                type: "returnPageConfig",
+                data: {
+                    config: store.state.pageConfig
+                }
+            }, "*");
         }
         //删除的点击事件
         function deleteClickEvent(event) {

@@ -120,6 +120,13 @@ export const initDrag = () => {
                         config
                     }
                 });
+                //告诉父页面iframe的页面配置信息
+                window.parent.postMessage({
+                    type: "returnPageConfig",
+                    data: {
+                        config: store.state.pageConfig
+                    }
+                }, "*");
             }
         });
     });

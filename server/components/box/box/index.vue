@@ -18,7 +18,7 @@ export default {
     },
     computed: {
         componentsList() {
-            
+            return []
         }
     }
 }

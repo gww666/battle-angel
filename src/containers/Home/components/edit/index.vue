@@ -57,9 +57,30 @@ export default class Edit extends Vue {
     }
     //组件支持编辑的属性列表
     get componentPropsList() {
-        console.log("componentPropsList", this.$store.state.gw.componentProps[this.editId]);
+        // console.log("componentPropsList", this.$store.state.gw.componentProps[this.editId]);
         
         return this.$store.state.gw.componentProps[this.editId] || [];
+    }
+    //根据属性列表展示组件
+    get componentsForProps() {
+        if (!this.$store.state.gw.componentProps[this.editId]) return [];
+        let arr = this.$store.state.gw.componentProps[this.editId].map(item => {
+            return this.formElRender(item);
+        });
+        arr.unshift(
+            <Select id="parent" label="父容器" values={this.boxComponentList}></Select>
+        );
+        return arr;
+    }
+    get boxComponentList() {
+        console.log("boxComponentList", this.$store.getters["gw/boxComponentList"]);
+        
+        return this.$store.getters["gw/boxComponentList"].map(item => {
+            return {
+                key: item.id,
+                value: item.id
+            }
+        });
     }
     handleFormBtnEvent(propType) {
         let comId = this.editId;
@@ -129,12 +150,12 @@ export default class Edit extends Vue {
                     <div class="component-props-box">
                         <Form ref="comForm">
                             {
-                                this.componentPropsList.map(item => {
-                                    // return (
-                                    //     <Input label={item.prop} id={item.prop} />
-                                    // )
-                                    return this.formElRender(item);
-                                })
+                                // this.componentPropsList.map(item => {
+                                //     return this.formElRender(item);
+                                // }).unshift(
+                                //     <Select id="parent" label="父容器" values={this.boxComponentList}></Select>
+                                // )
+                                this.componentsForProps
                             }
                         </Form>
                     </div>

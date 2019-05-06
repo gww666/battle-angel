@@ -26,9 +26,14 @@ export default {
         //当前选中的项目id
         currentProjectId: "89",
         currentPageId: "t3",
+        pageConfig: {}
     },
     getters: {
-
+        boxComponentList: state => {
+            return state.pageConfig[state.currentPageId] ?
+                state.pageConfig[state.currentPageId].componentList.filter(item => item.type === "box") :
+                [];
+        }
     },
     mutations: {
         setComponentProps(state, {id, list}) {
@@ -69,6 +74,9 @@ export default {
         setCurrentPageId(state, id) {
             state.currentPageId = id;
         },
+        setPageConfig(state, config) {
+            state.pageConfig = config;
+        }
     },
     actions: {
         async getComponentPropsList({state, commit}, params) {
