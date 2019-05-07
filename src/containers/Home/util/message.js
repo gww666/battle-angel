@@ -11,7 +11,7 @@ const events = (type) => {
         //         PSEvent.trigger("showComponentConfig", data.config);
         //     }, 17);
         // },
-        getComponentProps(data) {
+        async getComponentProps(data) {
             console.log("接收到getComponentProps事件");
             
             //根据tag判断是什么操作触发的该事件
@@ -24,7 +24,7 @@ const events = (type) => {
             //当前编辑的组件id，存到vuex中
             store.commit("gw/setEditId", data.id);
             //从服务端获取这个组件支持哪些配置项
-            store.dispatch("gw/getComponentPropsList", {
+            await store.dispatch("gw/getComponentPropsList", {
                 group: data.group,
                 id: data.id
             });
@@ -63,6 +63,7 @@ const events = (type) => {
                 }
             })
         },
+        //调用save接口
         async savePageConfig(data) {
             store.dispatch("gw/savePageConfig", {
                 pageConfig: data.config,
@@ -77,6 +78,14 @@ const events = (type) => {
             setTimeout(() => {
                 PSEvent.trigger("showComponentConfig", data.config);
             }, 17);
+        },
+        async replyChangeComParent(data) {
+            let {componentList} = data;
+            await store.dispatch("getIframeSrc", {
+                componentList,
+                projectId: store.state.gw.currentProjectId,
+                pageId: store.state.gw.currentPageId
+            });
         }
     }
     return _events[type] || (() => {});

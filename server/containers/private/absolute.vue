@@ -5,7 +5,8 @@
             :is="item.type" :key="index + '' + item.type"
             :componentId="item.id"
             :data-baid="item.id"
-            :data-bagroup="item.group">
+            :data-bagroup="item.group"
+            :config="item.config">
         </component>
     </div>
 </template>

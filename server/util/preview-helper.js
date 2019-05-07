@@ -6,6 +6,7 @@ import StyleLoader from "../plugin/edit/css-modules";
 import {setComConfigById, getComConfigById, getComDataById} from "../util/setConfig";
 import Edit from "../plugin/edit";
 import Drag from "../plugin/drag";
+import store from "../store";
 const postMessage = (data) => {
     window.parent.postMessage(data, "*");
 }

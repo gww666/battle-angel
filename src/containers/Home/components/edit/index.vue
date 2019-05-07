@@ -13,6 +13,59 @@ Vue.use(Button);
 
 @Component
 export default class Edit extends Vue {
+    //获取当前编辑的面板
+    //1为页面配置，2为组件配置
+    get tabValue() {
+        return this.$store.state.gw.editActiveTab;
+    }
+    //获取正在编辑的模块id
+    get editId() {
+        return this.$store.state.gw.editId;
+    }
+    //页面支持编辑的属性列表
+    get pagePropsList() {
+        return this.$store.state.gw.pageProps[this.editId] || [];
+    }
+    //组件支持编辑的属性列表
+    get componentPropsList() {
+        // console.log("componentPropsList", this.$store.state.gw.componentProps[this.editId]);
+        
+        return this.$store.state.gw.componentProps[this.editId] || [];
+    }
+    //根据属性列表展示组件
+    get componentsForProps() {
+        if (!this.$store.state.gw.componentProps[this.editId]) return [];
+        let arr = this.$store.state.gw.componentProps[this.editId]
+        .filter(item => !item.private)
+        .map(item => {
+            return this.formElRender(item);
+        });
+        arr.unshift(
+            <Select id="parent" label="父容器" 
+                values={this.boxComponentList} 
+                defaultValue="page" 
+                change={this.onComParentChange} />
+        );
+        return arr;
+    }
+    //获得当前页面的component类别为box的
+    get boxComponentList() {
+        //默认追加一个节点，代表根页面
+        // console.log("boxComponentList", this.$store.getters["gw/boxComponentList"]);
+        
+        return [{
+            key: "page",
+            value: "page"
+        }].concat(this.$store.getters["gw/boxComponentList"].map(item => {
+            return {
+                key: item.id,
+                value: item.id
+            }
+        }));
+    }
+    get currentPageId() {
+        return this.$store.state.gw.currentPageId;
+    }
     getFormInstance() {
         return this.tabValue === "1" ? 
             this.$refs.pageForm : 
@@ -42,43 +95,20 @@ export default class Edit extends Vue {
             this.$store.commit("gw/setEditId", "page");
         }
     }
-    //获取当前编辑的面板
-    //1为页面配置，2为组件配置
-    get tabValue() {
-        return this.$store.state.gw.editActiveTab;
-    }
-    //获取正在编辑的模块id
-    get editId() {
-        return this.$store.state.gw.editId;
-    }
-    //页面支持编辑的属性列表
-    get pagePropsList() {
-        return this.$store.state.gw.pageProps[this.editId] || [];
-    }
-    //组件支持编辑的属性列表
-    get componentPropsList() {
-        // console.log("componentPropsList", this.$store.state.gw.componentProps[this.editId]);
-        
-        return this.$store.state.gw.componentProps[this.editId] || [];
-    }
-    //根据属性列表展示组件
-    get componentsForProps() {
-        if (!this.$store.state.gw.componentProps[this.editId]) return [];
-        let arr = this.$store.state.gw.componentProps[this.editId].map(item => {
-            return this.formElRender(item);
-        });
-        arr.unshift(
-            <Select id="parent" label="父容器" values={this.boxComponentList}></Select>
-        );
-        return arr;
-    }
-    get boxComponentList() {
-        console.log("boxComponentList", this.$store.getters["gw/boxComponentList"]);
-        
-        return this.$store.getters["gw/boxComponentList"].map(item => {
-            return {
-                key: item.id,
-                value: item.id
+    //切换组件的父组件
+    onComParentChange(newVal, oldVal) {
+        if (!oldVal) return;
+        //拿到父组件的id
+        //通知iframe改变引用关系
+        //在iframe里回传事件，调用compiler接口
+        postMessage({
+            type: "changeComParent",
+            data: {
+                cb: "replyChangeComParent",
+                comId: this.editId,
+                newParentId: newVal,
+                oldParentId: oldVal,
+                pageId: this.currentPageId
             }
         });
     }
@@ -150,11 +180,6 @@ export default class Edit extends Vue {
                     <div class="component-props-box">
                         <Form ref="comForm">
                             {
-                                // this.componentPropsList.map(item => {
-                                //     return this.formElRender(item);
-                                // }).unshift(
-                                //     <Select id="parent" label="父容器" values={this.boxComponentList}></Select>
-                                // )
                                 this.componentsForProps
                             }
                         </Form>

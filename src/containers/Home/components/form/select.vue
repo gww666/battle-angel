@@ -59,9 +59,9 @@ export default {
 		}
 	},
 	watch: {
-		value(newVal) {
+		value(newVal, oldVal) {
 			if (newVal) {
-				this.change(newVal);
+				this.change(newVal, oldVal);
 			}
 		}
 	},

@@ -1,24 +1,14 @@
-// const KoaRouter = require("koa-router");
 const path = require("path");
 const fs = require("fs");
-// const clientWebpackConfig = require("../build/webpack.client.config.js");
 const webpack = require("webpack");
 const rimraf = require("rimraf");
-const {copy} = require("../util/server-util");
 
 const compiler = (configPath) => {
     return new Promise((resolve) => {
-        // let serverCompiler = webpack(configPath);
         webpack(configPath, (err, stats) => {
             console.log("err", err);
-            // console.log("stats", stats);
             resolve();
         });
-        // serverCompiler.run((err, stats) => {
-        //     console.log("err", err);
-        //     // console.log("stats", stats);
-        //     resolve();
-        // });
     });
 }
 const resolve = (_path) => {
@@ -55,39 +45,73 @@ const initFilehelper = () => {
                 componentId: {
                     type: String,
                     default: ""
+                },
+                config: {
+                    type: Object,
+                    default: () => ({})
                 }
             },
             provide() {
                 return {
-                    componentId: this.componentId
+                    componentId: this.componentId,
+                    config: this.config
                 }
             }
         }
     `;
 }
-const routerFilehelper = (pageName) => {
-    return `
-        import ${pageName} from "../containers/${pageName}";
-        export default [
-            {
-                path: "/",
-                component: ${pageName}
+const generateComponentsForBoxCom = ({projectId, pageId, componentList}) => {
+    let pageDirPath = resolve(`../project/${projectId}`);
+    //import.js文件的路径地址
+    let importJSFilePath = path.join(pageDirPath, "components/box/box1/import.js");
+    //找到所有的盒子组件
+    let boxComponents = [];
+    let getBoxComponents = (_componentList) => {
+        _componentList.forEach(item => {
+            if (item.type === "box") {
+                boxComponents.push(item);
+                //同时遍历该box组件下面的componentList
+                getBoxComponents(item.componentList);
             }
-        ]
-    `;
+        });
+    }
+    getBoxComponents(componentList);
+    let temp = {};
+    let importCode = [];
+    let componentsName = "";
+    boxComponents.forEach(box => {
+        box.componentList.forEach(item => {
+            if (!temp[item.type]) {
+                temp[item.type] = 1;
+                //还未注册过
+                importCode.push(`import ${item.type} from "../../../containers/${pageId}/components/${item.group}/${item.type}";`);
+                componentsName += `${item.type},`;
+            }
+        });
+    });
+    let code = `${importCode.join("")}export default {components: {${componentsName}}}`;
+    //写入import.js
+    fs.writeFileSync(importJSFilePath, code);
 }
-
+const generateComponentsForBoxCom2 = ({projectId, pageId, componentList}) => {
+    let pageDirPath = resolve(`../project/${projectId}`);
+    //import.js文件的路径地址
+    let importJSFilePath = path.join(pageDirPath, "components/box/box1/import.js");
+    let importCode = [];
+    let componentsName = "";
+    componentList.forEach(item => {
+        if (item.group !== "box") {
+            importCode.push(`import ${item.type} from "../../../containers/${pageId}/components/${item.group}/${item.type}";`);
+            componentsName += `${item.type},`;
+        }
+    });
+    let code = `${importCode.join("")}export default {components: {${componentsName}}}`;
+    //写入import.js
+    fs.writeFileSync(importJSFilePath, code);
+}
 const generateComponents = async ({projectId, pageId, componentList}) => {
     let pageRootPath = resolve(`../project/${projectId}/containers`);
     let pageDirPath = path.join(pageRootPath, pageId);
-    //创建页面
-    // fs.mkdirSync(pageDirPath);
-    //创建index.vue文件
-    // copy(
-    //     resolve("../containers/private/index.vue"),
-    //     path.join(pageDirPath, "index.vue")
-    // );
-    
     //创建components文件夹
     let componentsDirPath = path.join(pageDirPath, "components");
     //先删除componentsDirPath
@@ -98,10 +122,6 @@ const generateComponents = async ({projectId, pageId, componentList}) => {
     let importCode = [];
     let componentsName = "";
     componentList.forEach(item => {
-        // console.log("item", item);
-        
-        // console.log("componentsDirPath", componentsDirPath);
-        
         //组件类别文件夹地址
         let compoentTypeDirPath = path.join(componentsDirPath, item.group);
         //逻辑组件文件夹地址
@@ -119,9 +139,12 @@ const generateComponents = async ({projectId, pageId, componentList}) => {
         let initFilePath = path.join(compoentItemDirPath, "private.init.js");
         fs.writeFileSync(indexFilePath, indexFilehelper(item.group, item.type));
         fs.writeFileSync(initFilePath, initFilehelper());
-        //import语句
-        importCode.push(`import ${item.type} from "./components/${item.group}/${item.type}";`);
-        componentsName += `${item.type},`;
+        if (item.group !== "box") {
+            //import语句
+            importCode.push(`import ${item.type} from "./components/${item.group}/${item.type}";`);
+            componentsName += `${item.type},`;
+        }
+        
     });
     let code = `${importCode.join("")}export default {data() {return {pageId: "${pageId}"}},components: {${componentsName}}}`;
     //写入import.js
@@ -136,6 +159,7 @@ const handle = async (ctx, next) => {
     // console.log("接收到参数", componentList);
     //按需引入组件
     generateComponents({componentList, projectId, pageId});
+    generateComponentsForBoxCom2({componentList, projectId, pageId});
     // generateRouter();
     //删除完毕，开始编译
     await removeDirectory(path.join(projectDirPath, "client-dist/static"));
@@ -154,5 +178,4 @@ const handle = async (ctx, next) => {
     ctx.body = `http://127.0.0.1:3000/public/${projectId}/test.html/#/${pageId}`;
 };
 
-// module.exports = router;
 module.exports = handle;

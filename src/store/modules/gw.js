@@ -30,9 +30,23 @@ export default {
     },
     getters: {
         boxComponentList: state => {
-            return state.pageConfig[state.currentPageId] ?
-                state.pageConfig[state.currentPageId].componentList.filter(item => item.type === "box") :
-                [];
+            if (!state.pageConfig[state.currentPageId]) return [];
+            let boxComponents = [];
+            let getBoxComponents = (_componentList) => {
+                console.log("_componentList", _componentList);
+                
+                _componentList.forEach(item => {
+                    if (item.group === "box") {
+                        boxComponents.push(item);
+                        if (item.config.componentList) {
+                            //同时遍历该box组件下面的componentList
+                            getBoxComponents(item.config.componentList);
+                        }
+                    }
+                });
+            }
+            getBoxComponents(state.pageConfig[state.currentPageId].componentList);
+            return boxComponents;
         }
     },
     mutations: {

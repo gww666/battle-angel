@@ -32,7 +32,7 @@ const getConfig = (mode = "development", projectId) => {
     }
     config = merge(config, {
         output: {
-            publicPath: isDev ? `http://127.0.0.1:3000/public/${projectId}` : "/", 
+            publicPath: isDev ? `http://127.0.0.1:3000/public/${projectId}/` : "/", 
             filename: "static/js/[name].js",
         },
         optimization: {

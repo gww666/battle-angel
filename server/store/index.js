@@ -12,6 +12,8 @@ export default new Vuex.Store({
         currentPageId: "t3",
         comBoxComponentList: {}
     },
+    getters: {
+    },
     mutations: {
         add(state, count) {
             state.count += count;

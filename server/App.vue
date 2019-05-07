@@ -5,6 +5,8 @@
 </template>
 <script>
 import PrivateInit from "./private.init";
+import Vue from "vue";
+Vue.component("box1", () => import("./containers/t3/components/box/box1"));
 export default {
     mixins: [PrivateInit]
 }
