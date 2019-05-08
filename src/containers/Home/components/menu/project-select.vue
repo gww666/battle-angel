@@ -9,6 +9,7 @@ export default class ProjectSelect extends Vue {
         return this.$store.state.gw.currentProjectId;
     }
     get projectList() {
+        return this.$store.state.qxz.projectsList.map(item => ({key: item.name, value: item.name}));
         // return [
         //     {
         //         name: "测试",
