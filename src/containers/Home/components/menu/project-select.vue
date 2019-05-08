@@ -28,6 +28,8 @@ export default class ProjectSelect extends Vue {
     handleProjectChange(projectId) {
         console.log(projectId);
         this.$store.commit("gw/setCurrentProjectId", projectId);
+        //获取页面列表
+        this.$store.dispatch("qxz/requestPagesList", projectId);
     }
     render() {
         return (

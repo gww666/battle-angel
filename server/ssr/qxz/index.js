@@ -90,8 +90,8 @@ const getProjectsList = async (ctx, next) => {
 const getProjectPages = async (ctx, next) => {
     let parmas = ctx.query;
     try{
-        let projectName = parmas.name;
-        let projectsList = fs.readdirSync(path.resolve(__dirname, `../../project/${projectName}/containers`));
+        let projectId = parmas.projectId;
+        let projectsList = fs.readdirSync(path.resolve(__dirname, `../../project/${projectId}/containers`));
         let arr = [];
         projectsList.forEach(item => {
             if(item !== "private") {

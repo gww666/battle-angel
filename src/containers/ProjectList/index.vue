@@ -45,7 +45,7 @@ export default class ProjectsList extends Vue {
     handleCardClick(item) {
         this.$store.commit("gw/setCurrentProjectId", item.name);
         //获取项目列表
-        this.$store.dispatch("qxz/requestPagesList", item);
+        this.$store.dispatch("qxz/requestPagesList", item.name);
         this.$router.push({name: "home"});
     }
     mounted() {

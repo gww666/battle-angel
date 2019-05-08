@@ -23,6 +23,7 @@ export default class List extends Vue {
         return this.$store.state.gw.currentPageId;
     }
     get pageList() {
+        return this.$store.state.qxz.pagesList.map(item => ({key: item.name, value: item.name}));
         return [
             {
                 // name: "测试",

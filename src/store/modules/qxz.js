@@ -45,11 +45,13 @@ export default {
             commit("setProjectsList", list);
         },
         // 获取页面列表
-        async requestPagesList({commit}, item) {
+        async requestPagesList({commit}, projectId) {
             let options = {
                 method: "GET",
                 url: GET_PAGES,
-                params: item
+                params: {
+                    projectId
+                }
             }
             let data = await axios(options);
             let list = handleData(data) || [];
