@@ -18,39 +18,47 @@ class Edit {
         
         let id = el.getAttribute("data-baid");
         let group = el.getAttribute("data-bagroup");
-        el.onmouseenter = () => {
+        el.onmouseenter = (e) => {
             // console.log("鼠标进入");
-            showCover();
+            showCover(e);
         }
-        el.onmouseleave = () => {
+        el.onmouseleave = (e) => {
             // console.log("鼠标离开");
-            hideCover();
+            hideCover(e);
         }
         //创建一个浮层
-        function showCover() {
-            // console.log("el", el);
+        function showCover(e) {
+            // el = e.target;
             let width = getComputedStyle(el, null).width;
             let height = getComputedStyle(el, null).height;
             !el.style.position && (el.style.position = "relative");
-            let cover = `
-                <div class="edit-cover" 
-                    style="border: 3px dashed #2489c5;width: ${width};height: ${height};
-                    position: absolute;left: 0;top: 0;
-                    z-index: 1;box-sizing: border-box;">
-                    <div style="height: 30px;width: 150px;position: absolute;
-                        right: 0;top: 0;display: flex;justify-content: space-between;">
-                        <span class="cover-edit-btn"
-                            style="${styleLoader(editBtn.blue_btn)}">
-                            编辑
-                        </span>
-                        <span class="cover-del-btn" 
-                            style="${deleteAble ? styleLoader(editBtn.blue_btn) : styleLoader(editBtn.blue_btn_disable)}">
-                            删除
-                        </span>
-                    </div>
+            let btnBox = `
+                <div class="edit-handle-box" style="height: 30px;width: 150px;position: absolute;
+                    right: 0;top: 0;display: flex;justify-content: space-between;">
+                    <span class="cover-edit-btn"
+                        style="${styleLoader(editBtn.blue_btn)}">
+                        编辑
+                    </span>
+                    <span class="cover-del-btn" 
+                        style="${deleteAble ? styleLoader(editBtn.blue_btn) : styleLoader(editBtn.blue_btn_disable)}">
+                        删除
+                    </span>
                 </div>
             `;
-            el.insertAdjacentHTML("afterbegin", cover);
+            if (group === "box") {
+                el.style.border = "3px dashed #2489c5";
+                el.insertAdjacentHTML("afterbegin", btnBox);
+            } else {
+                let cover = `
+                    <div class="edit-cover" 
+                        style="border: 3px dashed #2489c5;width: ${width};height: ${height};
+                        position: absolute;left: 0;top: 0;
+                        z-index: 1;box-sizing: border-box;">
+                        ${btnBox}
+                    </div>
+                `;
+                el.insertAdjacentHTML("afterbegin", cover);
+            }
             //添加编辑按钮点击事件
             el.querySelector(".cover-edit-btn").onmousedown = stop;
             el.querySelector(".cover-edit-btn").onmouseup = stop;
@@ -60,8 +68,17 @@ class Edit {
             el.querySelector(".cover-del-btn").onclick = deleteClickEvent;
         }
         //隐藏浮层
-        function hideCover() {
-            el.querySelector(".edit-cover") && el.removeChild(el.querySelector(".edit-cover"));
+        function hideCover(e) {
+            // el = e.target;
+            if (group === "box") {
+                //清除border
+                el.style.border = "unset";
+                //清除handle-box
+                el.querySelector(".edit-handle-box") && el.removeChild(el.querySelector(".edit-handle-box"));
+            } else {
+                el.querySelector(".edit-cover") && el.removeChild(el.querySelector(".edit-cover"));
+            }
+            
         }
         //阻止冒泡，防止事件污染
         function stop(event) {

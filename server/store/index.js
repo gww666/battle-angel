@@ -3,6 +3,7 @@ import Vue from "vue";
 import gw from "./modules/gw";
 import componentList from "../db/component-list";
 import pageConfig from "../db/page-config";
+import {getComById} from "../util/setConfig";
 Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
@@ -19,14 +20,20 @@ export default new Vuex.Store({
             state.count += count;
         },
         //追加一个组件
-        addComponentToList(state, {comId, pageId, component}) {
+        addComponentToList(state, {pageId, component, boxComId}) {
             // console.log("追加一个组件", addComponentToList);
             let obj = JSON.parse(JSON.stringify(state.pageConfig));
-            //向页面的组件列表追加一个组件
-            if (pageId) {
+            //如果有boxComId，代表要添加到自由容器中
+            if (boxComId) {
+                let com = getComById(boxComId, obj);
+                if (com.config.componentList) {
+                    com.config.componentList.push(component);
+                } else {
+                    com.config.componentList = [component];
+                }
+            } else {
                 //已经存在该页面的配置项
                 if (obj[pageId]) {
-                    // obj[pageId].componentList.push(component);
                     obj[pageId].componentList.push(component);
                 } else {
                     obj[pageId] = {
@@ -34,16 +41,8 @@ export default new Vuex.Store({
                         componentList: [component]
                     }
                 }
-            } else if (comId) {
-                //向容器组件的组件列表追加一个组件
-                let com = obj[pageId].componentList.find(item => item.id === comId);
-                com.componentList.push(component);
             }
             state.pageConfig = obj;
-            console.log(state.pageConfig);
-            
-            // console.log("推入组件", component);
-            // state.componentList = state.componentList.concat(component);
         },
         setPageConfig(state, config) {
             state.pageConfig = config;

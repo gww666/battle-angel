@@ -1,8 +1,8 @@
 import store from "../store";
 /**
  * 根据id从pageConfig对象中找到对应的组件
- * @param {String} id 
- * @param {Object} data 
+ * @param {String} id 要找的组件Id
+ * @param {Object} data pageConfig对象
  */
 export const getComById = (id, data) => {
     if (!data) {

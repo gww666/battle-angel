@@ -26,7 +26,8 @@ export default {
         //当前选中的项目id
         currentProjectId: "89",
         currentPageId: "t3",
-        pageConfig: {}
+        pageConfig: {},
+        boxComId: ""
     },
     getters: {
         boxComponentList: state => {
@@ -90,6 +91,10 @@ export default {
         },
         setPageConfig(state, config) {
             state.pageConfig = config;
+        },
+        //设置正在执行添加组件操作的boxComId
+        setBoxComId(state, id) {
+            state.boxComId = id;
         }
     },
     actions: {

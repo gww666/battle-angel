@@ -1,7 +1,7 @@
 <template>
-    <div class="com-box">
+    <div class="com-box" :style="mStyle">
         <component 
-            v-for="(item, index) in componentList" 
+            v-for="(item, index) in _componentList" 
             :is="item.type" :key="index + '' + item.type"
             :componentId="item.id"
             :data-baid="item.id"
@@ -11,23 +11,16 @@
     </div>
 </template>
 <script>
-import base from "./import";
+import _import from "./import";
+import base from "./base";
 import {getComById} from "../../../util/setConfig";
 export default {
-    mixins: [base],
+    mixins: [base, _import],
     inject: ["componentId", "config"],
-    data() {
-        return {
-
-        }
-    },
     computed: {
-        componentList() {
-            // console.log("box-config", this.config);
-            // let com = this.$store.state.pageConfig["t3"].componentList.find(item => item.id === this.componentId);
+        _componentList() {
             let com = getComById(this.componentId);
             console.log("box-list", com.config.componentList);
-            
             return com.config.componentList ? com.config.componentList : []
         }
     }
@@ -41,7 +34,8 @@ export default {
     justify-content: space-between;
     box-sizing: border-box;
     width: 100%;
-    min-height: 20px;
+    height: 200px;
+    overflow: hidden;
 }
 </style>
 

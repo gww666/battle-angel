@@ -24,6 +24,10 @@ export default class List extends Vue {
         return this.$store.state.gw.currentPageId;
     }
 
+    get boxComId() {
+        return this.$store.state.gw.boxComId;
+    }
+
     onChange(group, component) {
         component.group = group;
         // let arr = [].concat(needImportComponentList);
@@ -70,9 +74,11 @@ export default class List extends Vue {
             type: "addComponent",
             data: {
                 component: item,
-                pageId: this.currentPageId
+                pageId: this.currentPageId,
+                boxComId: this.boxComId
             }
         });
+        this.$store.commit("gw/setBoxComId", "");
         //
     }
     /**

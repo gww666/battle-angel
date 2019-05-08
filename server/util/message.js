@@ -16,14 +16,14 @@ const events = (type) => {
             window.location.href = url;
         },
         addComponent(data) {
-            let {component, pageId} = data;
+            let {component, pageId, boxComId} = data;
             store.commit("setCurrentPageId", pageId);
-            store.commit("addComponentToList", {pageId, comId: component.id, component});
+            store.commit("addComponentToList", {pageId, component, boxComId});
             //顺便初始化组建的拖拽等事件
             //nextTick
             setTimeout(() => {
                 initDrag();
-            }, 0);   
+            }, 17);   
         },
         // 删除组件
         deleteThisComponent(data) {
@@ -119,13 +119,6 @@ const events = (type) => {
             }
             //保存到vuex中
             store.commit("setPageConfig", pageConfig);
-            //回传父页面，调用compiler接口
-            // postMessage({
-            //     type: cb,
-            //     data: {
-            //         componentList
-            //     }
-            // });
         }
     }
     if (_event[type]) {

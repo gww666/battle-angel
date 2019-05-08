@@ -28,8 +28,6 @@ export default class Edit extends Vue {
     }
     //组件支持编辑的属性列表
     get componentPropsList() {
-        // console.log("componentPropsList", this.$store.state.gw.componentProps[this.editId]);
-        
         return this.$store.state.gw.componentProps[this.editId] || [];
     }
     //根据属性列表展示组件
@@ -40,19 +38,17 @@ export default class Edit extends Vue {
         .map(item => {
             return this.formElRender(item);
         });
-        arr.unshift(
-            <Select id="parent" label="父容器" 
-                values={this.boxComponentList} 
-                defaultValue="page" 
-                change={this.onComParentChange} />
-        );
+        // arr.unshift(
+        //     <Select id="parent" label="父容器" 
+        //         values={this.boxComponentList} 
+        //         defaultValue="page" 
+        //         change={this.onComParentChange} />
+        // );
         return arr;
     }
     //获得当前页面的component类别为box的
     get boxComponentList() {
         //默认追加一个节点，代表根页面
-        // console.log("boxComponentList", this.$store.getters["gw/boxComponentList"]);
-        
         return [{
             key: "page",
             value: "page"
@@ -122,6 +118,10 @@ export default class Edit extends Vue {
                     left: "50%",
                     transform: "translateX(-50%)"
                 });
+            },
+            //向自由容器中添加组件
+            addComToBox: () => {
+                this.$store.commit("gw/setBoxComId", comId);
             }
         };
         if (_event[propType]) {
@@ -138,10 +138,12 @@ export default class Edit extends Vue {
                 return <Input label={item.prop} id={item.prop} />;
             case "button":
                 return (
-                    <a-button type="primary"
-                        onClick={this.handleFormBtnEvent.bind(this, item.prop)}>
-                        {item.title}
-                    </a-button>
+                    <div>
+                        <a-button type="primary"
+                            onClick={this.handleFormBtnEvent.bind(this, item.prop)}>
+                            {item.title}
+                        </a-button>
+                    </div>
                 );
             case "select":
                 return <Select id={item.prop} label={item.prop} values={item.values}></Select>;
@@ -195,6 +197,7 @@ export default class Edit extends Vue {
                     </a-button> :
                     <div></div>
                 }
+                <div class="edit-add-com-cover"></div>
             </div>
         )
     }
