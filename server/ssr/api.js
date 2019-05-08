@@ -6,8 +6,10 @@ const newFile = require("./newFile");
 
 const { 
     getKitsList,
-    getReadyKits
-} = require('./qxz')
+    getReadyKits,
+    getProjectsList,
+    getProjectPages
+} = require('./qxz');
 const {
     getProps
 } = require("./gw");
@@ -29,4 +31,8 @@ router.get("/newFile", newFile);
 router.get('/getKitsList', getKitsList);
 // 获取可用的组件的接口
 router.get('/getReadyKits', getReadyKits);
+// 获取项目列表
+router.get('/getProjectsList', getProjectsList);
+// 获取项目页面列表
+router.get('/getProjectPages', getProjectPages);
 module.exports = router;

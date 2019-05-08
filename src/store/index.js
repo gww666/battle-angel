@@ -4,6 +4,7 @@ Vue.use(Vuex);
 import axios from "axios";
 import {COMPILER} from "../config/api";
 import gw from "./modules/gw";
+import qxz from "./modules/qxz";
 export default new Vuex.Store({
     state: {
         count: 1,
@@ -40,7 +41,8 @@ export default new Vuex.Store({
         }
     },
     modules: {
-        gw
+        gw,
+        qxz
     }
 
 });
