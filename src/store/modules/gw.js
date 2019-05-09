@@ -116,14 +116,23 @@ export default {
             commit("setComponentProps", {list: data, id: params.id});
         },
         async getPagePropsList({state, commit}, params) {
-            if (state.pageProps["page"]) return;
-            let test = [
-                {
-                    prop: "backgroundColor",
-                    title: "背景颜色"
-                }
-            ]
-            commit("setPageProps", {list: test, id: "page"});
+            let {pageId} = params;
+            if (state.pageProps[pageId]) return;
+            // let test = [
+            //     {
+            //         prop: "backgroundColor",
+            //         title: "背景颜色"
+            //     }
+            // ]
+            let options = {
+                url: GET_PROPS,
+                params
+            }
+            let data = await axios(options);
+            data = handleData(data);
+            commit("setPageProps", {list: data, id: pageId});
+            console.log("setPageProps存储完毕");
+            
         },
         //下载接口
         async downloadPage({commit, state}, params = {}) {

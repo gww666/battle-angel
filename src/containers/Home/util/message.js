@@ -63,6 +63,12 @@ const events = (type) => {
                 PSEvent.trigger("showComponentConfig", data.config);
             }, 17);
         },
+        //更新页面配置项
+        updatePageProps(data) {
+            setTimeout(() => {
+                PSEvent.trigger("showPageConfig", data.config);
+            }, 17);
+        },
         async replyChangeComParent(data) {
             let {componentList} = data;
             await store.dispatch("getIframeSrc", {
