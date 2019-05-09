@@ -3,6 +3,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import {postMessage} from "../../util";
 import Select from "../form/select";
+import axios from 'axios';
 @Component
 export default class ProjectSelect extends Vue {
     get currentProjectId() {
@@ -25,11 +26,20 @@ export default class ProjectSelect extends Vue {
     }
 
     //处理切换项目的方法
-    handleProjectChange(projectId) {
+    async handleProjectChange(projectId) {
         console.log(projectId);
         this.$store.commit("gw/setCurrentProjectId", projectId);
         //获取页面列表
         this.$store.dispatch("qxz/requestPagesList", projectId);
+        let options = {
+            method: "GET",
+            url: "/api/getProjectConf",
+            params: {
+                projectId
+            }
+        };
+        let res = await axios(options);
+        console.log(res, 'resssss')
     }
     render() {
         return (

@@ -8,7 +8,8 @@ const {
     getKitsList,
     getReadyKits,
     getProjectsList,
-    getProjectPages
+    getProjectPages,
+    getProjectConf
 } = require('./qxz');
 const {
     getProps
@@ -35,4 +36,6 @@ router.get('/getReadyKits', getReadyKits);
 router.get('/getProjectsList', getProjectsList);
 // 获取项目页面列表
 router.get('/getProjectPages', getProjectPages);
+// 获取项目配置
+router.get('/getProjectConf', getProjectConf);
 module.exports = router;

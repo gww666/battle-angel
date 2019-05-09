@@ -42,7 +42,7 @@ const _copy = (scanPath, distPath) => {
 }
 
 //生成路由导入文件
-const generateRouter = (projectId, pageId) => {
+const generateRouter = (projectId, pageId, isMainPage) => {
     let projectDirPath = resolve(`../project/${projectId}`);
     let importJSFilePath = path.join(projectDirPath, "routers/import.js");
     let code = fs.readFileSync(importJSFilePath);
@@ -56,6 +56,23 @@ const generateRouter = (projectId, pageId) => {
             //拿到它的declaration，这里是一个ArrayExpression
             //拿到它的elements，向里面追加一个路由节点
             //路由节点是一个对象，我们这里通过ObjectExpression构建
+
+            if(isMainPage === '1') {
+                // 如果已有redirect，删掉
+                for(let i = 0;i < item.declaration.elements.length;i++) {
+                    if(item.declaration.elements[0].properties[1].key.name === "redirect") {
+                        item.declaration.elements.splice(i, 1);
+                        i--;
+                    }
+                }
+                // 设置路由/重定向
+                item.declaration.elements.unshift(
+                    objectExpression([
+                        property("init", identifier("path"), literal(`/`)),
+                        property("init", identifier("redirect"), literal(`/${pageId}`)),
+                    ])
+                );
+            }
             item.declaration.elements.push(
                 objectExpression([
                     //定义path属性
@@ -90,7 +107,7 @@ const handler = {
         );
     },
     //新建页面
-    page({projectId, pageId, layout}) {
+    page({projectId, pageId, layout, isMainPage}) {
         let pageRootPath = resolve(`../project/${projectId}/containers`);
         let pageDirPath = path.join(pageRootPath, pageId);
         fs.mkdirSync(pageDirPath);
@@ -100,14 +117,14 @@ const handler = {
             path.join(pageDirPath, `index.vue`)
         );
         //生成路由文件
-        generateRouter(projectId, pageId);
+        generateRouter(projectId, pageId, isMainPage);
     }
 }
 
 module.exports = (ctx) => {
     console.log(ctx.query);
-    
-    let {type, projectId, pageId, layout} = ctx.query;
-    handler[type]({projectId, pageId, layout});
+    // isMainPage：是否设置为项目主页，是:"1"，否:"0"
+    let {type, projectId, pageId, layout, isMainPage} = ctx.query;
+    handler[type]({projectId, pageId, layout, isMainPage});
     ctx.body = new SucModel([], "创建成功");
 }
