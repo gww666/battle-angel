@@ -36,6 +36,34 @@ export const getComById = (id, data) => {
         }
     }
 }
+
+export const deleteComById = (id) => {
+    let data = JSON.parse(JSON.stringify(store.state.pageConfig));
+    let pageId = store.state.currentPageId;
+    let index = 0;
+    
+    for (let item of data[pageId].componentList) {
+        //判断该组件是否是页面上的
+        //先找页面
+        if (item.id === id) {
+            data[pageId].componentList.splice(index, 1);
+            break;
+        } else if (item.group === "box") {
+            //遍历该自由容器的组件列表
+            let index2 = 0;
+            for (let item2 of item.config.componentList) {
+                if (item2.id === id) {
+                    item.config.componentList.splice(index2, 1);
+                    break;
+                }
+                index2++;
+            }
+        }
+        index++;
+    }
+    store.commit("setPageConfig", data);
+}
+
 //主要是把元素的样式值填充到config对象里
 export const mapComputedStyle = (el, config) => {
     //遍历config
