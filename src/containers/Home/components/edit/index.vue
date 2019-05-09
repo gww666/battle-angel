@@ -25,7 +25,7 @@ export default class Edit extends Vue {
     }
     //页面支持编辑的属性列表
     get pagePropsList() {
-        return this.$store.state.gw.pageProps[this.editId] || [];
+        return this.$store.state.gw.pageProps[this.currentPageId] || [];
     }
     //组件支持编辑的属性列表
     get componentPropsList() {
@@ -74,7 +74,7 @@ export default class Edit extends Vue {
         let data = {
             type: this.tabValue === "1" ? "changePageProps" : "changeComponentProps",
             data: {
-                id: this.editId,
+                id: this.tabValue === "1" ? this.currentPageId : this.editId,
                 config: {
                     ...values
                 }
@@ -87,7 +87,9 @@ export default class Edit extends Vue {
         // this.tabValue = e.target.value;
         this.$store.commit("gw/setEditActiveTab", e.target.value);
         if (e.target.value === "1") {
-            this.$store.commit("gw/setEditId", "page");
+            this.$store.commit("gw/setEditId", this.currentPageId);
+            //从服务端请求页面支持的props配置项
+            this.$store.dispatch("gw/getPagePropsList", {pageId: this.currentPageId})
         }
     }
     //切换组件的父组件
@@ -211,6 +213,11 @@ export default class Edit extends Vue {
         window.PSEvent.listen("showComponentConfig", (config) => {
             // console.log("config", config);
             this.$refs.comForm.setValues(config);
+        });
+        window.PSEvent.remove("showPageConfig");
+        window.PSEvent.listen("showPageConfig", (config) => {
+            console.log("page-props-config", config);
+            this.$refs.pageForm.setValues(config);
         });
     }
     mounted() {

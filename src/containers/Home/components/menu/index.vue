@@ -36,7 +36,19 @@ export default class Menu extends Vue {
             pageId: this.currentPageId
         });
         //请求页面配置
-        this.$store.dispatch("gw/getPagePropsList", {});
+        await this.$store.dispatch("gw/getPagePropsList", {pageId: this.currentPageId});
+        //从iframe中获取pageProps的既存值
+        //这里之所以加一个setTimeout是为了iframe页面初始化完毕
+        setTimeout(() => {
+            postMessage({
+                type: "getPageProps",
+                data: {
+                    cb: "updatePageProps",
+                    pageId: this.currentPageId
+                }
+            });
+        }, 100);
+        
     }
     async save() {
         //给iframe发消息，拿到其配置信息

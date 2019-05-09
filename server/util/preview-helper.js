@@ -68,7 +68,7 @@ export const initListenerCallback = (vm, type) => {
 export const initData = (vm, type) => {
     let id = type === "page" ? vm.pageId : vm.componentId;
     let config = type === "page" ?
-        {backgroundColor: "#fff"} :
+        (store.state.pageConfig[vm.pageId] ? store.state.pageConfig[vm.pageId].config : {}) :
         getComConfigById(id, true);
     if (config) {
         mapData(vm, config);

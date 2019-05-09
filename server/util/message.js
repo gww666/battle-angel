@@ -15,6 +15,7 @@ const events = (type) => {
             let url = data.url;
             window.location.href = url;
         },
+        //添加一个组件的事件
         addComponent(data) {
             let {component, pageId, boxComId} = data;
             store.commit("setCurrentPageId", pageId);
@@ -39,6 +40,17 @@ const events = (type) => {
             // delete data.id;
             // PSEvent.trigger(id, data);
             PSEvent.trigger(id, data.config);
+            //保存到vuex中
+            if (!store.state.pageConfig[id]) {
+                store.state.pageConfig[id] = {
+                    config: {},
+                    componentList: []
+                }
+            }
+            store.state.pageConfig[id].config = {
+                ...store.state.pageConfig[id].config,
+                ...data.config
+            }
         },
         //更改组件配置
         changeComponentProps(data) {
@@ -119,7 +131,18 @@ const events = (type) => {
             }
             //保存到vuex中
             store.commit("setPageConfig", pageConfig);
+        },
+        // 获取页面的props既存值并返回给父页面
+        getPageProps(data) {
+            let {pageId, cb} = data;
+            postMessage({
+                type: cb,
+                data: {
+                    config: store.state.pageConfig[pageId] ? store.state.pageConfig[pageId].config : {}
+                }
+            });
         }
+
     }
     if (_event[type]) {
         return _event[type];
