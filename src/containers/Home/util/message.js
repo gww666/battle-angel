@@ -21,32 +21,6 @@ const events = (type) => {
             }, 17);
             
         },
-        // 删除组件
-        deleteComponentById(data) {
-            Modal.confirm({
-                cancelText: '取消',
-                okText: '确定',
-                content: '确定删除这个组件么',
-                onOk: () => {
-                    let currentState = store.state.gw
-                    // 正在编辑这个要删除的组件
-                    if(currentState.editId === data.id) {
-                        store.commit("gw/setEditId", "")
-                    }
-                    // 删除componentProps里面的对应组件
-                    Object.keys(currentState.componentProps).forEach(ele => {
-                        if(ele === data.id) {
-                            store.commit("gw/deleteAComponentProps", ele)
-                        }
-                    })
-                    // 发个消息给iframe,执行删除
-                    postMessage({
-                        type: "deleteThisComponent",
-                        data
-                    });
-                }
-            })
-        },
         //调用save接口
         async savePageConfig(data) {
             store.dispatch("gw/savePageConfig", {

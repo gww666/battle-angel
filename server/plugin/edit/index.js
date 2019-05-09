@@ -1,6 +1,7 @@
 import editBtn from "./css-modules/edit-button";
 import styleLoader from "./css-modules";
-import {getComConfigById} from "../../util/setConfig";
+import {getComConfigById, deleteComById} from "../../util/setConfig";
+import { Modal } from "ant-design-vue";
 import store from "../../store";
 // import {getClass} from "../../utils/gw/utils";
 class Edit {
@@ -116,19 +117,23 @@ class Edit {
             // }
             event.stopPropagation();
             console.log("点击删除按钮按钮", id, group);
-            let data = {
-                type: "deleteComponentById",
-                data: {
-                    id,
-                    group
+            Modal.confirm({
+                cancelText: "取消",
+                okText: "确定",
+                content: "确定删除这个组件吗？",
+                onOk: () => {
+                    deleteComById(id);
+                    //更新父页面的pageConfig
+                    let data = {
+                        type: "returnPageConfig",
+                        data: {
+                            config: store.state.pageConfig
+                        }
+                    }
+                    window.parent.postMessage(data, "*");
                 }
-            }
-            // let parentNode = el.parentNode;
-            //告诉父页面要删除的组件信息
-            window.parent.postMessage(data, "*");
-            // let part = getPart(parentNode);
-            // console.log("parentNode", parentNode, part);
-            // del({position: index, part});
+            });
+            
         }
     }
 }
