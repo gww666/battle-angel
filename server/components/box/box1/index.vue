@@ -12,7 +12,7 @@
 </template>
 <script>
 import _import from "./import";
-import base from "./base";
+import base from "../base";
 import {getComById} from "../../../util/setConfig";
 export default {
     mixins: [base, _import],

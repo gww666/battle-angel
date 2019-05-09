@@ -60,39 +60,6 @@ const initFilehelper = () => {
         }
     `;
 }
-const generateComponentsForBoxCom = ({projectId, pageId, componentList}) => {
-    let pageDirPath = resolve(`../project/${projectId}`);
-    //import.js文件的路径地址
-    let importJSFilePath = path.join(pageDirPath, "components/box/box1/import.js");
-    //找到所有的盒子组件
-    let boxComponents = [];
-    let getBoxComponents = (_componentList) => {
-        _componentList.forEach(item => {
-            if (item.type === "box") {
-                boxComponents.push(item);
-                //同时遍历该box组件下面的componentList
-                getBoxComponents(item.componentList);
-            }
-        });
-    }
-    getBoxComponents(componentList);
-    let temp = {};
-    let importCode = [];
-    let componentsName = "";
-    boxComponents.forEach(box => {
-        box.componentList.forEach(item => {
-            if (!temp[item.type]) {
-                temp[item.type] = 1;
-                //还未注册过
-                importCode.push(`import ${item.type} from "../../../containers/${pageId}/components/${item.group}/${item.type}";`);
-                componentsName += `${item.type},`;
-            }
-        });
-    });
-    let code = `${importCode.join("")}export default {components: {${componentsName}}}`;
-    //写入import.js
-    fs.writeFileSync(importJSFilePath, code);
-}
 const generateComponentsForBoxCom2 = ({projectId, pageId, componentList}) => {
     let pageDirPath = resolve(`../project/${projectId}`);
     //import.js文件的路径地址
@@ -139,11 +106,11 @@ const generateComponents = async ({projectId, pageId, componentList}) => {
         let initFilePath = path.join(compoentItemDirPath, "private.init.js");
         fs.writeFileSync(indexFilePath, indexFilehelper(item.group, item.type));
         fs.writeFileSync(initFilePath, initFilehelper());
-        if (item.group !== "box") {
+        // if (item.group !== "box") {
             //import语句
             importCode.push(`import ${item.type} from "./components/${item.group}/${item.type}";`);
             componentsName += `${item.type},`;
-        }
+        // }
         
     });
     let code = `${importCode.join("")}export default {data() {return {pageId: "${pageId}"}},components: {${componentsName}}}`;

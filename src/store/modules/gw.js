@@ -27,7 +27,10 @@ export default {
         currentProjectId: "89",
         currentPageId: "t3",
         pageConfig: {},
-        boxComId: ""
+        //如果该值存在，代表将要向这个id的自由容器中追加一个组件
+        boxComId: "",
+        //向自由容器中追加组件时的提示遮罩框显示状态
+        add2BoxComCoverVisible: false
     },
     getters: {
         boxComponentList: state => {
@@ -95,6 +98,9 @@ export default {
         //设置正在执行添加组件操作的boxComId
         setBoxComId(state, id) {
             state.boxComId = id;
+        },
+        setAdd2BoxComCoverVisible(state, visible) {
+            state.add2BoxComCoverVisible = visible;
         }
     },
     actions: {

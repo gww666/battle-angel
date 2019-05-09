@@ -8,6 +8,7 @@ import Input from "../form/input";
 import Select from "../form/select";
 import Form from "../form";
 import {Button, Radio} from "ant-design-vue";
+import Cover from "./cover";
 Vue.use(Radio);
 Vue.use(Button);
 
@@ -38,12 +39,6 @@ export default class Edit extends Vue {
         .map(item => {
             return this.formElRender(item);
         });
-        // arr.unshift(
-        //     <Select id="parent" label="父容器" 
-        //         values={this.boxComponentList} 
-        //         defaultValue="page" 
-        //         change={this.onComParentChange} />
-        // );
         return arr;
     }
     //获得当前页面的component类别为box的
@@ -62,6 +57,10 @@ export default class Edit extends Vue {
     get currentPageId() {
         return this.$store.state.gw.currentPageId;
     }
+    get add2BoxComCoverVisible() {
+        return this.$store.state.gw.add2BoxComCoverVisible;
+    }
+
     getFormInstance() {
         return this.tabValue === "1" ? 
             this.$refs.pageForm : 
@@ -122,6 +121,10 @@ export default class Edit extends Vue {
             //向自由容器中添加组件
             addComToBox: () => {
                 this.$store.commit("gw/setBoxComId", comId);
+                //追加到body中
+                document.body.appendChild(document.querySelector(".edit-box-com-cover"));
+                //显示遮罩
+                this.$store.commit("gw/setAdd2BoxComCoverVisible", true);
             }
         };
         if (_event[propType]) {
@@ -197,7 +200,7 @@ export default class Edit extends Vue {
                     </a-button> :
                     <div></div>
                 }
-                <div class="edit-add-com-cover"></div>
+                <Cover visible={this.add2BoxComCoverVisible} />
             </div>
         )
     }

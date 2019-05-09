@@ -90,6 +90,7 @@ export default class Menu extends Vue {
     // align-items: center;
     justify-content: space-between;
     background-color: #fafafa;
+    height: 45px;
 
     .left {
         display: flex;

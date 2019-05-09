@@ -78,8 +78,10 @@ export default class List extends Vue {
                 boxComId: this.boxComId
             }
         });
+        //置空自由容器的id
         this.$store.commit("gw/setBoxComId", "");
-        //
+        //隐藏提示遮罩
+        this.$store.commit("gw/setAdd2BoxComCoverVisible", false);
     }
     /**
      * 获取列表
@@ -108,9 +110,7 @@ export default class List extends Vue {
     render() {
         return (
             <div class="component-list-box">
-                <div class="btn-box">
-                    <a-button onClick={this._import} size="small">导入</a-button>
-                </div>
+                <div class="btn-box"></div>
                 <a-collapse activeKey={this.activeKey}>
                     {
                         this.componentsList.map((item, index) => {
@@ -146,16 +146,16 @@ export default class List extends Vue {
 <style scoped lang="scss">
 .component-list-box {
     height: 100%;
+    width: 200px;
+    display: flex;
+    flex-flow: column nowrap;
 
     .btn-box {
-        background: #fafafa;
-        padding: 10px;
-        display: flex;
-        justify-content: flex-end;
+        height: 45px;
     }
 
     .ant-collapse {
-        height: 100%;
+        flex: 1;
     }
     .component-item {
         display: flex;
