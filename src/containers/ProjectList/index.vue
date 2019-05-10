@@ -3,6 +3,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Card } from 'ant-design-vue';
 import axios from "axios";
+import NewFile from "../Home/components/menu/new-file";
 Vue.use(Card)
 @Component({
     computed: {
@@ -16,6 +17,7 @@ export default class ProjectsList extends Vue {
         return (
             <div class="project-page">
                 <p class="title">已有项目</p>
+                <NewFile />
                 <div class="project-box">
                     {
                         this.projectsList.map((item, index) => {
@@ -44,8 +46,9 @@ export default class ProjectsList extends Vue {
     // 点击卡片
     handleCardClick(item) {
         this.$store.commit("gw/setCurrentProjectId", item.name);
-        //获取项目列表
+        //获取页面列表
         this.$store.dispatch("qxz/requestPagesList", item.name);
+        
         this.$router.push({name: "home"});
     }
     mounted() {

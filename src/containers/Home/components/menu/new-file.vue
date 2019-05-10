@@ -19,6 +19,10 @@ export default class NewFile extends Vue {
         {key: "flex布局", value: "flex"},
         {key: "绝对定位布局", value: "absolute"},
     ];
+    isMainValues = [
+        {key: "是", value: '1'},
+        {key: "否", value: '0'}
+    ]
     get currentProjectId() {
         return this.$store.state.gw.currentProjectId;
     }
@@ -51,7 +55,7 @@ export default class NewFile extends Vue {
         this.newFileModalVisible = false;
         if (values.type === "page") {
             //获取页面列表
-            this.$store.dispatch("qxz/requestPagesList", this.currentProjectId);
+            this.$store.dispatch("qxz/requestPagesList", this.currentProjectId, 'noCompile');
         } else {
             //获取项目列表
             this.$store.dispatch("qxz/requestProjectsList");
@@ -86,6 +90,14 @@ export default class NewFile extends Vue {
                                 id="layout"
                                 label="布局类型" 
                                 values={this.layoutValues}>
+                            </Select> :
+                            ""
+                        }
+                        {this.newFileType === "page" ? 
+                            <Select 
+                                id="isMainPage"
+                                label="是否设置为项目主页" 
+                                values={this.isMainValues}>
                             </Select> :
                             ""
                         }

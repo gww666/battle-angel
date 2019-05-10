@@ -79,7 +79,7 @@ const generateComponentsForBoxCom2 = ({projectId, pageId, componentList}) => {
 const generateComponents = async ({projectId, pageId, componentList}) => {
     let pageRootPath = resolve(`../project/${projectId}/containers`);
     let pageDirPath = path.join(pageRootPath, pageId);
-    //创建components文件夹
+    //创建components文件夹（基础组件文件夹）
     let componentsDirPath = path.join(pageDirPath, "components");
     //先删除componentsDirPath
     await removeDirectory(componentsDirPath);
@@ -125,8 +125,10 @@ const handle = async (ctx, next) => {
     let projectDirPath = path.resolve(__dirname, `../project/${projectId}`);
     // console.log("接收到参数", componentList);
     //按需引入组件
-    generateComponents({componentList, projectId, pageId});
-    generateComponentsForBoxCom2({componentList, projectId, pageId});
+    if (componentList) {
+        generateComponents({componentList, projectId, pageId});
+        generateComponentsForBoxCom2({componentList, projectId, pageId});
+    }
     // generateRouter();
     //删除完毕，开始编译
     await removeDirectory(path.join(projectDirPath, "client-dist/static"));

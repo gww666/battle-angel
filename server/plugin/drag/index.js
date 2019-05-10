@@ -26,7 +26,7 @@ class Drag {
         this.addEventListener();
     }
     init() {
-        this.dom.style.position = "absolute";
+        
 
         //lifecycle方法
         if (this.options.init) {
@@ -38,6 +38,7 @@ class Drag {
         dom.oncontextmenu = () => { return false };
         //鼠标左键按下
         dom.onmousedown = (e) => {
+            dom.style.position = "absolute";
             e.stopPropagation();
             // console.log("开始拖拽", dom);
             //如果存在translateX,置为none，防止对拖拽产生影响
