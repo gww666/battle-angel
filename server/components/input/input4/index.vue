@@ -71,11 +71,11 @@ export default {
         height: 100%;
         // background-color: rgba(0, 0, 0, 0);
         outline: none;
-        border: 1px solid #fff;
+        border: 0;
         text-align: center;
         color: #fff;
         background-color: #f1f1f1f1;
-        border-radius: 0.2rem;
+        // border-radius: 0.2rem;
     }
     .clear {
         position: absolute;

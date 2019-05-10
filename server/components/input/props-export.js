@@ -19,6 +19,14 @@ module.exports = base.concat([
         prop: "backgroundColor"
     },
     {
+        title: "文字颜色",
+        prop: "color"
+    },
+    {
+        title: "边框",
+        prop: "border"
+    },
+    {
         title: "边框圆角弧度",
         prop: "borderRadius"
     },

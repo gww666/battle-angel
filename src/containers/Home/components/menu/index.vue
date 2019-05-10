@@ -47,7 +47,7 @@ export default class Menu extends Vue {
                     pageId: this.currentPageId
                 }
             });
-        }, 100);
+        }, 150);
         
     }
     async save() {
