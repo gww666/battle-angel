@@ -45,6 +45,7 @@ const _copy = (scanPath, distPath) => {
 const generateRouter = (projectId, pageId, isMainPage) => {
     let projectDirPath = resolve(`../project/${projectId}`);
     let importJSFilePath = path.join(projectDirPath, "routers/import.js");
+    let comImportJSFilePath = path.join(projectDirPath, `/containers/${pageId}/import.js`);
     let code = fs.readFileSync(importJSFilePath);
     //通过ast解析语法，并添加一个路由规则
     //首先拿到ast
@@ -93,7 +94,10 @@ const generateRouter = (projectId, pageId, isMainPage) => {
     ));
     //将改造完之后的ast转为字符串
     code = recast.print(ast).code;
+    // 添加import.js
+    let importJSCode = `export default {data() {return {pageId: "${pageId}"}},components: {}}`;
     fs.writeFileSync(importJSFilePath, code);
+    fs.writeFileSync(comImportJSFilePath, importJSCode);
 }
 
 const handler = {

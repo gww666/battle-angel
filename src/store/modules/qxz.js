@@ -4,6 +4,7 @@ import {
     GET_PAGE_CONF
 } from "../../config/api";
 import axios from "axios";
+import {postMessage} from "../../containers/Home/util";
 const handleData = (data) => {
     if (data.status === 200 && data.data.returnCode === 1) {
         return data.data.data;
@@ -66,6 +67,7 @@ export default {
             if(noCompile || !homePage) {
                 return;
             };
+            
             // 修改选中的页面
             commit("gw/setCurrentPageId", homePage.name, {root: true});
             commit("setPagesList", data);
@@ -80,23 +82,24 @@ export default {
                 url: GET_PAGE_CONF,
                 params: {
                     projectId: currentProjectId,
-                    pageId: currentPageId
+                    pageId: currentPageId   
                 }
             };
             let data = await axios(options);
             data = handleData(data);
             // 没组件，不编译
             if(!data.length) {
-                return
+                commit("gw/setNeedImportComponentList", [], {root: true});
+            }else {
+                // 设置要引入的组件列表
+                commit("gw/setNeedImportComponentList", data, {root: true});
             };
-            // 设置要引入的组件列表
-            commit("gw/setNeedImportComponentList", data, {root: true});
             // 编译
             await dispatch("getIframeSrc", {
-                componentList: data,
                 projectId: currentProjectId,
                 pageId: currentPageId
             }, {root: true});
+            
             //请求页面配置
             await dispatch("gw/getPagePropsList", {pageId: currentPageId}, {root: true});
             //这里之所以加一个setTimeout是为了iframe页面初始化完毕

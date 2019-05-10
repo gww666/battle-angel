@@ -46,6 +46,14 @@ export default class List extends Vue {
     //处理页面切换的逻辑
     handleChange(value) {
         this.$store.commit("gw/setCurrentPageId", value);
+        //通知iframe更改页面
+        postMessage({
+            type: "changeCurrentPageId",
+            data: {
+                pageId: value,
+            }
+        });
+        this.$store.dispatch("qxz/requestPageConf");
     }
     render() {
         // console.log(this.$store);

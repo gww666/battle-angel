@@ -141,8 +141,12 @@ const events = (type) => {
                     config: store.state.pageConfig[pageId] ? store.state.pageConfig[pageId].config : {}
                 }
             });
+        },
+        // 切换页面
+        changeCurrentPageId(data) {
+            let { pageId } = data;
+            store.commit("setCurrentPageId", pageId);
         }
-
     }
     if (_event[type]) {
         return _event[type];
