@@ -57,7 +57,7 @@ export default class List extends Vue {
                         <span><a-icon type="arrow-left" /></span>
                         <span><a-icon type="arrow-right" /></span>
                         <span onClick={this.reload} title="刷新"><a-icon type="reload" /></span>
-                        <a-select defaultValue={this.currentPageId} style="flex: 1;" onChange={this.handleChange}>
+                        <a-select value={this.currentPageId} style="flex: 1;" onChange={this.handleChange}>
                             {
                                 this.pageList.map(item => {
                                     return (

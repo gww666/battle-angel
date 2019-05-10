@@ -24,8 +24,8 @@ export default {
         //是否正在下载
         isDownloading: false,
         //当前选中的项目id
-        currentProjectId: "89",
-        currentPageId: "t3",
+        currentProjectId: "",
+        currentPageId: "",
         pageConfig: {},
         //如果该值存在，代表将要向这个id的自由容器中追加一个组件
         boxComId: "",
@@ -116,23 +116,14 @@ export default {
             commit("setComponentProps", {list: data, id: params.id});
         },
         async getPagePropsList({state, commit}, params) {
-            let {pageId} = params;
-            if (state.pageProps[pageId]) return;
-            // let test = [
-            //     {
-            //         prop: "backgroundColor",
-            //         title: "背景颜色"
-            //     }
-            // ]
-            let options = {
-                url: GET_PROPS,
-                params
-            }
-            let data = await axios(options);
-            data = handleData(data);
-            commit("setPageProps", {list: data, id: pageId});
-            console.log("setPageProps存储完毕");
-            
+            if (state.pageProps["page"]) return;
+            let test = [
+                {
+                    prop: "backgroundColor",
+                    title: "背景颜色"
+                }
+            ]
+            commit("setPageProps", {list: test, id: "page"});
         },
         //下载接口
         async downloadPage({commit, state}, params = {}) {

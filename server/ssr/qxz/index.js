@@ -2,6 +2,15 @@ const fs = require("fs");
 const path = require("path");
 const { SucModel, ErrModel } = require("../../util/resModel");
 const excludeList = require("../../config/excluded-components");
+const recast = require('recast');
+const {
+    identifier, 
+    importDefaultSpecifier, 
+    importDeclaration, 
+    literal,
+    objectExpression,
+    property
+} = recast.types.builders;
 const Name = (name) => {
     let res = name.split(".");
     res.splice(res.length - 1, 1);
@@ -106,29 +115,37 @@ const getProjectPages = async (ctx, next) => {
     try{
         let projectId = parmas.projectId;
         let projectsList = fs.readdirSync(path.resolve(__dirname, `../../project/${projectId}/containers`));
-        
-        // 读取项目的route
-        let projectRoute = fs.readFileSync(path.resolve(__dirname, `../../project/${projectId}/routers/import.js`), "utf-8");
-        let routesStr = JSON.stringify(projectRoute.split("export default ")[1].split(";")[0]);
-        console.log(routesStr, typeof routesStr, 'routesStr');
-        let routesArr = JSON.parse(routesStr);
-        console.log(routesArr, typeof routesArr, 'projectRoute');
 
+        // 读取项目的route
+        let projectRoute = fs.readFileSync(path.resolve(__dirname, `../../project/${projectId}/routers/import.js`));
+        let ast = recast.parse(projectRoute);
+        let body = ast.program.body;
+        let homePage;
+        for (let item of body) {
+            if(item.type === "ExportDefaultDeclaration") {
+                if(item.declaration.elements[0] && item.declaration.elements[0].properties[1].key.name === "redirect") {
+                    homePage = item.declaration.elements[0].properties[1].value.value.split("/")[1]
+                }
+            }
+        };
+        
         let arr = [];
         projectsList.forEach(item => {
             if(item !== "private") {
                 arr.push({
-                    name: item
-                })
-            }
+                    name: item,
+                    isMainPage: homePage === item
+                });
+            };
         });
         ctx.body = new SucModel(arr, "获取页面列表成功");
     } catch (err) {
         console.log('errr::::', err)
         ctx.body = new ErrModel("", "获取页面列表失败");
-    }
+    };
 };
-const getProjectConf = async (ctx, next) => {
+// 获取页面已引入的组件
+const getPageConf = async (ctx, next) => {
     let parmas = ctx.query;
     try{
         let projectId = parmas.projectId;
@@ -140,19 +157,17 @@ const getProjectConf = async (ctx, next) => {
         let allKits = getKits().allKits;
         for(let i = 0;i < projectsList.length;i++) {
             if(projectsList[i] === pageId) {
-                let confs = fs.readFileSync(`${projectPath}/${projectsList[i]}/import.js`, "utf-8");
+                let isExist = fs.existsSync(`${projectPath}/${projectsList[i]}/import.js`);
+                let confs = isExist ? fs.readFileSync(`${projectPath}/${projectsList[i]}/import.js`, "utf-8") : '';
                 allKits.forEach(ele => {
-                    if(confs.includes(ele.path)) {
+                    if(confs.includes(ele.path.substr(10))) {
                         arr.push(ele);
                     }
                 })
                 break;
             }
         }
-        console.log(arr, 'project_id');
-        ctx.body = new SucModel({
-            importedKits: arr
-        }, "获取页面配置成功");
+        ctx.body = new SucModel(arr, "获取页面配置成功");
     } catch (err) {
         console.log('errrrr', err);
         ctx.body = new ErrModel("", "获取项目配置失败");
@@ -163,5 +178,5 @@ module.exports = {
     getReadyKits,
     getProjectsList,
     getProjectPages,
-    getProjectConf
+    getPageConf
 };

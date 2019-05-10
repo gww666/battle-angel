@@ -7,3 +7,4 @@ export const GET_PROPS = "/api/getProps";
 
 export const GET_PROJECTS = "/api/getProjectsList";
 export const GET_PAGES = "/api/getProjectPages";
+export const GET_PAGE_CONF = "/api/getPageConf";

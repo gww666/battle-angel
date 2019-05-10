@@ -28,6 +28,11 @@ export default class List extends Vue {
         return this.$store.state.gw.boxComId;
     }
 
+    get gwNeedImportComponentList() {
+        this.needImportComponentList = this.$store.state.gw.needImportComponentList;
+        return this.$store.state.gw.needImportComponentList;
+    }
+
     onChange(group, component) {
         component.group = group;
         // let arr = [].concat(needImportComponentList);
@@ -92,7 +97,7 @@ export default class List extends Vue {
             let list = await axios(url);
             this.componentsList = list.data.data;
         }catch (err) {
-            console.log('err: ', err)
+            console.log('err: ', err);
         }
     }
     /**
@@ -102,10 +107,32 @@ export default class List extends Vue {
         let url = "/api/getReadyKits";
         try {
             let res = await axios(url);
-            this.importedComponent = res.data.data
+            this.importedComponent = res.data.data;
         }catch(err) {
-            this.importedComponent = ''
-        }
+            this.importedComponent = '';
+        };
+    }
+    /**
+     * 勾选状态
+    */
+    isChecked(item2, key) {
+        let isChecked = false;
+        this.gwNeedImportComponentList.forEach(ele => {
+            if(ele.path === item2.path) {
+                // 展开有选中的
+                let pushed = false;
+                this.activeKey.forEach(item => {
+                    if(item === key) {
+                        pushed = true;
+                    }
+                });
+                if(!pushed) {
+                    this.activeKey.push(key);
+                }
+                isChecked = true;
+            };
+        });
+        return isChecked;
     }
     render() {
         return (
@@ -122,7 +149,7 @@ export default class List extends Vue {
                                                 return (
                                                     <div class="component-item">
                                                         <span onClick={() => this.add(item.group, item2)}>{item2.name}</span>
-                                                        <a-checkbox onChange={() => this.onChange(item.group, item2)}></a-checkbox>
+                                                        <a-checkbox checked={this.isChecked(item2, index + 1 + "")} onChange={() => this.onChange(item.group, item2)}></a-checkbox>
                                                     </div>
                                                 )
                                             })

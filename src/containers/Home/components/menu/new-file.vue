@@ -55,7 +55,7 @@ export default class NewFile extends Vue {
         this.newFileModalVisible = false;
         if (values.type === "page") {
             //获取页面列表
-            this.$store.dispatch("qxz/requestPagesList", this.currentProjectId);
+            this.$store.dispatch("qxz/requestPagesList", this.currentProjectId, 'noCompile');
         } else {
             //获取项目列表
             this.$store.dispatch("qxz/requestProjectsList");
