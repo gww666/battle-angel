@@ -1,12 +1,13 @@
 <template>
     <div class="img1-box">
         <img src="../../../public/static/images/customer.png" />
-        <span></span>
+        <span>{{text || "客户姓名"}}</span>
     </div>
 </template>
 <script>
+import Base from "../base";
 export default {
-    
+    mixins: [Base]
 }
 </script>
 <style lang="scss" scoped>
