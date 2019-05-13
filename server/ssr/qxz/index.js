@@ -123,8 +123,17 @@ const getProjectPages = async (ctx, next) => {
         let homePage;
         for (let item of body) {
             if(item.type === "ExportDefaultDeclaration") {
-                if(item.declaration.elements[0] && item.declaration.elements[0].properties[1].key.name === "redirect") {
-                    homePage = item.declaration.elements[0].properties[1].value.value.split("/")[1]
+                if(item.declaration.elements[0]) {
+                    // 默认没首页
+                    if(item.declaration.elements[0].properties[1].key.name !== "redirect") {
+                        homePage = item.declaration.elements[0].properties[1].value.name;
+                    }
+                    for(let i = 0;i < item.declaration.elements.length;i++) {
+                        if(item.declaration.elements[i].properties[1].key.name === "redirect") {
+                            homePage = item.declaration.elements[i].properties[1].value.value.split("/")[1];
+                            break;
+                        }
+                    }
                 }
             }
         };
