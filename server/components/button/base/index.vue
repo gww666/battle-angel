@@ -4,7 +4,7 @@ import Component from "vue-class-component";
 import {initListenerCallback, initData} from "../../../util/preview-helper";
 
 @Component({
-    inject: ["componentId"]
+    inject: ["componentId", "pageId"]
 })
 export default class BaseBtn extends Vue {
     mStyle = "";

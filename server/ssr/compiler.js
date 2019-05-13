@@ -46,6 +46,10 @@ const initFilehelper = () => {
                     type: String,
                     default: ""
                 },
+                pageId: {
+                    type: String,
+                    default: ""
+                },
                 config: {
                     type: Object,
                     default: () => ({})
@@ -54,6 +58,7 @@ const initFilehelper = () => {
             provide() {
                 return {
                     componentId: this.componentId,
+                    pageId: this.pageId,
                     config: this.config
                 }
             }

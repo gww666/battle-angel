@@ -66,13 +66,17 @@ export const initListenerCallback = (vm, type) => {
 }
 
 export const initData = (vm, type) => {
-    let id = type === "page" ? vm.pageId : vm.componentId;
+    // console.log("initData-vm", vm);
+    // console.log("initData-pageId", vm.pageId);
+    // let id = type === "page" ? vm.pageId : vm.componentId;
     let config = type === "page" ?
         (store.state.pageConfig[vm.pageId] ? store.state.pageConfig[vm.pageId].config : {}) :
-        getComConfigById(id, true, vm.pageId);
+        getComConfigById({
+            id: vm.componentId,
+            origin: true, 
+            pageId: vm.pageId
+        });
     if (config) {
-        console.log(id, config);
-        
         mapData(vm, config);
     }
 }
@@ -87,7 +91,7 @@ export const setPosition = (el) => {
     setComConfigById(id, {left, top, transform});
     //trigger事件
     //这一行代码的目的是为了把实时改动同步到组件实例的data上
-    window.PSEvent.trigger(id, getComConfigById(id));
+    window.PSEvent.trigger(id, getComConfigById({id}));
 }
 
 //初始化drag
@@ -102,7 +106,7 @@ export const initDrag = () => {
                 new Edit(dom)
             },
             dragStart(dom) {
-                let config = getComConfigById(dom, id);
+                let config = getComConfigById({dom, id});
                 postMessage({
                     type: "getComponentProps",
                     data: {
@@ -116,7 +120,7 @@ export const initDrag = () => {
             dragCompleted(dom) {
                 setPosition(dom);
                 // let id = dom.getAttribute("data-baid");
-                let config = getComConfigById(dom, id);
+                let config = getComConfigById({dom, id});
                 postMessage({
                     type: "updateEditComProps",
                     data: {
@@ -164,7 +168,7 @@ export const alignCenter = (comId) => {
     let screenWidth = window.innerWidth;
     let elWidth = window.getComputedStyle(el, null).width.slice(0, -2);
     //获得当前config
-    let config = getComConfigById(el, comId);
+    let config = getComConfigById({el, comId});
     config.left = (screenWidth - elWidth) / 2 + "px";
     //转为rem
     config.left = r(config.left);

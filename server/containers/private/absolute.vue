@@ -6,7 +6,8 @@
             :componentId="item.id"
             :data-baid="item.id"
             :data-bagroup="item.group"
-            :config="item.config">
+            :config="item.config"
+            :pageId="pageId">
         </component>
     </div>
 </template>

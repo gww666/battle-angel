@@ -3,7 +3,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import {initListenerCallback, initData} from "../../../util/preview-helper";
 @Component({
-    inject: ["componentId"]
+    inject: ["componentId", "pageId"]
 })
 export default class Home extends Vue {
     text = "";

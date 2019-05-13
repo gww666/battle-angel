@@ -17,8 +17,8 @@ export const getComById = (
     if (!pageId) {
         pageId = store.state.currentPageId;
     }
-    console.log("getComById-data", data);
-    console.log("getComById-pageId", pageId);
+    // console.log("getComById-data", data);
+    // console.log("getComById-pageId", pageId);
     //先找页面
     // let pageId = store.state.currentPageId;
     let com = data[pageId].componentList.find(item => item.id === id);
@@ -52,7 +52,7 @@ export const deleteComById = (id) => {
     let data = JSON.parse(JSON.stringify(store.state.pageConfig));
     let pageId = store.state.currentPageId;
     let index = 0;
-    console.log("data[pageId].componentList", data[pageId].componentList);
+    // console.log("data[pageId].componentList", data[pageId].componentList);
     
     for (let item of data[pageId].componentList) {
         //判断该组件是否是页面上的
@@ -92,6 +92,7 @@ export const mapComputedStyle = (el, config) => {
  * 根据id修改componentList里对应组件的config
  * @param {String} id 
  * @param {Object} config 
+ * @param {String} pageId 
  */
 export const setComConfigById = (id, config, pageId = store.state.currentPageId) => {
     // let list = JSON.parse(JSON.stringify(store.state.componentList));
@@ -110,12 +111,16 @@ export const setComConfigById = (id, config, pageId = store.state.currentPageId)
  * @param {Object} el 可省略
  * @param {String} id 必传
  * @param {Boolean} origin 可省略
+ * @param {String} pageId 可省略
  */
-export const getComConfigById = (el, id, origin, pageId = store.state.currentPageId) => {
+export const getComConfigById = ({
+    el, 
+    id, 
+    origin, 
+    pageId = store.state.currentPageId
+}) => {
     //处理参数
-    if (typeof el === "string") {
-        origin = id;
-        id = el;
+    if (!el) {
         el = document.querySelector(`div[data-baid="${id}"]`);
     }
     let com = getComById(id, pageId);

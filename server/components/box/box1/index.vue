@@ -6,7 +6,8 @@
             :componentId="item.id"
             :data-baid="item.id"
             :data-bagroup="item.group"
-            :config="item.config">
+            :config="item.config"
+            :pageId="pageId">
         </component>
     </div>
 </template>
@@ -16,10 +17,9 @@ import base from "../base";
 import {getComById} from "../../../util/setConfig";
 export default {
     mixins: [base, _import],
-    inject: ["componentId", "config"],
     computed: {
         _componentList() {
-            let com = getComById(this.componentId);
+            let com = getComById(this.componentId, this.pageId);
             console.log("box-list", com.config.componentList);
             return com.config.componentList ? com.config.componentList : []
         }
