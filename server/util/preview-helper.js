@@ -69,8 +69,10 @@ export const initData = (vm, type) => {
     let id = type === "page" ? vm.pageId : vm.componentId;
     let config = type === "page" ?
         (store.state.pageConfig[vm.pageId] ? store.state.pageConfig[vm.pageId].config : {}) :
-        getComConfigById(id, true);
+        getComConfigById(id, true, vm.pageId);
     if (config) {
+        console.log(id, config);
+        
         mapData(vm, config);
     }
 }

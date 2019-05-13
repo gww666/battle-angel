@@ -4,12 +4,23 @@ import store from "../store";
  * @param {String} id 要找的组件Id
  * @param {Object} data pageConfig对象
  */
-export const getComById = (id, data) => {
-    if (!data) {
+export const getComById = (
+    id, 
+    data,
+    pageId
+) => {
+    //处理参数
+    if (typeof data === "string" || typeof data === "undefined") {
+        pageId = data;
         data = JSON.parse(JSON.stringify(store.state.pageConfig));
     }
+    if (!pageId) {
+        pageId = store.state.currentPageId;
+    }
+    console.log("getComById-data", data);
+    console.log("getComById-pageId", pageId);
     //先找页面
-    let pageId = store.state.currentPageId;
+    // let pageId = store.state.currentPageId;
     let com = data[pageId].componentList.find(item => item.id === id);
     if (com) return com;
     //找到所有的盒子组件
@@ -41,6 +52,7 @@ export const deleteComById = (id) => {
     let data = JSON.parse(JSON.stringify(store.state.pageConfig));
     let pageId = store.state.currentPageId;
     let index = 0;
+    console.log("data[pageId].componentList", data[pageId].componentList);
     
     for (let item of data[pageId].componentList) {
         //判断该组件是否是页面上的
@@ -51,6 +63,7 @@ export const deleteComById = (id) => {
         } else if (item.group === "box") {
             //遍历该自由容器的组件列表
             let index2 = 0;
+            console.log("item.componentList", item.config.componentList);
             for (let item2 of item.config.componentList) {
                 if (item2.id === id) {
                     item.config.componentList.splice(index2, 1);
@@ -80,13 +93,13 @@ export const mapComputedStyle = (el, config) => {
  * @param {String} id 
  * @param {Object} config 
  */
-export const setComConfigById = (id, config) => {
+export const setComConfigById = (id, config, pageId = store.state.currentPageId) => {
     // let list = JSON.parse(JSON.stringify(store.state.componentList));
     let obj = JSON.parse(JSON.stringify(store.state.pageConfig));
     // let pageId = store.state.currentPageId;
     //先找page里
     // let com = obj[pageId].componentList.find(item => item.id === id);
-    let com = getComById(id, obj);
+    let com = getComById(id, obj, pageId);
     if (com) {
         com.config = Object.assign(com.config, config);
     } 
@@ -98,14 +111,14 @@ export const setComConfigById = (id, config) => {
  * @param {String} id 必传
  * @param {Boolean} origin 可省略
  */
-export const getComConfigById = (el, id, origin) => {
+export const getComConfigById = (el, id, origin, pageId = store.state.currentPageId) => {
     //处理参数
     if (typeof el === "string") {
         origin = id;
         id = el;
         el = document.querySelector(`div[data-baid="${id}"]`);
     }
-    let com = getComById(id);
+    let com = getComById(id, pageId);
     if (origin) {
         return com.config;
     } else {
@@ -120,8 +133,7 @@ export const getComConfigById = (el, id, origin) => {
  * 根据组件id获取其完整对象数据
  * @param {*} id 
  */
-export const getComDataById = (id) => {
-    let pageId = store.state.currentPageId;
+export const getComDataById = (id, pageId = store.state.currentPageId) => {
     let obj = JSON.parse(JSON.stringify(store.state.pageConfig));
     let com = obj[pageId].componentList.find(item => item.id === id);
     return com;
