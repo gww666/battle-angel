@@ -65,6 +65,7 @@ export default {
             });
             // 新增页面重新拉取或是没有页面
             if(noCompile || !homePage) {
+                commit("gw/setCurrentPageId", "", {root: true});
                 return;
             };
             
