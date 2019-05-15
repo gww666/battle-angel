@@ -46,6 +46,8 @@ export default class List extends Vue {
     //处理页面切换的逻辑
     handleChange(value) {
         this.$store.commit("gw/setCurrentPageId", value);
+        let newSrc = `${this.src.split('/#/')[0]}/#/${value}`;
+        this.$store.commit("setIframeSrc", newSrc);
         //通知iframe更改页面
         postMessage({
             type: "changeCurrentPageId",
@@ -53,7 +55,7 @@ export default class List extends Vue {
                 pageId: value,
             }
         });
-        this.$store.dispatch("qxz/requestPageConf");
+        // this.$store.dispatch("qxz/requestPageConf");
     }
     render() {
         // console.log(this.$store);
