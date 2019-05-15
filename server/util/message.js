@@ -93,7 +93,7 @@ const events = (type) => {
                         }
                     }
                 });
-            }
+            }   
             getBoxComponents(componentList);
             
             //代表要从盒子组件移到根页面中
@@ -146,6 +146,9 @@ const events = (type) => {
         changeCurrentPageId(data) {
             let { pageId } = data;
             store.commit("setCurrentPageId", pageId);
+            setTimeout(() => {
+                initDrag();
+            }, 0); 
         }
     }
     if (_event[type]) {

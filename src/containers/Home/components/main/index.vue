@@ -55,7 +55,7 @@ export default class List extends Vue {
                 pageId: value,
             }
         });
-        // this.$store.dispatch("qxz/requestPageConf");
+        this.$store.dispatch("qxz/requestPageConf", 'noCompile');
     }
     render() {
         // console.log(this.$store);

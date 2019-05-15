@@ -75,7 +75,7 @@ export default {
             dispatch("requestPageConf");
         },
         // 获取页面已引入的组件
-        async requestPageConf({commit, dispatch, rootState}) {
+        async requestPageConf({commit, dispatch, rootState}, noCompile) {
             let { currentPageId, currentProjectId } = rootState.gw;
             // 请求页面已引入的组件
             let options = {
@@ -95,6 +95,9 @@ export default {
                 // 设置要引入的组件列表
                 commit("gw/setNeedImportComponentList", data, {root: true});
             };
+            if(noCompile) {
+                return
+            }
             // 编译
             await dispatch("getIframeSrc", {
                 projectId: currentProjectId,
