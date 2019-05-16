@@ -1,4 +1,4 @@
-import {initDrag, px2rem} from "./util/preview-helper";
+import {px2rem} from "./util/preview-helper";
 import "./util/message.js";
 export default {
     mounted() {
@@ -7,6 +7,5 @@ export default {
         window.BA_ENV = "edit";
         //挂载成为全局api
         window.r = px2rem;
-        initDrag();
     }
 }

@@ -1,3 +1,4 @@
+import {sort} from "./help";
 //判断某个元素有无某个class
 let hasClass = (el, className) => {
     let _class = el.getAttribute("class");
@@ -84,6 +85,55 @@ class Drag {
 
     }
 
+}
+
+//赋予一个dom具备原生drag事件
+export class NativeDrag {
+    constructor(dom, options = {}) {
+        this.dom = dom;
+        this.options = Object.assign({}, options);
+        this.init();
+    }
+    init() {
+        let dom = this.dom;
+        if (!dom) return;
+        dom.setAttribute("draggable", true);
+        dom.ondragstart = e => {
+            let id = dom.getAttribute("data-baid");
+            let group = dom.getAttribute("data-bagroup");
+            let data = JSON.stringify({
+                id,
+                group
+            });
+            e.dataTransfer.setData("drag", data);
+        }
+    }
+
+}
+//赋予一个dom具备接收原生拖拽元素的事件
+export class NativeDrop {
+    constructor(dom, options = {}) {
+        this.dom = dom;
+        this.options = Object.assign({}, options);
+        this.init();
+    }
+    init() {
+        let dom = this.dom;
+        dom.ondragover = e => {
+            e.preventDefault();
+            
+        }
+        dom.ondrop = e => {
+            console.log("放置区域接收到元素");
+            let data = e.dataTransfer.getData("drag");
+            // console.log(data);
+            data = {
+                ...JSON.parse(data),
+                top: e.pageY
+            }
+            sort(data);
+        }
+    }
 }
 
 export default Drag;

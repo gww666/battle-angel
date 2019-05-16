@@ -5,7 +5,7 @@
 import StyleLoader from "../plugin/edit/css-modules";
 import {setComConfigById, getComConfigById, getComDataById} from "../util/setConfig";
 import Edit from "../plugin/edit";
-import Drag from "../plugin/drag";
+import Drag, {NativeDrag, NativeDrop} from "../plugin/drag";
 import store from "../store";
 const postMessage = (data) => {
     window.parent.postMessage(data, "*");
@@ -181,5 +181,18 @@ export const alignCenter = (comId) => {
             group,
             config,
         }
+    });
+}
+
+//为元素赋予原生拖拽事件
+export const initNativeDrag = (id) => {
+    let arr = [];
+    if (id) {
+        arr.push(document.querySelector(`div[data-baid=["${id}"]]`));
+    } else {
+        arr = Array.from(document.querySelectorAll("div[data-baid]"));
+    }
+    arr.forEach(item => {
+        new NativeDrag(item);
     });
 }

@@ -22,7 +22,7 @@ let serverDirCopyList = [
     "routers",
     "store",
     "public",
-    "components",
+    // "components",
     "containers",
     "plugin",
     "util",
@@ -39,6 +39,25 @@ const _copy = (scanPath, distPath) => {
         let _path = path.join(scanPath, item);
         copy(_path, path.join(distPath, item));
     }
+}
+
+//生成private.init.js文件
+const generateInitFile = ({projectId, pageId}) => {
+    let code = `
+        import {NativeDrop, NativeDrag} from "../../plugin/drag";
+        import {initNativeDrag} from "../../util/preview-helper";
+        export default {
+            mounted() {
+                initNativeDrag();
+                let box = document.querySelector(".${pageId}");
+                new NativeDrop(box);
+            }
+        }
+    `;
+    let projectDir = resolve(`../project/${projectId}`);
+    let pagePath = path.join(projectDir, "containers", pageId);
+    let filePath = path.join(pagePath, "private.init.js");
+    fs.writeFileSync(filePath, code);
 }
 
 //生成路由导入文件
@@ -155,6 +174,8 @@ const handler = {
             path.join(pageRootPath, `private/${layout}.vue`),
             path.join(pageDirPath, `index.vue`)
         );
+        //生成private.init.js文件
+        generateInitFile({projectId, pageId});
         //生成路由文件
         generateRouter(projectId, pageId, isMainPage);
     }
