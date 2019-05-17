@@ -141,8 +141,26 @@ const getProjectPages = async (ctx, next) => {
         let arr = [];
         projectsList.forEach(item => {
             if(item !== "private") {
+                // 获取pageType
+                let projectImportJs = fs.readFileSync(path.resolve(__dirname, `../../project/${projectId}/containers/${item}/import.js`));
+                let pageAst = recast.parse(projectImportJs);
+                let pageBody = pageAst.program.body;
+                let pageType = "";
+                for (let item of pageBody) {
+                    if(item.type === "ExportDefaultDeclaration") {
+                        if(item.declaration.properties[0].key.name === "data") {
+                            let property = item.declaration.properties[0].value.body.body[0].argument.properties;
+                            property.forEach(ele => {
+                                if(ele.key.name === "pageType") {
+                                    pageType = ele.value.value;
+                                };
+                            });
+                        };
+                    };
+                };
                 arr.push({
                     name: item,
+                    pageType,
                     isMainPage: homePage === item
                 });
             };

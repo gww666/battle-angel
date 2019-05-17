@@ -144,11 +144,12 @@ const events = (type) => {
         },
         // 切换页面
         changeCurrentPageId(data) {
-            let { pageId } = data;
+            let { pageId, pageType } = data;
             store.commit("setCurrentPageId", pageId);
+            store.commit("setCurrentPageType", pageType);
             setTimeout(() => {
                 initDrag();
-            }, 0); 
+            }, 17); 
         }
     }
     if (_event[type]) {

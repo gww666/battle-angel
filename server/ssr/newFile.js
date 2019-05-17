@@ -63,7 +63,7 @@ const generateInitFile = ({projectId, pageId, pageType = "flex"}) => {
 }
 
 //生成路由导入文件
-const generateRouter = (projectId, pageId, isMainPage) => {
+const generateRouter = (projectId, pageId, isMainPage, pageType) => {
     let projectDirPath = resolve(`../project/${projectId}`);
     let importJSFilePath = path.join(projectDirPath, "routers/import.js");
     let comImportJSFilePath = path.join(projectDirPath, `/containers/${pageId}/import.js`);
@@ -125,7 +125,7 @@ const generateRouter = (projectId, pageId, isMainPage) => {
             break;
         }
     }
-    // 修改currentPageId
+    // 修改state中的currentPageId
     for (let item of storeBody) {
         if (item.type === "ExportDefaultDeclaration") {
             item.declaration.arguments[0].properties.forEach(ele => {
@@ -150,7 +150,7 @@ const generateRouter = (projectId, pageId, isMainPage) => {
     code = recast.print(ast).code;
     storeCode = recast.print(storeAst).code;
     // 添加import.js
-    let importJSCode = `export default {data() {return {pageId: "${pageId}"}},components: {}}`;
+    let importJSCode = `export default {data() {return {pageId: "${pageId}", pageType: "${pageType}"}},components: {}}`;
     fs.writeFileSync(importJSFilePath, code);
     fs.writeFileSync(comImportJSFilePath, importJSCode);
     fs.writeFileSync(storeFilePath, storeCode);
@@ -179,7 +179,7 @@ const handler = {
         //生成private.init.js文件
         generateInitFile({projectId, pageId});
         //生成路由文件
-        generateRouter(projectId, pageId, isMainPage);
+        generateRouter(projectId, pageId, isMainPage, layout);
     }
 }
 

@@ -16,6 +16,9 @@ export default class Menu extends Vue {
     get currentPageId() {
         return this.$store.state.gw.currentPageId;
     }
+    get currentPageType() {
+        return this.$store.state.gw.currentPageType;
+    }
     get currentProjectId() {
         return this.$store.state.gw.currentProjectId;
     }
@@ -33,7 +36,8 @@ export default class Menu extends Vue {
         await this.$store.dispatch("getIframeSrc", {
             componentList: needImportComponentList,
             projectId: this.currentProjectId,
-            pageId: this.currentPageId
+            pageId: this.currentPageId,
+            pageType: this.currentPageType
         });
         //请求页面配置
         await this.$store.dispatch("gw/getPagePropsList", {pageId: this.currentPageId});

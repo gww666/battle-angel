@@ -71,19 +71,21 @@ export default {
             
             // 修改选中的页面
             commit("gw/setCurrentPageId", homePage.name, {root: true});
+            commit("gw/setCurrentPageType", homePage.pageType, {root: true});
             commit("setPagesList", data);
             dispatch("requestPageConf");
         },
         // 获取页面已引入的组件
         async requestPageConf({commit, dispatch, rootState}, noCompile) {
-            let { currentPageId, currentProjectId } = rootState.gw;
+            let { currentPageId, currentProjectId, currentPageType } = rootState.gw;
+            console.log(currentPageType, 'currentPageType');
             // 请求页面已引入的组件
             let options = {
                 method: "GET",
                 url: GET_PAGE_CONF,
                 params: {
                     projectId: currentProjectId,
-                    pageId: currentPageId   
+                    pageId: currentPageId
                 }
             };
             let data = await axios(options);
@@ -101,7 +103,8 @@ export default {
             // 编译
             await dispatch("getIframeSrc", {
                 projectId: currentProjectId,
-                pageId: currentPageId
+                pageId: currentPageId,
+                pageType: currentPageType
             }, {root: true});
             
             //请求页面配置

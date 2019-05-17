@@ -48,7 +48,8 @@ const events = (type) => {
             await store.dispatch("getIframeSrc", {
                 componentList,
                 projectId: store.state.gw.currentProjectId,
-                pageId: store.state.gw.currentPageId
+                pageId: store.state.gw.currentPageId,
+                pageType: store.state.gw.currentPageType
             });
         }
     }

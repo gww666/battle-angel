@@ -11,6 +11,7 @@ export default new Vuex.Store({
         pageConfig,
         componentList,
         currentPageId: "t3",
+        currentPageType: "",
         comBoxComponentList: {}
     },
     getters: {
@@ -59,6 +60,9 @@ export default new Vuex.Store({
         },
         setCurrentPageId(state, id) {
             state.currentPageId = id;
+        },
+        setCurrentPageType(state, type) {
+            state.currentPageType = type;
         }
     },
     modules: {

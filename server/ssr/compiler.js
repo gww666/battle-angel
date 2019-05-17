@@ -146,7 +146,7 @@ const copyBaseComponent = ({projectId, pageId, componentList}) => {
             }
     });
 }
-const generateComponents = async ({projectId, pageId, componentList}) => {
+const generateComponents = async ({projectId, pageId, pageType, componentList}) => {
     //按需复制样式组件
     copyBaseComponent({projectId, pageId, componentList});
     let pageRootPath = resolve(`../project/${projectId}/containers`);
@@ -189,7 +189,7 @@ const generateComponents = async ({projectId, pageId, componentList}) => {
         // }
         
     });
-    let code = `${importCode.join("")}export default {data() {return {pageId: "${pageId}"}},components: {${componentsName}}}`;
+    let code = `${importCode.join("")}export default {data() {return {pageId: "${pageId}", pageType: "${pageType}"}},components: {${componentsName}}}`;
     //写入import.js
     fs.writeFileSync(importJSFilePath, code);
 }
@@ -197,12 +197,12 @@ const generateComponents = async ({projectId, pageId, componentList}) => {
 const handle = async (ctx, next) => {
     //获取参数
     // let componentList = ctx.params.componentList;
-    let {componentList, projectId, pageId} = ctx.params;
+    let {componentList, projectId, pageId, pageType} = ctx.params;
     let projectDirPath = path.resolve(__dirname, `../project/${projectId}`);
     // console.log("接收到参数", componentList);
     //按需引入组件
     if (componentList) {
-        await generateComponents({componentList, projectId, pageId});
+        await generateComponents({componentList, projectId, pageId, pageType});
         generateComponentsForBoxCom2({componentList, projectId, pageId});
     }
     // generateRouter();

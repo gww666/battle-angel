@@ -26,6 +26,7 @@ export default {
         //当前选中的项目id
         currentProjectId: "",
         currentPageId: "",
+        currentPageType: "",
         pageConfig: {},
         //如果该值存在，代表将要向这个id的自由容器中追加一个组件
         boxComId: "",
@@ -91,6 +92,10 @@ export default {
         //设置当前选中的页面ID
         setCurrentPageId(state, id) {
             state.currentPageId = id;
+        },
+        //设置当前选中的页面布局
+        setCurrentPageType(state, type) {
+            state.currentPageType = type;
         },
         setPageConfig(state, config) {
             state.pageConfig = config;
