@@ -42,15 +42,17 @@ const _copy = (scanPath, distPath) => {
 }
 
 //生成private.init.js文件
-const generateInitFile = ({projectId, pageId}) => {
+const generateInitFile = ({projectId, pageId, pageType = "flex"}) => {
     let code = `
-        import {NativeDrop, NativeDrag} from "../../plugin/drag";
-        import {initNativeDrag} from "../../util/preview-helper";
+        ${pageType === "absolute" ? "" : "import {NativeDrop} from '../../plugin/drag';"}
+        import {${pageType === "absolute" ? "initDrag" : "initNativeDrag"}} from "../../util/preview-helper";
         export default {
             mounted() {
-                initNativeDrag();
-                let box = document.querySelector(".${pageId}");
-                new NativeDrop(box);
+                ${
+                    pageType === "absolute" ? 
+                        "initDrag();" : 
+                        "initNativeDrag();let box = document.querySelector('" + pageId + "');new NativeDrop(box);"
+                }
             }
         }
     `;
