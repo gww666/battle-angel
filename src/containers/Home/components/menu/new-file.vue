@@ -1,7 +1,7 @@
 <script>
 import Vue from "vue";
 import Component from "vue-class-component";
-import {Button, Modal} from "ant-design-vue";
+import {Button, Modal, Message} from "ant-design-vue";
 import Form from "../form";
 import Select from "../form/select";
 import Input from "../form/input";
@@ -48,7 +48,7 @@ export default class NewFile extends Vue {
         // 必须以下划线或字母开头且无特殊字符
         let regExp = /^[a-zA-Z_]{1}[a-zA-Z0-9_]{0,}$/;
         if(!regExp.test(values.name)) {
-            alert("无效名称");
+            Message.warning("请输入以下划线或字母开头且无特殊字符的名称", 2);
             return;
         };
         if (values.type === "page") {
