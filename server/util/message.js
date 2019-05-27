@@ -5,7 +5,7 @@ import store from "../store";
 const postMessage = (data) => {
     window.parent.postMessage(data, "*");
 }
-import {initDrag, alignCenter} from "./preview-helper";
+import {initDrag, alignCenter, initNativeDrag} from "./preview-helper";
 import {setComConfigById} from "./setConfig";
 //接收父页面的postmessage
 const events = (type) => {
@@ -17,13 +17,18 @@ const events = (type) => {
         },
         //添加一个组件的事件
         addComponent(data) {
-            let {component, pageId, boxComId} = data;
+            let {component, pageId, boxComId, pageType} = data;
             store.commit("setCurrentPageId", pageId);
             store.commit("addComponentToList", {pageId, component, boxComId});
             //顺便初始化组建的拖拽等事件
             //nextTick
             setTimeout(() => {
-                initDrag();
+                if (pageType === "flex") {
+                    initNativeDrag(boxComId)
+                } else {
+                    initDrag();
+                }
+                
             }, 17);   
         },
         // 删除组件

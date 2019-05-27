@@ -23,6 +23,10 @@ export default class List extends Vue {
     get currentPageId() {
         return this.$store.state.gw.currentPageId;
     }
+    //当前页面的type:flex或absolute
+    get currentPageType() {
+        return this.$store.state.gw.currentPageType;
+    }
 
     get boxComId() {
         return this.$store.state.gw.boxComId;
@@ -80,7 +84,8 @@ export default class List extends Vue {
             data: {
                 component: item,
                 pageId: this.currentPageId,
-                boxComId: this.boxComId
+                boxComId: this.boxComId,
+                pageType: this.currentPageType
             }
         });
         //置空自由容器的id
