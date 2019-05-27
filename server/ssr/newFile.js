@@ -51,7 +51,7 @@ const generateInitFile = ({projectId, pageId, pageType = "flex"}) => {
                 ${
                     pageType === "absolute" ? 
                         "initDrag();" : 
-                        "initNativeDrag();let box = document.querySelector('." + pageId + "');new NativeDrop(box);"
+                        "initNativeDrag();let box = document.querySelector('" + pageId + "');new NativeDrop(box);"
                 }
             }
         }

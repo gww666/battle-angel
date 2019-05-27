@@ -45,6 +45,12 @@ export default class NewFile extends Vue {
             ...values
         }
         delete params.name;
+        // 必须以下划线或字母开头且无特殊字符
+        let regExp = /^[a-zA-Z_]{1}[a-zA-Z0-9_]{0,}$/;
+        if(!regExp.test(values.name)) {
+            alert("无效名称");
+            return;
+        };
         if (values.type === "page") {
             params.pageId = values.name;
             params.projectId = this.currentProjectId;
